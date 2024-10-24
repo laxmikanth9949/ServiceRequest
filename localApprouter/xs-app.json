@@ -1,0 +1,42 @@
+{
+    "welcomeFile": "/index.html",
+    "authenticationMethod": "route",
+    "routes": [
+      
+      {
+        "source": "^/zs_app_srs_srv/(.*)$",
+        "target": "/zs_app_srs_srv/$1",
+        "destination": "int_ic",
+        "authenticationType": "xsuaa",
+        "csrfProtection": false
+      },
+      {
+        "source": "^/ext_xalm/(.*)$",
+        "target": "$1",
+        "destination": "ext_xalm",
+        "authenticationType": "xsuaa",
+        "csrfProtection": false
+      },
+      {
+        "source": "^/user-api(.*)",
+        "target": "$1",
+        "service": "sap-approuter-userapi"
+       },
+   
+       {
+        "source": "^/sapit-employee-data",
+        "target": "/",
+        "csrfProtection": false,
+        "destination": "sapit-employee-data",
+        "authenticationType": "xsuaa"
+       },
+  
+      {
+        "source": "^(.*)$",
+        "target": "/sapcomservicerequestservicerequest/$1",
+        "service": "html5-apps-repo-rt",
+        "authenticationType": "xsuaa"
+      }
+    ]
+  }
+  

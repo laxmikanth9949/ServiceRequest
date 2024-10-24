@@ -1,0 +1,31 @@
+# yaml-language-server: $schema=https://sap.github.io/ui5-tooling/schema/ui5.yaml.json
+
+specVersion: "3.1"
+metadata:
+  name: com.sap.ui.srs
+type: application
+server:
+  customMiddleware:
+    - name: fiori-tools-proxy
+      afterMiddleware: compression
+      configuration:
+        ignoreCertError: false # If set to true, certificate errors will be ignored. E.g. self-signed certificates will be accepted
+        backend:
+          - path: /zs_app_srs_srv
+            url: https://icd.wdf.sap.corp/sap/opu/odata/sap
+            destination: int_ic
+          - path: /ext_xalm
+            destination: ext_xalm
+          - path: /ext_commerce
+            destination: ext_commerce 
+    - name: fiori-tools-appreload
+      afterMiddleware: compression
+      configuration:
+        port: 35729
+        path: webapp
+        delay: 300
+    - name: fiori-tools-preview
+      afterMiddleware: fiori-tools-appreload
+      configuration:
+        component: com.sap.ui.srs
+        ui5Theme: sap_horizon

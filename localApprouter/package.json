@@ -1,0 +1,21 @@
+{
+    "name": "local-approuter",
+    "description": "Local approuter",
+    "engines": {
+        "node": ">=16.14",
+        "npm": ">=8.3.0"
+    },
+    "overrides": {
+        "semver": "7.5.4",
+        "@sap/approuter": {
+            "@sap/audit-logging": "5.7.2"
+        }
+    },
+    "dependencies": {
+        "@sap/approuter": "14.3.3",
+        "@sap/audit-logging": "5.7.2"
+    },
+    "scripts": {
+        "start": "node node_modules/@sap/approuter/approuter.js"
+    }
+}
