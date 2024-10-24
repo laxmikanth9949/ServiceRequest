@@ -1,0 +1,41 @@
+<core:FragmentDefinition xmlns="sap.ui.table" xmlns:core="sap.ui.core" xmlns:f="sap.ui.layout.form" xmlns:m="sap.m" xmlns:l="sap.ui.layout"
+	xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+	<m:Dialog id="addTenantsDialog" title="{i18n>txtAddTenant}" tooltip="{i18n>txtAddTenant}">
+		<m:content>
+			<m:Table growing="false" mode="MultiSelect" id="idTenantTable" enableBusyIndicator="true" items="{tenantModel>/}" ariaLabelledBy="title"
+				selectionChange="selectTenantRow" sticky="ColumnHeaders">
+				<m:columns>
+					<m:Column>
+						<m:Text text="{i18n>txtTenantID}" tooltip="{i18n>txtTenantID}"/>
+					</m:Column>
+					<m:Column minScreenWidth="Desktop" demandPopin="true">
+						<m:Text text="{i18n>txtTenantDesc}" tooltip="{i18n>txtTenantDesc}"/>
+					</m:Column>
+					<m:Column demandPopin="true" minScreenWidth="Desktop">
+						<m:Text text="{i18n>txtSystemRole}" tooltip="{i18n>txtSystemRole}"/>
+					</m:Column>
+					<m:Column minScreenWidth="Desktop" demandPopin="true">
+						<m:Text text="{i18n>txtDataCenter}" tooltip="{i18n>txtDataCenter}"/>
+					</m:Column>
+				</m:columns>
+				<m:items>
+					<m:ColumnListItem>
+						<m:cells>
+							<m:Text app:selectedTenant="{tenantModel>}" text="{parts: ['tenantModel>Addtenantid'], formatter: '.formatter.formatCloudRefObjProductID' }"
+								tooltip="{tenantModel>Addtenantid}"/>
+							<m:Text text="{tenantModel>Addtenantdescription}" tooltip="{tenantModel>Addtenantdescription}"/>
+							<m:Text text="{tenantModel>CarRole}" tooltip="{tenantModel>CarRole}"/>
+							<m:Text text="{tenantModel>CarDataCenter}" tooltip="{tenantModel>CarDataCenter}"/>
+						</m:cells>
+					</m:ColumnListItem>
+				</m:items>
+			</m:Table>
+		</m:content>
+		<m:beginButton>
+			<m:Button id="idSelectTenant" text="{i18n>txtAddTenant}" tooltip="{i18n>txtAddTenant}" enabled="false" press="onSelectTenant"/>
+		</m:beginButton>
+		<m:endButton>
+			<m:Button id="idCancelTenant" text="{i18n>cancel}" tooltip="{i18n>cancel}" press="onCancelTenantPopup"/>
+		</m:endButton>
+	</m:Dialog>
+</core:FragmentDefinition>

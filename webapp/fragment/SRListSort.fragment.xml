@@ -1,0 +1,8 @@
+<core:FragmentDefinition xmlns="sap.ui.table" xmlns:core="sap.ui.core" xmlns:f="sap.ui.layout.form" xmlns:m="sap.m" xmlns:l="sap.ui.layout">
+	<m:ViewSettingsDialog id="idDialogSort"
+		confirm="handleSortDialogConfirm" sortDescending="{SRListSortModel>/sortDescending}" class="sapUiSizeCompact" sortItems="{SRListSortModel>/items}">
+		<m:sortItems>
+				<m:ViewSettingsItem text="{SRListSortModel>text}" key="{SRListSortModel>key}" selected="{SRListSortModel>selected}" />
+		</m:sortItems>
+	</m:ViewSettingsDialog>
+</core:FragmentDefinition>

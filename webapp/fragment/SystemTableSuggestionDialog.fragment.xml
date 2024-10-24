@@ -1,0 +1,169 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:u="sap.ui.unified" xmlns:fb="sap.ui.comp.filterbar" xmlns:table="sap.ui.table"
+	xmlns:core="sap.ui.core" xmlns:l="sap.ui.layout" xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+	<Dialog id="dialogSystem" title="{i18n>selectSystem}" tooltip="{i18n>selectSystem}">
+		<content>
+			<fb:FilterBar id="filterbar" showFilterConfiguration="false" search="onSystemSearchInDialog" useToolbar="false">
+				<fb:filterItems>
+					<fb:FilterItem name="A" label="{i18n>customerId}">
+						<fb:control>
+							<Input id="idCustomerInput" submit="onSystemSearchInDialog" type="Number" tooltip="{i18n>customerIDPromptText}"
+								placeholder="{i18n>customerIDPromptText}"/>
+						</fb:control>
+					</fb:FilterItem>
+					<fb:FilterItem name="D" label="{i18n>txtRelatedPartner}">
+						<fb:control> 
+							<l:HorizontalLayout class="classHorizontalLayoutSystemSearchFilter">
+								<ComboBox id="comboRelatedPartner" change="onRelatedPartnerSelection" selectedKey="Y" tooltip="{i18n>txtPromptRelatedPartner}">
+									<core:Item key="Y" text="Yes"/>
+									<core:Item key="N" text="No"/>
+								</ComboBox>
+								<Button icon="sap-icon://information" press="showRelatedPartnerHint" type="Transparent" tooltip="{i18n>txtHint}" enabled="true"></Button>
+							</l:HorizontalLayout>
+						</fb:control>
+					</fb:FilterItem>
+					<fb:FilterItem name="F" label="{i18n>txtFlaggedForDeletion}">
+						<fb:control>
+							<l:HorizontalLayout class="classHorizontalLayoutSystemSearchFilter">
+								<ComboBox id="comboFlaggedForDeletion"  change="onChangeDeletionFlag" selectedKey="N" tooltip="{i18n>txtFlaggedForDeletion}">
+									<core:Item key="Y" text="Yes"/>
+									<core:Item key="N" text="No"/>
+									<core:Item key="ALL" text="All"/>
+								</ComboBox>
+								<Button icon="sap-icon://information" press="showSystemDeletionFlagHint" type="Transparent" tooltip="{i18n>txtHint}" enabled="true"></Button>
+							</l:HorizontalLayout>
+						</fb:control>
+					</fb:FilterItem>
+					<fb:FilterItem name="B" label="{i18n>installationNumber}">
+						<fb:control>
+							<Input id="idInstallationNumber" submit="onSystemSearchInDialog" type="Number" tooltip="{i18n>installationNumberPromptText}"
+								placeholder="{i18n>installationNumberPromptText}"/>
+						</fb:control>
+					</fb:FilterItem>
+					<fb:FilterItem name="C" label="{i18n>systemID}">
+						<fb:control>
+							<Input id="idSystemID" submit="onSystemSearchInDialog" tooltip="{i18n>systemIDPromptText}" placeholder="{i18n>systemIDPromptText}"/>
+						</fb:control>
+					</fb:FilterItem>
+					<fb:FilterItem name="E" label="{i18n>systemRole}">
+						<fb:control>
+							<ComboBox busy="{busyIndicatorModel>/dropdownList}" id="comboSystemRole" selectedKey="" change="onSystemRoleSelection"
+								tooltip="{i18n>systemRolePromptText}" placeholder="{i18n>systemRolePromptText}" showSecondaryValues="true"
+								items="{path: 'carSystemRoleModel>/'}">
+								<core:ListItem key="{carSystemRoleModel>DdlbKey}" text="{carSystemRoleModel>DdlbKey}" additionalText="{carSystemRoleModel>Value}"/>
+							</ComboBox>
+						</fb:control>
+					</fb:FilterItem>
+				</fb:filterItems>
+			</fb:FilterBar>
+			<MessageStrip id="idMsgStripSystemDialogInfo" type="Information" showIcon="true" visible="true" showCloseButton="false"  class="sapUiTinyMarginBottom"></MessageStrip>
+			<MessageStrip text="{i18n>enterCustomerIdorInstallationNumber}" type="Error" id="idMsgStripFilterBarSystemDialog" showIcon="true"
+				visible="false" showCloseButton="true"></MessageStrip>
+			<MessageStrip type="Information" text="{buttonControlModel>/textMessageStripInSystemDialogForSessionFilter}" showIcon="true" visible="{buttonControlModel>/visibleMessageStripInSystemDialogForSessionFilter}" showCloseButton="false"  class="sapUiTinyMarginBottom"></MessageStrip>
+			<MessageStrip text="{i18n>txtSystemRowIndicator}" type="Success" class="sapUiTinyMarginBottom" showIcon="true" showCloseButton="false"></MessageStrip>
+			<table:Table id="systemTable" enableSelectAll="false" selectionBehavior="RowOnly" selectionMode="Single" rows="{systemModel>/}"
+				visibleRowCount="8" enableCellFilter="true" rowSelectionChange="onRowSelectionChange" filter="onFilterSystemByColumn" rowHeight="40px">
+				<table:extension>
+					<OverflowToolbar>
+						<Title id="titleSystemTable" text="{i18n>systemTableHeaderTitle}"/>
+						<ToolbarSpacer/>
+						<!--core:HTML content='&lt;div style="display: block; padding: 3px; background: #38a238; height: 30px; margin-right: 3px;"&gt;&lt;/div&gt;&lt;span style="text-wrap: wrap; width: 200px; font-size: small"&gt;System already appears in the Value Help &lt;/span&gt;'/-->
+						<Button icon="sap-icon://clear-filter" tooltip="{i18n>clearAllFilters}" type="Transparent" press="clearAllSystemTableFilters"/>
+						<ToolbarSeparator/>
+					</OverflowToolbar>
+				</table:extension>
+				<table:rowSettingsTemplate>
+					<table:RowSettings highlight="{parts: ['systemModel>doesSystemAlreadyExistInDropDown'], formatter: '.formatter.formatRowHighlight' }"/>
+				</table:rowSettingsTemplate>
+				<table:columns>
+					<table:Column filterProperty="Customer" sortProperty="Customer" defaultFilterOperator="Contains">
+						<Label text="{i18n>customerId}" tooltip="{i18n>customerId}" wrapping="true"/>
+						<table:template>
+							<Text app:system="{systemModel>}" text="{systemModel>Customer}" tooltip="{systemModel>Customer}" wrapping="false"/>
+						</table:template>
+					</table:Column>
+					<table:Column filterProperty="InstNo" sortProperty="InstNo" defaultFilterOperator="Contains">
+						<Label text="{i18n>installationNumber}" tooltip="{i18n>installationNumberTooltip}" wrapping="true"/>
+						<table:template>
+							<Text text="{systemModel>InstNo}" tooltip="{systemModel>InstNo}" wrapping="false"/>
+						</table:template>
+					</table:Column>
+					<table:Column filterProperty="Sid" id="idColumnSID" sortProperty="Sid" defaultFilterOperator="Contains">
+						<Label text="{i18n>systemID}" tooltip="{i18n>systemIDTooltip}" wrapping="true"/>
+						<table:template>
+							<!--Text text="{systemModel>Sid}" tooltip="{systemModel>Sid}" wrapping="false"/-->
+							<HBox>
+								<HBox class="classIconSWS">
+									<core:Icon src="sap-icon://disconnected"
+										visible="{parts: ['systemModel>SolmanSid','systemModel>DeployModT' ,'systemModel>shallAppendSolmanAtBotton'], formatter: '.formatter.formatSystemIcon' }"
+										color="#8B0000" tooltip="{i18n>txtMissingSolman}"></core:Icon>
+								</HBox>
+								<Text text="{systemModel>Sid}" tooltip="{systemModel>Sid}" wrapping="false"/>
+							</HBox>
+						</table:template>
+					</table:Column>
+					<table:Column filterProperty="ReferenceProductID" sortProperty="ReferenceProductID" defaultFilterOperator="Contains">
+						<Label text="{i18n>txtSystemNoTenant}" tooltip="{i18n>txtSystemNoTenanttooltip}" wrapping="true" />
+						<table:template>
+							<Text text="{parts: ['systemModel>ReferenceProductID'], formatter: '.formatter.formatCloudRefObjProductID' }" tooltip="{parts: ['systemModel>ReferenceProductID'], formatter: '.formatter.formatCloudRefObjProductID' }" wrapping="true"/>
+						</table:template>
+					</table:Column>
+					<table:Column defaultFilterOperator="Contains">
+						<Label text="{i18n>txtTPT}" tooltip="{i18n>txtTPT}" wrapping="true" />
+						<table:template>
+							<Text text="{parts: ['systemModel>TenantProductType','systemModel>TenantProductTypeText'], formatter: '.formatter.formatTPTText' }" tooltip="{parts: ['systemModel>TenantProductType','systemModel>TenantProductTypeText'], formatter: '.formatter.formatTPTText' }" wrapping="true"/>
+						</table:template>
+					</table:Column>
+					<table:Column filterProperty="SysDescription" sortProperty="SysDescription" defaultFilterOperator="Contains">
+						<Label text="{i18n>systemDescription}" tooltip="{i18n>systemDescriptionTooltip}" wrapping="true"/>
+						<table:template>
+							<Text text="{systemModel>SysDescription}" tooltip="{systemModel>SysDescription}" wrapping="true"/>
+						</table:template>
+					</table:Column>
+					<table:Column filterProperty="SystemUsage" sortProperty="SystemUsage" defaultFilterOperator="Contains">
+						<Label text="{i18n>systemUsage}" tooltip="{i18n>systemUsageTooltip}" wrapping="true"/>
+						<table:template>
+							<Text text="{systemModel>SystemUsage}" tooltip="{systemModel>SystemUsage}" wrapping="false"/>
+						</table:template>
+					</table:Column>
+					<table:Column filterProperty="DeployModT" sortProperty="DeployModT" defaultFilterOperator="Contains">
+						<Label text="{i18n>deploymentModel}" tooltip="{i18n>deploymentModel}" wrapping="true"/>
+						<table:template>
+							<Text text="{systemModel>DeployModT}" tooltip="{systemModel>DeployModT}" wrapping="false"/>
+						</table:template>
+					</table:Column>
+					<table:Column filterProperty="CarSysRoleText" sortProperty="CarSysRoleText" defaultFilterOperator="Contains">
+						<Label text="{i18n>systemRole}" tooltip="{i18n>systemRoleTooltip}" wrapping="true"/>
+						<table:template>
+							<Text text="{systemModel>CarSysRoleText}" tooltip="{systemModel>CarSysRoleText}" wrapping="true"/>
+						</table:template>
+					</table:Column>
+					<table:Column filterProperty="SolmanSid" sortProperty="SolmanSid" defaultFilterOperator="Contains">
+						<Label text="{i18n>solManagerID}" tooltip="{i18n>solManagerIDTooltip}" wrapping="true"/>
+						<table:template>
+							<Text text="{systemModel>SolmanSid}" tooltip="{systemModel>SolmanSid}" wrapping="false"/>
+						</table:template>
+					</table:Column>
+					<table:Column>
+						<Label text="{i18n>txtFlaggedForDeletion}" tooltip="{i18n>txtFlaggedForDeletion}" wrapping="true"/>
+						<table:template>
+							<Text text="{parts: ['systemModel>DeletionFlag'], formatter: '.formatter.formatDeletionFlagText' }" tooltip="{parts: ['systemModel>DeletionFlag'], formatter: '.formatter.formatDeletionFlagText' }"/>
+						</table:template>
+					</table:Column>
+				</table:columns>
+				<table:footer>
+					<!--OverflowToolbar id="infobar"></OverflowToolbar-->
+					<!--core:Icon src="sap-icon://sys-help-2"></core:Icon-->
+					<Link class="classLinkSO" wrapping="true" target="_blank" text="{i18n>txtSystemHelp}" tooltip="{i18n>txtSystemHelp}"
+						href="https://sap.sharepoint.com/teams/SRSApp/HELP%20Cannot%20use%20my%20System/Home.aspx"></Link>
+				</table:footer>
+			</table:Table>
+		</content>
+		<beginButton>
+			<Button text="{i18n>txtBtnAdd}" id="addBtnSystemsDialog" type="Accept" tooltip="{i18n>txtBtnAdd}" press="addSystemToReferenceObjects"
+				visible="true"/>
+		</beginButton>
+		<endButton>
+			<Button id="cancelSystemDialog" text="{i18n>cancel}" tooltip="{i18n>cancel}" press="onSystemDialogCloseCase" visible="true"/>
+		</endButton>
+	</Dialog>
+</core:FragmentDefinition>

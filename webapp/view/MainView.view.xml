@@ -1,0 +1,292 @@
+<mvc:View xmlns="sap.f" xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns:m="sap.m" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:smartTable="sap.ui.comp.smarttable" xmlns:sv="sap.ui.comp.smartvariants" xmlns:vm="sap.ui.comp.variants" xmlns:tnt="sap.tnt"
+	controllerName="sap.com.servicerequest.servicerequest.controller.MainView" xmlns:cust="sap.com.servicerequest.servicerequest.model" height="100%"
+	xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+	<DynamicPage id="dynamicPage">
+		<title>
+			<DynamicPageTitle backgroundDesign="Solid">
+				<heading>
+					<vm:VariantManagement id="pageVariantId" variantItems="{/results}" save="variantOnSave" manage="VariantOnManage" select="VariantOnSelect"
+						showExecuteOnSelection="false" showShare="false" lifecycleSupport="false" showCreateTile="false" standardItemText="Standard"
+						useFavorites="false">
+						<vm:variantItems>
+							<vm:VariantItem text="{VariantDisplayName}" key="{VariantID}"></vm:VariantItem>
+						</vm:variantItems>
+					</vm:VariantManagement>
+				</heading>
+				<snappedContent>
+					<m:Text id="statusText"></m:Text>
+				</snappedContent>
+				<actions>
+					<m:Button icon="sap-icon://role" type="Transparent" tooltip="{i18n>txtUserRoles}" press="roleBtnOnPress"></m:Button>
+				</actions>
+			</DynamicPageTitle>
+		</title>
+		<header>
+			<DynamicPageHeader backgroundDesign="Solid">
+				<content>
+					<fb:FilterBar id="filterbar" filterChange="filterOnChange" showClearButton="true" showClearOnFB="true" search="onFilterPressed"
+						reset="onResetFilterBar" filterContainerWidth="15em" clear="onClear" useToolbar="false" advancedMode="false">
+						<fb:filterItems>
+							<fb:FilterItem name="8" label="{i18n>servicerequestID}" partOfCurrentVariant="true" visibleInFilterBar="true">
+								<fb:control>
+									<m:Input liveChange="filterBarInputsOnChange" id="ServiceRequestID" submit="onFilterPressed" type="Number" tooltip="{i18n>servicerequestID}"/>
+								</fb:control>
+							</fb:FilterItem>
+							<fb:FilterItem name="1" label="{i18n>service}" partOfCurrentVariant="true" visibleInFilterBar="true">
+								<fb:control>
+									<m:MultiComboBox busy="{busyIndicatorModel>/serviceDropDown}" busyIndicatorDelay="0" selectionChange="filterBarInputsOnChange" name="SERVICE" id="ServiceName"
+										items="{ path: 'productSetModelMainView>/', sorter: { path: 'ProductText' } }" tooltip="{i18n>service}">
+										<core:ListItem key="{productSetModelMainView>ProductID}" text="{productSetModelMainView>ProductText}"/>
+									</m:MultiComboBox>
+								</fb:control>
+							</fb:FilterItem>
+							<fb:FilterItem name="2" label="{i18n>session}" partOfCurrentVariant="true" visibleInFilterBar="true">
+								<fb:control>
+									<m:MultiComboBox valueState="Information" valueStateText="{i18n>txtSelectServiceForSession}" selectionChange="filterBarInputsOnChange"
+										id="SessionName" items="{ path: 'SessionSetModel>/', sorter: { path: 'ComponentText' } }" tooltip="{i18n>session}">
+										<core:ListItem key="{SessionSetModel>ComponentId}" text="{SessionSetModel>ComponentText}"/>
+									</m:MultiComboBox>
+								</fb:control>
+							</fb:FilterItem>
+							<fb:FilterItem name="4" label="{i18n>Case}" partOfCurrentVariant="true" visibleInFilterBar="true">
+								<fb:control>
+									<m:MultiInput tokenUpdate="filterBarInputsOnChange" id="CaseID" showValueHelp="true" submit="onFilterPressed" valueHelpOnly="true"
+										valueHelpRequest="onCaseSearch" tooltip="{i18n>Case}"/>
+								</fb:control>
+							</fb:FilterItem>
+							<fb:FilterItem name="11" label="{i18n>serviceRequestOwner}" partOfCurrentVariant="true" visibleInFilterBar="true">
+								<fb:control>
+									<m:MultiInput tokenUpdate="filterBarInputsOnChange" id="ServiceRequestOwnerUser" valueHelpOnly="true" type="Text" showValueHelp="true"
+										valueHelpRequest="handleOwnerSearchValueHelp" tooltip="{i18n>serviceRequestOwner}"/>
+								</fb:control>
+							</fb:FilterItem>
+							<fb:FilterItem name="12" label="{i18n>creationdate}" labelTooltip="{i18n>creationdateToolTip}" partOfCurrentVariant="true"
+								visibleInFilterBar="true">
+								<fb:control>
+									<m:DateRangeSelection name="CREATION_DATE" tooltip="{i18n>creationdateToolTip}" change="filterBarInputsOnChange" id="CreationDate"
+										showFooter="true"/>
+								</fb:control>
+							</fb:FilterItem>
+							<fb:FilterItem name="6" label="{i18n>requestedDeliveryDate}" labelTooltip="{i18n>requestedDeliveryDateToolTip}" partOfCurrentVariant="true"
+								visibleInFilterBar="true">
+								<fb:control>
+									<m:DateRangeSelection name="RQDLDATE" tooltip="{i18n>requestedDeliveryDateToolTip}" change="filterBarInputsOnChange"
+										id="RequestedDeliveryDate" showFooter="true"/>
+								</fb:control>
+							</fb:FilterItem>
+							<fb:FilterItem name="5" label="{i18n>status}" partOfCurrentVariant="true" visibleInFilterBar="true">
+								<fb:control>
+									<m:MultiComboBox selectionChange="filterBarInputsOnChange" id="StatusDescription" items="{status_model>/status_local_data}"
+										tooltip="{i18n>status}">
+										<core:ListItem key="{status_model>DdlbKey}" text="{status_model>Value}"/>
+									</m:MultiComboBox>
+								</fb:control>
+							</fb:FilterItem>
+							<fb:FilterItem name="9" label="{i18n>customer}" partOfCurrentVariant="true" visibleInFilterBar="true" visible="false">
+								<fb:control>
+									<m:MultiInput tokenUpdate="filterBarInputsOnChange" id="CustomerName" showValueHelp="true" submit="onFilterPressed" valueHelpOnly="true"
+										valueHelpRequest="onCustomerSearch" tooltip="{i18n>Customer}"/>
+								</fb:control>
+							</fb:FilterItem>
+							<fb:FilterItem name="0" label="{i18n>region}" partOfCurrentVariant="true" visibleInFilterBar="true">
+								<fb:control>
+									<m:MultiComboBox name="DELIVERY_REGION" selectionChange="filterBarInputsOnChange" id="RegionID"
+										items="{ path: 'regionModel>/', sorter: { path: 'Value' } }" tooltip="{i18n>region}">
+										<core:ListItem key="{regionModel>DdlbKey}" text="{regionModel>Value}"/>
+									</m:MultiComboBox>
+								</fb:control>
+							</fb:FilterItem>
+							<fb:FilterItem name="3" label="{i18n>deploymentroom}" partOfCurrentVariant="true" visibleInFilterBar="true">
+								<fb:control>
+									<m:MultiComboBox selectionChange="filterBarInputsOnChange" id="RespDepName" items="{deplRoomValuesFiltersModel>/}"
+										tooltip="{i18n>deploymentroom}">
+										<core:ListItem key="{deplRoomValuesFiltersModel>DrPartner}" text="{deplRoomValuesFiltersModel>DrName}"/>
+									</m:MultiComboBox>
+								</fb:control>
+							</fb:FilterItem>
+							<fb:FilterItem name="13" label="{i18n>txtCountry}" partOfCurrentVariant="true" visibleInFilterBar="true">
+								<fb:control>
+									<m:MultiInput tokenUpdate="filterBarInputsOnChange" id="idCountry" showValueHelp="true" submit="onFilterPressed" valueHelpOnly="true"
+										valueHelpRequest="onCountrySearch" tooltip="{i18n>txtCountry}"/>
+								</fb:control>
+							</fb:FilterItem>
+							<fb:FilterItem name="10" label="{i18n>serviceRequestProcessor}" partOfCurrentVariant="true" visibleInFilterBar="true">
+								<fb:control>
+									<m:VBox id="vBoxProcessorUser">
+										<m:MultiInput tokenUpdate="filterBarInputsOnChange" id="ProcessorUser" valueHelpOnly="true" app:resp="{}" showValueHelp="true"
+											valueHelpRequest="handleEmpSearchValueHelp" tooltip="{i18n>serviceRequestProcessor}"/>
+										<m:HBox id="hBoxSwitchUnassignedSR"
+											visible="{parts: [{path: 'SRS_Data_UserSet>/isScoper'} ], formatter: '.formatter.showUnassignedSRField'}">
+											<m:Switch id="SwitchUnassignedSR" change="changeSwitchUnassignedSR"></m:Switch>
+											<m:Button iconFirst="false" icon="sap-icon://question-mark" text="{i18n>txtSearchUnassigned}" press="showSearchUnassignedSR"
+												type="Transparent" tooltip="{i18n>txtSearchUnassigned}" enabled="true"></m:Button>
+										</m:HBox>
+									</m:VBox>
+								</fb:control>
+							</fb:FilterItem>
+							<fb:FilterItem name="14" label="{i18n>txtLastChangedDate}" partOfCurrentVariant="true" visibleInFilterBar="true">
+								<fb:control>
+									<m:DynamicDateRange name="LASTCHANGED_DATE" id="ChangedDate" change="filterBarInputsOnChange" options="TODAY,DATERANGE,TODAYFROMTO"/>
+								</fb:control>
+							</fb:FilterItem>
+							<fb:FilterItem name="15" label="{i18n>txtLastScoper}" partOfCurrentVariant="true" visibleInFilterBar="false">
+								<fb:control>
+										<m:MultiInput tokenUpdate="filterBarInputsOnChange" id="LastScoperUser" valueHelpOnly="true" app:resp="{}" showValueHelp="true"
+											valueHelpRequest="handleLastScoperSearchValueHelp" tooltip="{i18n>txtLastScoper}"/>
+								</fb:control>
+							</fb:FilterItem>
+						</fb:filterItems>
+					</fb:FilterBar>
+				</content>
+			</DynamicPageHeader>
+		</header>
+		<content>
+			<m:VBox>
+				<m:layoutData>
+					<m:FlexItemData growFactor="1" baseSize="0%"/>
+				</m:layoutData>
+				<cust:CustomTable sticky="ColumnHeaders,HeaderToolbar" id="servicerequestTable" growing="false" growingThreshold="10" growingScrollToLoad="false"
+					itemPress="onItemPressed" items="{path:'/results'}">
+					<cust:headerToolbar>
+						<m:OverflowToolbar>
+							<m:Button iconFirst="false" text="{i18n>servicerequestTable} ({serviceRequestFilterModel>/current}/{serviceRequestFilterModel>/total})"
+								level="H2" tooltip="{i18n>servicerequestTable} ({serviceRequestFilterModel>/current}/{serviceRequestFilterModel>/total})"
+								id="idIconEditPageSize" icon="sap-icon://edit" type="Transparent" press="editPageOnPress"></m:Button>
+							<m:Link wrapping="true" href="" target="" class="classLabelSurveyRecipient" id="idTextTotalUnassignedSR" text="{i18n>txtUnassignedSR}"
+								visible="{parts: [{path: 'SRS_Data_UserSet>/isScoper'} ], formatter: '.formatter.showUnassignedSRField'}"></m:Link>
+							<m:ToolbarSpacer/>
+							<m:Button id="btnCreateNewSR" icon="sap-icon://add" type="Emphasized" text="{i18n>createNewServiceRequest}" visible="false"
+								tooltip="{i18n>createNewServiceRequest}" press="createNewServiceRequest"/>
+							<m:layoutData>
+								<m:OverflowToolbarLayoutData priority="High"/>
+							</m:layoutData>
+							<m:Button tooltip="View Sort Settings" icon="sap-icon://sort" visible="{parts: [{path:''}], formatter: '.formatter.showSortButton'}" text="Sort" press="handleSRListSortBtnPressed">
+								<m:layoutData>
+									<m:OverflowToolbarLayoutData priority="Low"/>
+								</m:layoutData>
+							</m:Button>
+							<m:Button icon="sap-icon://excel-attachment" text="{i18n>export}" tooltip="{i18n>export}" press="onExportServiceRequest">
+								<m:layoutData>
+									<m:OverflowToolbarLayoutData priority="Low"/>
+								</m:layoutData>
+							</m:Button>
+							<m:Button icon="sap-icon://user-settings" text="{i18n>personalize}" tooltip="{i18n>personalize}" press="onSRTablePersonalize">
+								<m:layoutData>
+									<m:OverflowToolbarLayoutData priority="Low"/>
+								</m:layoutData>
+							</m:Button>
+						</m:OverflowToolbar>
+					</cust:headerToolbar>
+					<cust:columns>
+						<m:Column sortIndicator="{SRListSortIconVisibilityModel>/ServiceRequestID}" id="ColServicerequestID" >
+							<m:Text class="classSRColumn" text="{i18n>servicerequestID}" tooltip="{i18n>servicerequestID}"/>
+						</m:Column>
+						<m:Column sortIndicator="{SRListSortIconVisibilityModel>/Description}" id="ColServicerequestTitle" visible="true" >
+							<m:Text class="classSRColumn" text="{i18n>servicerequestTitle}" tooltip="{i18n>servicerequestTitle}"/>
+						</m:Column>
+						<m:Column sortIndicator="{SRListSortIconVisibilityModel>/ServiceName}" id="ColService" minScreenWidth="Desktop" demandPopin="true" >
+							<m:Text class="classSRColumn" text="{i18n>service}" tooltip="{i18n>service}"/>
+						</m:Column>
+						<m:Column sortIndicator="{SRListSortIconVisibilityModel>/SessionName}" id="ColSession" minScreenWidth="Desktop" demandPopin="true" >
+							<m:Text class="classSRColumn" text="{i18n>session}" tooltip="{i18n>session}"/>
+						</m:Column>
+						<m:Column sortIndicator="{SRListSortIconVisibilityModel>/CustomerName}" id="ColCustomerName" minScreenWidth="Desktop" demandPopin="true" >
+							<m:Text class="classSRColumn" text="{i18n>customer}" tooltip="{i18n>customer}"/>
+						</m:Column>
+						<m:Column sortIndicator="{SRListSortIconVisibilityModel>/CaseID}" id="ColCaseID" minScreenWidth="Tablet" demandPopin="true" >
+							<m:Text class="classSRColumn" text="{i18n>caseId}" tooltip="{i18n>caseId}"/>
+						</m:Column>
+						<m:Column sortIndicator="{SRListSortIconVisibilityModel>/OwnerName}" id="ColServiceRequestOwner" minScreenWidth="Tablet" demandPopin="true" >
+							<m:Text class="classSRColumn" text="{i18n>serviceRequestOwner}" tooltip="{i18n>serviceRequestOwner}"/>
+						</m:Column>
+						<m:Column sortIndicator="{SRListSortIconVisibilityModel>/CreatedDate}" id="ColCreationDate" minScreenWidth="Desktop" demandPopin="true" >
+							<m:Text class="classSRColumn" text="{i18n>txtCreated}" tooltip="{i18n>txtCreated}"/>
+						</m:Column>
+						<m:Column sortIndicator="{SRListSortIconVisibilityModel>/RequestedDeliveryDate}" id="ColRequestedDeliveryDate"  minScreenWidth="Desktop"
+							demandPopin="true" >
+							<m:Text class="classSRColumn" text="{i18n>requestedDeliveryDate}" tooltip="{i18n>requestedDeliveryDate}"/>
+						</m:Column>
+						<m:Column sortIndicator="{SRListSortIconVisibilityModel>/StatusDescription}" id="ColStatus" >
+							<m:Text class="classSRColumn" text="{i18n>status}" tooltip="{i18n>status}"/>
+						</m:Column>
+						<m:Column sortIndicator="{SRListSortIconVisibilityModel>/RespDepName}" id="ColDeploymentroom" minScreenWidth="Desktop" demandPopin="true" >
+							<m:Text class="classSRColumn" text="{i18n>deploymentroom}" tooltip="{i18n>deploymentroom}"/>
+						</m:Column>
+						<m:Column sortIndicator="{SRListSortIconVisibilityModel>/ProcessorName}" id="ColServiceRequestProcessor" minScreenWidth="Desktop" 
+							demandPopin="true">
+							<m:Text class="classSRColumn" text="{i18n>serviceRequestProcessor}" tooltip="{i18n>serviceRequestProcessor}"/>
+						</m:Column>
+						<m:Column sortIndicator="{SRListSortIconVisibilityModel>/RegionName}" id="ColRegion" minScreenWidth="Desktop" demandPopin="true" 
+							popinDisplay="Inline">
+							<m:Text class="classSRColumn" text="{i18n>region}" width="4em" tooltip="{i18n>region}"/>
+						</m:Column>
+						<m:Column sortIndicator="{SRListSortIconVisibilityModel>/Country}" id="ColCountry" minScreenWidth="Desktop" demandPopin="true" 
+							popinDisplay="Inline">
+							<m:Text class="classSRColumn" text="{i18n>txtCountry}" width="4em" tooltip="{i18n>txtCountry}"/>
+						</m:Column>
+						<m:Column sortIndicator="{SRListSortIconVisibilityModel>/ChangedDate}" id="ColLastChangedDate" minScreenWidth="Desktop" demandPopin="true" 
+							popinDisplay="Inline">
+							<m:Text class="classSRColumn" text="{i18n>txtLastChangedDate}" tooltip="{i18n>txtCountry}"/>
+						</m:Column>
+						<m:Column visible="false" sortIndicator="{SRListSortIconVisibilityModel>/ExternalRef}" id="ColExtRef" minScreenWidth="Desktop" 
+							demandPopin="true" popinDisplay="Inline" >
+							<m:Text class="classSRColumn" text="{i18n>txtExtRef}" tooltip="{i18n>txtExtRef}" />
+						</m:Column>
+						<m:Column visible="false" sortIndicator="{SRListSortIconVisibilityModel>/LastScoperName}" id="ColLastScoper" minScreenWidth="Desktop" 
+							demandPopin="true" popinDisplay="Inline" >
+							<m:Text class="classSRColumn" text="{i18n>txtLastScoper}" tooltip="{i18n>txtExtRef}" />
+						</m:Column>
+					</cust:columns>
+					<cust:items>
+						<m:ColumnListItem type="Navigation">
+							<m:cells>
+								<m:Text text="{ServiceRequestID}" tooltip="{ServiceRequestID}"/>
+								<m:Text text="{Description}" tooltip="{Description}"/>
+								<m:Text text="{= ${ServiceBrandVoiceText}?${ServiceBrandVoiceText}:${ServiceName}}" tooltip="{ServiceName}"/>
+								<m:Text text="{ parts: [{path: 'SessionName'}, {path: 'TotalCallOffDays'}, {path: 'SessionBrandVoiceText'} ], formatter: '.formatter.showSessionTotalCallOffDays' }"
+									tooltip="{SessionName}"/>
+								<m:Text text="{CustomerName}" tooltip="{CustomerName}"/>
+								<m:Text text="{CaseID}" tooltip="{CaseID}"/>
+								<m:Text text="{OwnerName}" tooltip="{OwnerName}"/>
+								<m:Text text="{path : 'CreatedDate', formatter: '.formatter.dateTime'}"
+									tooltip="{path : 'CreatedDate', formatter: '.formatter.dateTime'}"/>
+								<m:Text text="{path : 'RequestedDeliveryDate', formatter: '.formatter.date'}"
+									tooltip="{path : 'RequestedDeliveryDate', formatter: '.formatter.date'}"/>
+								<m:VBox>
+									<m:items>
+										<tnt:InfoLabel text="{StatusDescription}" colorScheme="{path: 'StatusCode', formatter: '.formatter.statusState' }"
+											tooltip="{StatusDescription}">
+												<tnt:customData>
+													<core:CustomData key="statusColorClass" value="{StatusCode}"
+														writeToDom="true"/>
+												</tnt:customData>
+										</tnt:InfoLabel>
+										<m:Link text="{ServiceOrderID}" target="_blank"
+											href="{parts: [{path: 'ServiceOrderID'}, {path: 'SerivceOrderURL'} ], formatter: '.formatter.formatSOURL'}" tooltip="{ServiceOrderID}"
+											class="sapUiTinyMarginBegin sapUiTinyMarginTop"/>
+									</m:items>
+								</m:VBox>
+								<m:Text text="{RespDepName}" tooltip="{RespDepName}"/>
+								<m:Text text="{ parts: [{path: 'ProcessorUser'}, {path: 'ProcessorName'} ], formatter: '.formatter.formatProcessorName' }"
+									tooltip="{ProcessorName}"/>
+								<m:Text text="{RegionName}" tooltip="{RegionName}"/>
+								<m:Text text="{Country}" tooltip="{Country}"/>
+								<m:Text text="{path : 'ChangedDate', formatter: '.formatter.dateTime'}"
+									tooltip="{path : 'ChangedDate', formatter: '.formatter.dateTime'}"/>
+								<m:Text text="{ExternalRef}" tooltip="{ExternalRef}"/>
+								<m:Text text="{LastScoperName}" tooltip="{LastScoperName}"/>
+							</m:cells>
+						</m:ColumnListItem>
+					</cust:items>
+				</cust:CustomTable>
+				<m:FlexBox height="100%" alignItems="Start" justifyContent="Center">
+					<m:items>
+						<m:Button type="Emphasized" text="{i18n>showMore}" tooltip="{i18n>showMore}" press="showMoreServiceRequest"
+							visible="{serviceRequestFilterModel>/isShowMoreVisible}"/>
+					</m:items>
+				</m:FlexBox>
+			</m:VBox>
+		</content>
+	</DynamicPage>
+</mvc:View>

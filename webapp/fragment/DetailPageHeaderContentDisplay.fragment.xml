@@ -1,0 +1,191 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns="sap.uxap" xmlns:m="sap.m" xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form"
+	xmlns:tnt="sap.tnt" xmlns:utils="sapit.controls" xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+	<m:VBox backgroundDesign="Solid" wrap="Wrap" justifyContent="SpaceAround">
+		<f:Form id="dp-header-formDisplay" editable="false" width="">
+			<f:layoutData>
+				<m:FlexItemData growFactor="0.5"/>
+			</f:layoutData>
+			<f:layout>
+				<f:ResponsiveGridLayout labelSpanXL="4" labelSpanL="4" labelSpanM="12" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0"
+					emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="2" singleContainerFullSize="false"/>
+			</f:layout>
+			<f:formContainers>
+				<f:FormContainer>
+					<f:FormElement label="{i18n>customer}">
+						<f:fields>
+							<m:VBox class="sapUiSizeCompact classGridISDHubIntg">
+								<m:Text
+										text="{parts: ['servicerequestModel>/CustomerID', 'servicerequestModel>/CustomerName'], formatter: '.formatter.idAndNameFormatterForCustomer' }"
+										tooltip="{parts: ['servicerequestModel>/CustomerID', 'servicerequestModel>/CustomerName'], formatter: '.formatter.idAndNameFormatterForCustomer' }"></m:Text>
+									<m:Button class="classISDHubBtn sapUiSizeCompact" id="btnISDHub" tooltip="{i18n>btnISDHubTooltip}" text="{i18n>txtCheckingISDHubStatus}" press="pressISDHubBtn"></m:Button>
+							</m:VBox>
+						</f:fields>
+					</f:FormElement>
+					<f:FormElement label="{i18n>case}">
+						<f:fields required="true">
+							<m:Link emphasized="true" text="{servicerequestModel>/CaseID}" tooltip="{servicerequestModel>/CaseID}" press="showOpenCasePopover" class="hyperLinkClassDetailHeader"/>
+						</f:fields>
+					</f:FormElement>
+					<f:FormElement label="{i18n>goLiveDate}">
+						<f:fields>
+							<m:Text
+								text="{ parts: [ {path: 'servicerequestModel>/GoLiveDate'} ], formatter: 'sap.com.servicerequest.servicerequest.model.formatter.date' }"
+								tooltip="{ parts: [ {path: 'servicerequestModel>/GoLiveDate'} ], formatter: 'sap.com.servicerequest.servicerequest.model.formatter.date' }"/>
+						</f:fields>
+					</f:FormElement>
+					<f:FormElement label="{i18n>serviceRequestTitle}">
+						<f:fields>
+							<m:Text text="{servicerequestModel>/Description}" tooltip="{servicerequestModel>/Description}"/>
+						</f:fields>
+					</f:FormElement>
+					<f:FormElement label="{i18n>servicerOrderGroup}">
+						<f:fields>
+							<m:Text text="{servicerequestModel>/ServiceOrderGroup}" tooltip="{servicerequestModel>/ServiceOrderGroup}"/>
+						</f:fields>
+					</f:FormElement>
+					<f:FormElement label="{i18n>creationdate}">
+						<f:fields>
+							<m:HBox>
+								<m:Text text="{path: 'servicerequestModel>/CreatedDate', formatter: '.formatter.date' }"
+									tooltip="{path: 'servicerequestModel>/CreatedDate', formatter: '.formatter.date' }"/>
+								<m:Link wrapping="true"
+									visible="{parts: ['servicerequestModel>/CreatedDate', 'servicerequestModel>/RequestedDeliveryDate'], formatter: '.formatter.showPotntLeadTIme' }"
+									class="classLinkMarginLeft hyperLinkClassDetailHeader" press="linkPotLeadTimeOnPress"
+									text="{parts: ['servicerequestModel>/CreatedDate', 'servicerequestModel>/RequestedDeliveryDate'], formatter: '.formatter.calcPotntlLeadTime' }"
+									tooltip="{parts: ['servicerequestModel>/CreatedDate', 'servicerequestModel>/RequestedDeliveryDate'], formatter: '.formatter.calcPotntlLeadTime' }">
+									<m:customData>
+										<core:CustomData key="classBoldRed"
+											value="{ parts: [ 'servicerequestModel>/CreatedDate', 'servicerequestModel>/RequestedDeliveryDate'], formatter: '.formatter.fontStylePLT' }"
+											writeToDom="true"/>
+									</m:customData>
+								</m:Link>
+							</m:HBox>
+						</f:fields>
+					</f:FormElement>
+					<f:FormElement label="{i18n>serviceRequestOwner}" class="sapUiSmallMarginTop">
+						<f:fields>
+							<m:HBox width="100%">
+										<m:Avatar
+							src="{parts: [{path: 'servicerequestModel>/OwnerUser'}], formatter: '.formatter.getPictureURL'}"
+							displaySize="S"
+							tooltip="{i18n>serviceRequestOwner}"
+							displayShape="Circle"
+							showBorder="true"
+							app:userid="{servicerequestModel>/OwnerUser}"
+							press="onPressAvatar"/>
+								<m:Text text="{servicerequestModel>/OwnerName}" tooltip="{servicerequestModel>/OwnerName}" class="sapUiSmallMarginTop classLeftMarginStyle"></m:Text>
+							</m:HBox>
+						</f:fields>
+					</f:FormElement>
+				</f:FormContainer>
+				<f:FormContainer>
+					<f:FormElement label="SR {i18n>status}">
+						<f:fields>
+							<tnt:InfoLabel text="{servicerequestModel>/StatusDescription}"
+								colorScheme="{path: 'servicerequestModel>/StatusCode', formatter:'.formatter.statusState' }"
+								tooltip="{servicerequestModel>/StatusDescription}">
+								<tnt:layoutData>
+									<l:GridData linebreak="false" span="XL3 L3 M6 S6"/>
+								</tnt:layoutData>
+								<tnt:customData>
+									<core:CustomData key="statusColorClass" value="{servicerequestModel>/StatusCode}"
+										writeToDom="true"/>
+								</tnt:customData>
+							</tnt:InfoLabel>
+							<m:Link emphasized="true" target="_blank" class="classLinkSO"
+								visible="{path: 'servicerequestModel>/ServiceOrderID', formatter: '.formatter.showSOLink' }"
+								text="{servicerequestModel>/ServiceOrderID} ({serviceOrderStatusModel>/StatusText})"
+								href="{parts: [{path: 'servicerequestModel>/ServiceOrderID'}, {path: 'servicerequestModel>/SerivceOrderURL'} ], formatter: '.formatter.formatSOURL'}"
+								tooltip="{i18n>openSO}">
+								<m:layoutData>
+									<l:GridData linebreak="false" span="XL5 L5 M12 S12"/>
+								</m:layoutData>
+							</m:Link>
+							<core:Icon id="iconViolationAlertDisplay" src="sap-icon://alert" size="1.2rem" color="#f56548" tooltip="{i18n>violationAlert}"
+								press="showViolationAlert"
+								visible="{ parts: [ {path: 'servicerequestModel>/StatusCode'}, {path: 'servicerequestApprovalModel>/'} ], formatter: '.formatter.violationAlertDisplay' }">
+								<core:layoutData>
+									<l:GridData linebreak="false" span="XL1 L1 M2 S2"/>
+								</core:layoutData>
+							</core:Icon>
+						</f:fields>
+					</f:FormElement>
+					<f:FormElement visible="{ parts: [ {path: 'servicerequestModel>/StatusCode'}], formatter: '.formatter.showCancellationFields' }" label="{i18n>cancellationReason}">
+						<f:fields>
+							<m:HBox>
+								<m:Link text="{servicerequestModel>/ReasonStatusText}" tooltip="{i18n>txtCancellationHint}" press="cancellationReasonOnPress"/>
+							</m:HBox>
+						</f:fields>
+					</f:FormElement>
+					<f:FormElement label="{i18n>region}">
+						<f:fields>
+							<m:HBox>
+								<m:Text text="{servicerequestModel>/RegionID}" tooltip="{servicerequestModel>/RegionID}"/>
+							</m:HBox>
+						</f:fields>
+					</f:FormElement>
+					<f:FormElement label="{i18n>txtCountryShipTo}"
+						visible="{parts: [ {path: 'servicerequestModel>/ReferenceSystemID'}], formatter: '.formatter.shipToCountryVisibility' }">
+						<f:fields>
+							<m:HBox>
+								<m:Text text="{servicerequestModel>/CountryName}" tooltip="{servicerequestModel>/CountryName}"/>
+							</m:HBox>
+						</f:fields>
+					</f:FormElement>
+					<f:FormElement label="{i18n>deploymentRoom}">
+						<f:fields>
+							<m:Text text="{servicerequestModel>/RespDepName}" tooltip="{servicerequestModel>/RespDepName}"/>
+						</f:fields>
+					</f:FormElement>
+					<f:FormElement label="{i18n>txtLastChangedDate}"
+						visible="{parts: ['servicerequestModel>/ChangedDate'], formatter: '.formatter.showLastChanged' }">
+						<f:fields>
+							<m:HBox>
+								<m:Text text="{parts: ['servicerequestModel>/ChangedDate'], formatter: '.formatter.calcLastChanged' }"
+									tooltip="{parts: ['servicerequestModel>/ChangedDate'], formatter: '.formatter.calcLastChanged' }">
+									<m:customData>
+										<core:CustomData key="classBoldRed" value="{ parts: [ 'servicerequestModel>/ChangedDate'], formatter: '.formatter.fontStyleLastChanged' }"
+											writeToDom="true"/>
+									</m:customData>
+								</m:Text>
+								<m:Link wrapping="true" id="openForDisplay" class="classLinkMarginLeft hyperLinkClassDetailHeader" press="linkLastChangedOnPress"/>
+							</m:HBox>
+						</f:fields>
+					</f:FormElement>
+					<f:FormElement label="{i18n>serviceRequestProcessor}" class="sapUiSmallMarginTop">
+						<f:fields>
+							<m:HBox width="100%" visible="{ parts: [{path: 'servicerequestModel>/ProcessorUser'}], formatter: '.formatter.showProcessorAvatar' }">
+								<m:Avatar
+								src="{parts: [{path: 'servicerequestModel>/ProcessorUser'}], formatter: '.formatter.getPictureURL'}"
+								displaySize="S"
+								tooltip="{i18n>serviceRequestProcessor}"
+								displayShape="Circle"
+								showBorder="true"
+								app:userid="{servicerequestModel>/ProcessorUser}"
+								press="onPressAvatar"/>
+								<m:Text id="procDisplay"
+									text="{ parts: [{path: 'servicerequestModel>/ProcessorUser'}, {path: 'servicerequestModel>/ProcessorName'} ], formatter: '.formatter.formatProcessorName' }"
+									class="sapUiSmallMarginTop classLeftMarginStyle" tooltip="{servicerequestModel>/ProcessorName}"></m:Text>
+							</m:HBox>
+						</f:fields>
+					</f:FormElement>
+					<f:FormElement label="{i18n>txtLastScoper}" class="sapUiSmallMarginTop">
+						<f:fields>
+							<m:HBox width="100%" visible="{ parts: [{path: 'servicerequestModel>/LastScoperUser'}], formatter: '.formatter.showProcessorAvatar' }">
+								<m:Avatar
+								src="{parts: [{path: 'servicerequestModel>/LastScoperUser'}], formatter: '.formatter.getPictureURL'}"
+								displaySize="S"
+								tooltip="{i18n>serviceRequestProcessor}"
+								displayShape="Circle"
+								showBorder="true"
+								app:userid="{servicerequestModel>/LastScoperUser}"
+								press="onPressAvatar"/>
+								<m:Text class="sapUiSmallMarginTop classLeftMarginStyle" text="{ parts: [{path: 'servicerequestModel>/LastScoperUser'}, {path: 'servicerequestModel>/LastScoperName'} ], formatter: '.formatter.formatProcessorName' }"/>
+							</m:HBox>
+						</f:fields>
+					</f:FormElement>
+				</f:FormContainer>
+			</f:formContainers>
+		</f:Form>
+	</m:VBox>
+</core:FragmentDefinition>

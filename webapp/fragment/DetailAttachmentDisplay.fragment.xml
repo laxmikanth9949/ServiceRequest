@@ -1,0 +1,29 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:commons="sap.suite.ui.commons" xmlns:f="sap.ui.layout.form"
+	xmlns:core="sap.ui.core" xmlns:l="sap.ui.layout" xmlns:tnt="sap.tnt" xmlns="sap.m" xmlns:table="sap.ui.table" xmlns:upload="sap.m.upload">
+	<UploadCollection id="UploadSetDisplay" fileSizeExceed="onFileSizeExceeded" maximumFileSize="30" multiple="true" change="onChange" visible="true" uploadEnabled="{buttonControlModel>/enableAttachmentUpload}"
+		uploadUrl="zs_app_srs_srv/AttachmentSet" uploadComplete="onUploadComplete" beforeUploadStarts="onBeforeUploadStarts"
+		fileDeleted="deleteAttachmentHandler" busy="{busyIndicatorModel>/attachmentBusyIndicator}" mode="MultiSelect"  items="{path: 'servicerequestAttachmentModel>/',templateShareable: false}">
+		<toolbar>
+			<OverflowToolbar>
+				<Title text="{buttonControlModel>/attachmentCount}" />
+				<ToolbarSpacer/>
+				<Button icon="sap-icon://download" id="downloadSelectedButtonDisplay" enabled="{buttonControlModel>/enableAttachDownloadAllBtn}" text="{i18n>txtDownloadSelected}" tooltip="{i18n>txtDownloadSelected}" press="onDownloadSelectedButton"/>
+				<UploadCollectionToolbarPlaceholder/>
+			</OverflowToolbar>
+		</toolbar>
+		<items>
+			<UploadCollectionItem visibleDelete="false" visibleEdit="false" fileName="{servicerequestAttachmentModel>FileName}" mimeType="{servicerequestAttachmentModel>FileType}" url="{ parts: [ {path: 'servicerequestAttachmentModel>ObjectID'},{path: 'servicerequestAttachmentModel>FileGuid'} ], formatter: '.formatter.formatAttachmentURLs' }"
+				thumbnailUrl="{ parts: [ {path: 'servicerequestAttachmentModel>ObjectID'},{path: 'servicerequestAttachmentModel>FileGuid'},{path: 'servicerequestAttachmentModel>FileType'} ], formatter: '.formatter.formatAttachmentThumbnailURLs' }">
+				<attributes>
+					<ObjectAttribute title="{i18n>txtUploadedBy}"
+						text="{servicerequestAttachmentModel>FileCreatedBy}"
+						active="true" press="attachmentUserOnPress"/>
+					<ObjectAttribute title="{i18n>txtUploadedOn}"
+						text="{ parts: [ {path: 'servicerequestAttachmentModel>FileCreatedAt'} ], formatter: '.formatter.dateTime' }"/>
+					<ObjectAttribute title="{i18n>txtFileSize}"
+						text="{ parts: [ {path: 'servicerequestAttachmentModel>FileSize'} ], formatter: '.formatter.convertBytesToSize' }"/>
+				</attributes>
+			</UploadCollectionItem>
+		</items>
+	</UploadCollection>
+</core:FragmentDefinition>

@@ -1,0 +1,36 @@
+<core:FragmentDefinition xmlns="sap.ui.table" xmlns:core="sap.ui.core" xmlns:f="sap.ui.layout.form" xmlns:m="sap.m" xmlns:l="sap.ui.layout"
+	xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+	<m:Dialog id="addModuleDialog" title="{i18n>txtAddModule}" tooltip="{i18n>txtAddModule}">
+		<m:content>
+			<m:Table growing="false" mode="MultiSelect" id="idModuleTable" enableBusyIndicator="true" items="{moduleModel>/}" ariaLabelledBy="title"
+				selectionChange="selectModuleRow" sticky="ColumnHeaders">
+				<m:columns>
+					<m:Column>
+						<m:Text text="{i18n>txtProductName}" tooltip="{i18n>txtProductName}"/>
+					</m:Column>
+					<m:Column minScreenWidth="Desktop" demandPopin="true">
+						<m:Text text="{i18n>txtProductKey}" tooltip="{i18n>txtProductKey}"/>
+					</m:Column>
+					<m:Column minScreenWidth="Desktop" demandPopin="true">
+						<m:Text text="{i18n>txtProductID}" tooltip="{i18n>txtProductID}"/>
+					</m:Column>
+				</m:columns>
+				<m:items>
+					<m:ColumnListItem>
+						<m:cells>
+							<m:Text app:selectedModule="{moduleModel>}" text="{moduleModel>Ppmsproductname}" tooltip="{moduleModel>Ppmsproductname}"/>
+							<m:Text text="{moduleModel>Ppmsproductid}" tooltip="{moduleModel>Ppmsproductid}"/>
+							<m:Text text="{moduleModel>Ppmspvproductid}" tooltip="{moduleModel>Ppmspvproductid}"/>
+						</m:cells>
+					</m:ColumnListItem>
+				</m:items>
+			</m:Table>
+		</m:content>
+		<m:beginButton>
+			<m:Button id="idSelectModule" text="{i18n>txtAddModule}" tooltip="{i18n>txtAddModule}" enabled="false" press="onSelectModule"/>
+		</m:beginButton>
+		<m:endButton>
+			<m:Button id="idCancelModule" text="{i18n>cancel}" tooltip="{i18n>cancel}" press="onCancelModulePopup"/>
+		</m:endButton>
+	</m:Dialog>
+</core:FragmentDefinition>

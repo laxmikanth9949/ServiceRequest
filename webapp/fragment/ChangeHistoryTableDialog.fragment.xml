@@ -1,0 +1,53 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:u="sap.ui.unified" xmlns:fb="sap.ui.comp.filterbar" xmlns:table="sap.ui.table"
+	xmlns:core="sap.ui.core" xmlns:l="sap.ui.layout" xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+	<Dialog id="dialogChangeHistory" title="{i18n>txtChangeHistory}" tooltip="{i18n>txtChangeHistory}">
+		<content>
+			<SearchField width="100%" id="idSearchChangeHistory" liveChange="searchChangeHistory"/>
+			<Table growing="true" id="tableChangeHistory" noDataText="{i18n>noDataText}" enableBusyIndicator="true" items="{changeHistoryModel>/data}" sticky="ColumnHeaders" >
+				<columns>
+					<Column>
+						<Text text="{i18n>txtChangeLevel}" tooltip="{i18n>txtChangeLevel}"/>
+					</Column>
+					<Column minScreenWidth="Desktop" demandPopin="true">
+						<Text text="{i18n>txtAction}" tooltip="{i18n>txtAction}"/>
+					</Column>
+					<Column demandPopin="true" minScreenWidth="Desktop">
+						<Text text="{i18n>txtOldValue}" tooltip="{i18n>txtOldValue}"/>
+					</Column>
+					<Column minScreenWidth="Desktop" demandPopin="true">
+						<Text text="{i18n>txtNewValue}" tooltip="{i18n>txtNewValue}"/>
+					</Column>
+					<Column minScreenWidth="Desktop" demandPopin="true">
+						<Text text="{i18n>txtChangedById}" tooltip="{i18n>txtChangedById}"/>
+					</Column>
+					<Column minScreenWidth="Desktop" demandPopin="true">
+						<Text text="{i18n>txtChangedByName}" tooltip="{i18n>txtChangedByName}"/>
+					</Column>
+					<Column minScreenWidth="Desktop" demandPopin="true">
+						<Text text="{i18n>txtChangedOn}" tooltip="{i18n>txtChangedOn}"/>
+					</Column>
+					<!--Column minScreenWidth="Desktop" demandPopin="true">
+						<Text text="{i18n>txtChangedAt}" tooltip="{i18n>txtChangedAt}"/>
+					</Column-->
+				</columns>
+				<items>
+					<ColumnListItem>
+						<cells>
+							<Text text="{changeHistoryModel>ChangeLevel}" tooltip="{changeHistoryModel>ChangeLevel}"/>
+							<Text text="{changeHistoryModel>Action}" tooltip="{changeHistoryModel>Action}"/>
+							<Text text="{changeHistoryModel>OldValue}" tooltip="{changeHistoryModel>OldValue}"/>
+							<Text text="{changeHistoryModel>NewValue}" tooltip="{changeHistoryModel>NewValue}"/>
+							<Text text="{changeHistoryModel>ChangedById}" tooltip="{changeHistoryModel>ChangedById}"/>
+							<Text text="{changeHistoryModel>ChangedByName}" tooltip="{changeHistoryModel>ChangedByName}"/>
+							<Text text="{ parts: [ {path: 'changeHistoryModel>ChangedTmstmp'} ], formatter: '.formatter.dateTime' }" tooltip="{ parts: [ {path: 'changeHistoryModel>ChangedTmstmp'} ], formatter: '.formatter.dateTime' }"/>
+							<!--Text text="{ parts: [ {path: 'changeHistoryModel>ChangedAt'} ], formatter: '.formatter.changeHistoryTimeConversion' }" tooltip="{ parts: [ {path: 'changeHistoryModel>ChangedAt'} ], formatter: '.formatter.changeHistoryTimeConversion' }"/-->
+						</cells>
+					</ColumnListItem>
+				</items>
+			</Table>
+		</content>
+		<endButton>
+			<Button text="{i18n>close}" tooltip="{i18n>close}" press="onChangeHistoryDialogClose" visible="true"/>
+		</endButton>
+	</Dialog>
+</core:FragmentDefinition>

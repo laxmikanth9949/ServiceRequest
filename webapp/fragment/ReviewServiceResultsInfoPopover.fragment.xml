@@ -1,0 +1,13 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form" xmlns:core="sap.ui.core">
+	<ResponsivePopover id="idServiceResultReviewHintPopover" showHeader="true" title="{i18n>txtReviewofServiceResultsrequired}"
+		placement="Auto" contentWidth="35rem" >
+		<content>
+			<VBox wrap="Wrap">
+				<Text text="{i18n>txtServiceReviewInfo}" class="sapUiSmallMargin"/>
+			</VBox>
+		</content>
+		<!--endButton>
+			<Button text="{i18n>close}" press="handleServiceResultsReviewPopoverClose"/>
+		</endButton-->
+	</ResponsivePopover>
+</core:FragmentDefinition>

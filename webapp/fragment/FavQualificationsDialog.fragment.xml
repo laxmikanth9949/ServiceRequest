@@ -1,0 +1,32 @@
+<core:FragmentDefinition xmlns="sap.ui.table" xmlns:core="sap.ui.core" xmlns:f="sap.ui.layout.form" xmlns:m="sap.m" xmlns:l="sap.ui.layout"
+	xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+	<m:Dialog width="100%" id="showFavQualDialog" title="{i18n>txtFavQualDialogTitle}" tooltip="{i18n>txtFavQualDialogTitle}">
+		<m:content>
+			<m:SearchField liveChange="onSearchQual" width="100%" />
+			<m:List
+			id="idListFavQualification"
+			items="{ path: 'favQualificationsModel>/'}"
+			selectionChange=".onSelectionChange"
+			mode="Single"
+			growing="true"
+			growingThreshold="50"
+			busy="{buttonControlModel>/busyIndicatorFavQualList}"
+			includeItemInSelection="true">
+			<m:infoToolbar>
+				<m:OverflowToolbar visible="false" id="idInfoToolbar">
+					<m:Label id="idFilterLabel" />
+				</m:OverflowToolbar>
+			</m:infoToolbar>
+			<m:StandardListItem
+				type="Active"
+				app:QualifiactionID="{favQualificationsModel>QualifiactionID}"
+				title="{favQualificationsModel>QualificationName}"
+				press="pressFavQualItem"
+				iconInset="true" />
+		</m:List>
+		</m:content>
+		<m:endButton>
+			<m:Button  text="{i18n>cancel}" tooltip="{i18n>cancel}" press="onCancelFavQualDialog"/>
+		</m:endButton>
+	</m:Dialog>
+</core:FragmentDefinition>

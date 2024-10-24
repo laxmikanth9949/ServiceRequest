@@ -1,0 +1,31 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns:f="sap.ui.layout.form" xmlns="sap.m" xmlns:l="sap.ui.layout">
+	<Dialog id="dialogValidateRDD" title="{i18n>txtValidateRDDDialogTitle}" tooltip="{i18n>txtValidateRDDDialogTitle}" class="classDialogCopySR">
+		<content>
+			<f:Form editable="true" >
+				<f:layout>
+					<f:ResponsiveGridLayout class="classScopeSectionServiceForm" labelSpanXL="4" labelSpanL="4" labelSpanM="4" labelSpanS="12"
+					adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="2"
+					singleContainerFullSize="true"/>
+				</f:layout>
+				<f:formContainers>
+					<f:FormContainer>
+						<f:formElements>
+							<f:FormElement label="{i18n>requestedDeliveryDate}">
+								<f:fields>	
+										<DatePicker valueStateText="Invalid date" change="onChangeDatePickerValidateRDDDialog" required="true" width="100%" id="idDatePickerValidateRDDDialog"/>
+								</f:fields>
+							</f:FormElement>
+						</f:formElements>
+					</f:FormContainer>
+				</f:formContainers>
+			</f:Form>
+			<MessageStrip class="sapUiTinyMargin" type="Warning" text="{i18n>txtValidateRDD}" tooltip="{i18n>txtValidateRDD}"></MessageStrip>									
+		</content>
+		<beginButton>
+			<Button type="Emphasized" id="idOkInValidateRDDDialog" enabled="true" text="{i18n>ok}" tooltip="{i18n>ok}" press="pressOkInValidateRDDDialog"/>
+		</beginButton>
+		<endButton>
+			<Button text="{i18n>dialogForChangeRDDCancel}" tooltip="{i18n>dialogForChangeRDDCancel}" press="pressCancelInValidateRDDDialog"/>
+		</endButton>
+	</Dialog>
+</core:FragmentDefinition>

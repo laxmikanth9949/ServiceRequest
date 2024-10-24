@@ -1,0 +1,60 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:viz="sap.viz.ui5.controls" xmlns:layout="sap.ui.layout"
+	xmlns:mvc="sap.ui.core.mvc" xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds" xmlns:viz.data="sap.viz.ui5.data" height="100%">
+	<ResponsivePopover id="idRelatedPartnerHintPopover" title="{i18n>txtSLAPopoverTitle} {servicerequestModel>/ServiceRequestID}"
+		placement="Left" contentWidth="35rem">
+		<content>
+			<Table class="tableLastChangedPoOver" id="idTableLastChangedPopover" inset="true" items="{slaModel>/SLA}">
+				<columns>
+					<Column width="12em">
+						<Text text="TIme Category"/>
+					</Column>
+					<Column minScreenWidth="Tablet" demandPopin="true" hAlign="Center">
+						<Text text="Number of Days"/>
+					</Column>
+					<Column minScreenWidth="Desktop" demandPopin="true">
+						<Text text="Status"/>
+					</Column>
+				</columns>
+				<items>
+					<ColumnListItem vAlign="Middle">
+						<cells>
+							<Text text="{slaModel>OpenTime}"/>
+							<Text text="{slaModel>Days}"/>
+							<Text text="{slaModel>Status}"/>
+						</cells>
+					</ColumnListItem>
+				</items>
+			</Table>
+			<layout:FixFlex id='chartFixFlex' minFlexSize="250">
+				<layout:flexContent>
+					<viz:Popover id="idPopOver"></viz:Popover>
+					<viz:VizFrame id="idVizFrame" uiConfig="{applicationSet:'fiori'}" height='100%' width="100%" vizType='pie'>
+						<viz:dataset>
+							<viz.data:FlattenedDataset data="{/sla}">
+								<viz.data:dimensions>
+									<viz.data:DimensionDefinition name="OpenTime" value="{OpenTime}"/>
+								</viz.data:dimensions>
+								<viz.data:measures>
+									<viz.data:MeasureDefinition name="Days" value="{Days}"/>
+								</viz.data:measures>
+							</viz.data:FlattenedDataset>
+						</viz:dataset>
+						<viz:feeds>
+							<viz.feeds:FeedItem uid="size" type="Measure" values="Days"/>
+							<viz.feeds:FeedItem uid="color" type="Dimension" values="OpenTime"/>
+						</viz:feeds>
+					</viz:VizFrame>
+				</layout:flexContent>
+			</layout:FixFlex>
+			<MessageStrip text="{i18n>txtLastChangedPopoverInfo}" showIcon="true" showCloseButton="false" class="sapUiMediumMargin"></MessageStrip>
+			<HBox class="sapUiMediumMargin" visible="{= ${buttonControlModel>/isNewRequest} ? false : !${buttonControlModel>/isEdit}}">
+				<core:HTML
+					content="&lt;div style='font-size: 0.9rem !important;'&gt;For a detailed analayis, please go through Service Request &lt;a class='classLinkChangeHistory'&gt;Change History&lt;/a&gt;&lt;/div&gt;"/>
+			</HBox>
+			<HBox class="sapUiMediumMargin" visible="{= ${buttonControlModel>/isNewRequest}?false:${buttonControlModel>/isEdit}}">
+				<core:HTML
+					content="&lt;div style='font-size: 0.9rem !important;'&gt;For a detailed analayis, please switch to Display mode and go through Service Request &lt;strong&gt;Change History&lt;/strong&gt;.&lt;/div&gt;"/>
+			</HBox>
+		</content>
+	</ResponsivePopover>
+</core:FragmentDefinition>

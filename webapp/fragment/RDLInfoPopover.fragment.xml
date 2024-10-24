@@ -1,0 +1,11 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form" xmlns:core="sap.ui.core">
+	<ResponsivePopover id="idRDLHintPopover" showHeader="true" title="{i18n>requestedDeliveryLanguage}"
+		placement="Auto" contentWidth="35rem">
+		<content>
+				<FormattedText htmlText="&lt;p&gt;Please select the language to be used for the service delivery. &lt;br/&gt; &lt;strong&gt;Restricted availability:&lt;/strong&gt; Available languages depend on service definition.&lt;/p&gt;" class="sapUiSmallMargin"/>
+		</content>
+		<!--endButton>
+			<Button text="{i18n>close}" press="handleRDLPopoverClose"/>
+		</endButton-->
+	</ResponsivePopover>
+</core:FragmentDefinition>

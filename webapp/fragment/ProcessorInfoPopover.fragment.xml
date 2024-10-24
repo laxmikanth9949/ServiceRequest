@@ -1,0 +1,13 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form" xmlns:core="sap.ui.core">
+	<ResponsivePopover id="idProcessorInfoPopover" title="{i18n>txtSystemHint}"
+		placement="Bottom" contentWidth="35rem" >
+		<content>
+			<VBox wrap="Wrap">
+				<Text text="{i18n>txtMsgProcessorSameAsRequestorAuth}" class="sapUiSmallMargin"/>
+			</VBox>
+		</content>
+		<!--endButton>
+			<Button text="{i18n>close}" press="handleServiceOrderGroupHintPopoverClose"/>
+		</endButton-->
+	</ResponsivePopover>
+</core:FragmentDefinition>

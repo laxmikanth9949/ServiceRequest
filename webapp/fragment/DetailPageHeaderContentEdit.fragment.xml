@@ -1,0 +1,199 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns="sap.uxap" xmlns:m="sap.m" xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form"
+	xmlns:tnt="sap.tnt" xmlns:utils="sapit.controls" xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+	<m:VBox backgroundDesign="Solid" wrap="Wrap" justifyContent="SpaceAround">
+		<f:Form id="dp-header-formEdit" editable="true" width="">
+			<f:layoutData>
+				<m:FlexItemData growFactor="0.5"/>
+			</f:layoutData>
+			<f:layout>
+				<f:ResponsiveGridLayout labelSpanXL="4" labelSpanL="4" labelSpanM="12" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0"
+					emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="2" singleContainerFullSize="false"/>
+			</f:layout>
+			<f:formContainers>
+				<f:FormContainer>
+					<f:FormElement label="{i18n>customer}" visible="{parts: ['servicerequestModel>/CustomerID'], formatter: '.formatter.visibleCustomer' }">
+							<f:fields>
+								<m:Text
+									text="{parts: ['servicerequestModel>/CustomerID', 'servicerequestModel>/CustomerName'], formatter: '.formatter.idAndNameFormatterForCustomer' }" 
+									tooltip="{servicerequestModel>/CustomerName}"/>
+							</f:fields>
+					</f:FormElement>
+					<f:FormElement label="{i18n>case}">
+						<f:fields>
+							<m:Input id="srs_case-input" value="{servicerequestModel>/CaseID}" showValueHelp="true" valueHelpRequest="onCaseSearch" required="true"
+								enabled="{editableFieldsModel>/Case}" valueLiveUpdate="false" valueStateText="{i18n>caseEmpty}" valueHelpOnly="true" tooltip="{i18n>case}"/>
+						</f:fields>
+						<m:Button text="{i18n>openCaseIn}" press="showOpenCasePopover"
+							visible="{= ${servicerequestModel>/CaseID} === '' || ${servicerequestModel>/CaseID} === null ? false : true}" tooltip="{i18n>openCaseIn}"/>
+					</f:FormElement>
+					<f:FormElement label="{i18n>goLiveDate}">
+							<f:fields>
+								<m:DatePicker enabled="{editableFieldsModel>/GoLiveDate}"
+									value="{ parts: [ {path: 'servicerequestModel>/GoLiveDate'} ], formatter: 'sap.com.servicerequest.servicerequest.model.formatter.date' }"
+									tooltip="{i18n>goLiveDate}" change="setGoLiveDate"/>
+							</f:fields>
+						</f:FormElement>
+					<f:FormElement label="" visible="{buttonControlModel>/caseWithoutReasonWarning}">
+						<f:fields>
+							<m:MessageStrip text="{i18n>txtCaseEmptyReason}" type="Warning" showIcon="true" showCloseButton="true" class="sapUiMediumMarginBottom"></m:MessageStrip>
+						</f:fields>
+					</f:FormElement>
+					<f:FormElement label="{i18n>serviceRequestTitle}">
+						<f:fields>
+							<m:Input id="sr_title_edit" width="100%"
+								value="{path : 'servicerequestModel>/Description', type : 'sap.ui.model.type.String', constraints : { minLength: 1 }}" required="true"
+								maxLength="40" valueLiveUpdate="true" valueStateText="{i18n>serviceRequestTitleEmpty}" liveChange="handleValid"
+								enabled="{editableFieldsModel>/SRTitle}" tooltip="{i18n>serviceRequestTitle}"/>
+						</f:fields>
+					</f:FormElement>
+					<f:FormElement label="{i18n>servicerOrderGroup}">
+						<f:fields>
+							<m:Input id="idServiceOrderGroupInput" value="{servicerequestModel>/ServiceOrderGroup}" startSuggestion="0" maxLength="40"
+								valueLiveUpdate="true" placeholder="{i18n>serviceOrderGroupPlaceholder}" showSuggestion="true" showValueHelp="true"
+								valueHelpRequest="handleServiceOrderGroupValueHelpOpen" enabled="{editableFieldsModel>/SRTitle}" tooltip="{i18n>servicerOrderGroup}"
+								suggestionItems="{serviceOrderGroupModel>/}" liveChange="searchServiceOrderGroup"
+								suggestionItemSelected="handleServiceOrderGroupItemSelection">
+								<m:suggestionItems>
+									<core:ListItem text="{serviceOrderGroupModel>Description}"/>
+								</m:suggestionItems>
+							</m:Input>
+							<m:Button icon="sap-icon://message-information" press="showServiceOrderGroupHint" type="Transparent" tooltip="{i18n>serviceOrderGroupHint}"
+								enabled="true">
+								<m:layoutData>
+									<l:GridData span="XL1 L1 M2 S4"/>
+								</m:layoutData>
+							</m:Button>
+						</f:fields>
+					</f:FormElement>
+					
+					<f:FormElement label="{i18n>creationdate}">
+						<f:fields>
+							<m:HBox>
+								<m:Text
+									text="{path: 'servicerequestModel>/CreatedDate', formatter: '.formatter.date' }"
+									tooltip="{path: 'servicerequestModel>/CreatedDate', formatter: '.formatter.date' }"/>
+								<m:Link id="linkPLT" wrapping="true" visible="{parts: ['servicerequestModel>/CreatedDate', 'servicerequestModel>/RequestedDeliveryDate'], formatter: '.formatter.showPotntLeadTIme' }" class="classLinkMarginLeft hyperLinkClassDetailHeader" press="linkPotLeadTimeOnPress"	text="{parts: ['servicerequestModel>/CreatedDate', 'servicerequestModel>/RequestedDeliveryDate'], formatter: '.formatter.calcPotntlLeadTime' }" tooltip="{parts: ['servicerequestModel>/CreatedDate', 'servicerequestModel>/RequestedDeliveryDate'], formatter: '.formatter.calcPotntlLeadTime' }">
+									<m:customData>
+									<core:CustomData key="classBoldRed" value="{ parts: [ 'servicerequestModel>/CreatedDate', 'servicerequestModel>/RequestedDeliveryDate'], formatter: '.formatter.fontStylePLT' }"
+										writeToDom="true"/>
+								</m:customData>
+							</m:Link>		
+							</m:HBox>	
+						</f:fields>
+					</f:FormElement>
+					<f:FormElement label="{i18n>serviceRequestOwner}">
+						<f:fields>
+							<m:HBox width="100%">
+								<!--utils:EmployeeAvatar employeeId="{servicerequestModel>/OwnerUser}" showProfilePicture="true" fetchUserInfo="true" press="onPressAvatar"
+									tooltip="{i18n>serviceRequestOwner}"></utils:EmployeeAvatar-->
+									<m:Avatar
+							src="{parts: [{path: 'servicerequestModel>/OwnerUser'}], formatter: '.formatter.getPictureURL'}"
+							displaySize="S"
+							tooltip="{i18n>serviceRequestOwner}"
+							displayShape="Circle"
+							showBorder="true"
+							app:userid="{servicerequestModel>/OwnerUser}"
+							press="onPressAvatar"/>
+								<m:Text text="{servicerequestModel>/OwnerName}" tooltip="{servicerequestModel>/OwnerName}" class="classLeftMarginStyle"></m:Text>
+							</m:HBox>
+						</f:fields>
+					</f:FormElement>
+				</f:FormContainer>
+				<f:FormContainer>
+					<f:FormElement label="{i18n>status}">
+						<f:fields>
+							<tnt:InfoLabel text="{servicerequestModel>/StatusDescription}"
+								colorScheme="{path: 'servicerequestModel>/StatusCode', formatter:'.formatter.statusState' }" tooltip="{i18n>status}">
+								<tnt:layoutData>
+									<l:GridData linebreak="false" span="XL3 L3 M6 S6"/>
+								</tnt:layoutData>
+								<tnt:customData>
+									<core:CustomData key="statusColorClass" value="{servicerequestModel>/StatusCode}"
+										writeToDom="true"/>
+								</tnt:customData>
+							</tnt:InfoLabel>
+							<core:Icon src="sap-icon://alert" size="1.2rem" color="#f56548" tooltip="{i18n>violationAlert}" class="sapUiSmallMarginTop"
+								press="showViolationAlert"
+								visible="{ parts: [ {path: 'servicerequestModel>/StatusCode'}, {path: 'servicerequestApprovalModel>/'} ], formatter: '.formatter.violationAlertDisplay' }">
+								<core:layoutData>
+									<l:GridData linebreak="false" span="XL1 L1 M2 S2"/>
+								</core:layoutData>
+							</core:Icon>
+						</f:fields>
+					</f:FormElement>
+					<f:FormElement label="{i18n>region}">
+						<f:fields>
+							<m:ComboBox id="region-edit" showSecondaryValues="true" busy="{busyIndicatorModel>/dropdownList}" selectionChange="regionOnChange"
+								selectedKey="{servicerequestModel>/RegionID}" enabled="{editableFieldsModel>/DRegion}"
+								items="{ path: 'regionModel>/', sorter: { path: 'Value' }}" required="true" tooltip="{i18n>region}">
+								<core:ListItem key="{regionModel>DdlbKey}" text="{regionModel>Value}"/>
+							</m:ComboBox>
+						</f:fields>
+					</f:FormElement>
+					<f:FormElement label="{i18n>deploymentRoom}">
+						<f:fields>
+							<m:ComboBox id="dr-edit" showSecondaryValues="true" filterSecondaryValues="true" selectionChange="deplRoomOnChange"
+								busy="{busyIndicatorModel>/deploymentRoom}" selectedKey="{servicerequestModel>/RespDepID}" enabled="{= ${editableFieldsModel>/DRoom}? ${buttonControlModel>/isScopingTeamFieldVisible}:false}"
+								items="{deplRoomModel>/}" required="true" tooltip="{i18n>deploymentRoom}">
+								<core:ListItem key="{deplRoomModel>DrPartner}" text="{deplRoomModel>DrName}" additionalText="{deplRoomModel>ServiceArea}"/>
+							</m:ComboBox>
+						</f:fields>
+					</f:FormElement>
+					<f:FormElement label="{i18n>txtLastChangedDate}" visible="{parts: ['servicerequestModel>/ChangedDate'], formatter: '.formatter.showLastChanged' }">
+						<f:fields>
+							<m:HBox>
+								<m:Text	text="{parts: ['servicerequestModel>/ChangedDate'], formatter: '.formatter.calcLastChanged' }" tooltip="{parts: ['servicerequestModel>/ChangedDate'], formatter: '.formatter.calcLastChanged' }">
+									<m:customData>
+										<core:CustomData key="classBoldRed" value="{ parts: [ 'servicerequestModel>/ChangedDate'], formatter: '.formatter.fontStyleLastChanged' }"
+											writeToDom="true"/>
+									</m:customData>
+								</m:Text>	
+								<m:Link wrapping="true" id="openForEdit" class="classLinkMarginLeft hyperLinkClassDetailHeader" press="linkLastChangedOnPress" />
+							</m:HBox>
+						</f:fields>
+					</f:FormElement>
+					<f:FormElement label="{i18n>serviceRequestProcessor}">
+						<f:fields>
+							<m:HBox class="classHBoxProcessor">
+								<m:Avatar
+								id="processor-avatar-edit" 
+								src="{parts: [{path: 'servicerequestModel>/ProcessorUser'}], formatter: '.formatter.getPictureURL'}"
+								displaySize="S"
+								tooltip="{i18n>serviceRequestProcessor}"
+								displayShape="Circle"
+								showBorder="true"
+								app:userid="{servicerequestModel>/ProcessorUser}"
+								press="onPressAvatar"/>
+								<m:Button enabled="{editableFieldsModel>/Processor}" class="classAssignMeButton" text="Assign me" press="handleBtnAssignMe"></m:Button>
+								<m:MultiInput class="classHBoxProcessorInput" id="procInput" enabled="{editableFieldsModel>/Processor}" valueHelpOnly="true"
+									showSuggestion="true" showValueHelp="true" valueHelpRequest="handleEmpSearchValueHelp" tokenUpdate="onProcessorChange"
+									tooltip="{servicerequestModel>/ProcessorName}">
+								</m:MultiInput>
+								<m:Button  icon="sap-icon://message-information" press="showProcessorInfoHint" type="Transparent"
+								visible="{buttonControlModel>/visibleProcessorInfoBtn}">
+								</m:Button>	
+								</m:HBox>
+								
+						</f:fields>
+					</f:FormElement>
+					<f:FormElement label="{i18n>txtLastScoper}" visible="{parts: [{path: 'servicerequestModel>/ServiceRequestID'}], formatter: '.formatter.showLastScoperField'}">
+						<f:fields>
+							<m:HBox alignItems="Center" class="classHBoxProcessor" visible="{ parts: [{path: 'servicerequestModel>/LastScoperUser'}], formatter: '.formatter.showProcessorAvatar' }">
+								<m:Avatar
+								src="{parts: [{path: 'servicerequestModel>/LastScoperUser'}], formatter: '.formatter.getPictureURL'}"
+								displaySize="S"
+								tooltip="{i18n>serviceRequestProcessor}"
+								displayShape="Circle"
+								showBorder="true"
+								app:userid="{servicerequestModel>/LastScoperUser}"
+								press="onPressAvatar"/>
+								<m:Button visible="{parts: [{path: 'servicerequestModel>/LastScoperUser'},{path: 'servicerequestModel>/StatusCode'},{path: 'SRS_Data_UserSet>/userId'},{path: 'servicerequestModel>/OwnerUser'},{path: 'servicerequestModel>/ProcessorUser'}], formatter: '.formatter.showAssignBackProcessorBtn'}" class="classAssignMeButton" text="Assign as Processor" press="handleBtnAssignAsProcessor"></m:Button>
+								<m:Text class="classLeftMarginStyle" text="{servicerequestModel>/LastScoperName}"/>
+							</m:HBox>
+						</f:fields>
+					</f:FormElement>
+				</f:FormContainer>
+			</f:formContainers>
+		</f:Form>
+	</m:VBox>
+</core:FragmentDefinition>

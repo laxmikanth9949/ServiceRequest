@@ -1,0 +1,31 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form" xmlns:core="sap.ui.core">
+	<ResponsivePopover busy="{buttonControlModel>/showBusyForCancellationPopoverTextArea}" busyIndicatorDelay="0" id="idCancellationReasonInfoPopover" title="{i18n>txtCancellationDetails}" placement="Auto" contentWidth="35rem">
+		<content>
+			<f:SimpleForm 
+			editable="false"
+			layout="ResponsiveGridLayout"
+			labelSpanXL="3"
+			labelSpanL="3"
+			labelSpanM="3"
+			labelSpanS="12"
+			adjustLabelSpan="true"
+			emptySpanXL="0"
+			emptySpanL="0"
+			emptySpanM="0"
+			emptySpanS="0"
+			columnsXL="1"
+			columnsL="1"
+			columnsM="1"
+			singleContainerFullSize="true">
+			<f:content>
+				<Label text="{i18n>cancellationReason}" />
+				<Text text="{servicerequestModel>/ReasonStatusText}" />
+				<Label text="{i18n>cancellationDesc}" />
+				<TextArea  busy="{buttonControlModel>/showBusyForCancellationPopoverTextArea}" value="{cancellationDescModel>/data/0/Text}"  width="100%" 
+				editable="false" rows="5" showExceededText="false" growing="false"
+				maxLength="10000" tooltip="{i18n>cancellationDesc}"/>
+			</f:content>
+		</f:SimpleForm>
+		</content>
+	</ResponsivePopover>
+</core:FragmentDefinition>

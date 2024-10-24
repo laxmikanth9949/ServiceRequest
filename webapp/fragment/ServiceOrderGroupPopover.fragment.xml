@@ -1,0 +1,13 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form" xmlns:core="sap.ui.core">
+	<ResponsivePopover id="idSOGHintPopover" title="{i18n>serviceOrderGroupHint}"
+		placement="Right" contentWidth="35rem" >
+		<content>
+			<VBox wrap="Wrap">
+				<Text text="{i18n>serviceOrderGroupHintContent}" class="sapUiSmallMargin"/>
+			</VBox>
+		</content>
+		<!--endButton>
+			<Button text="{i18n>close}" press="handleServiceOrderGroupHintPopoverClose"/>
+		</endButton-->
+	</ResponsivePopover>
+</core:FragmentDefinition>

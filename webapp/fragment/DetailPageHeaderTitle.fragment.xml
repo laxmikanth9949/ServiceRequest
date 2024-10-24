@@ -1,0 +1,50 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns="sap.uxap" xmlns:m="sap.m">
+	<ObjectPageDynamicHeaderTitle backgroundDesign="Solid">
+		<heading>
+			<m:VBox>
+				<m:Title
+					text="{parts : ['servicerequestModel>/Description','servicerequestModel>/ServiceRequestID','servicerequestModel>/CustomerID','servicerequestModel>/CustomerName'], formatter: '.formatter.setDetailPageHeaderTitle'}"
+					tooltip="{parts : ['servicerequestModel>/Description','servicerequestModel>/ServiceRequestID','servicerequestModel>/CustomerID','servicerequestModel>/CustomerName'], formatter: '.formatter.setDetailPageHeaderTitle'}"
+					wrapping="true"/>
+				<m:HBox class="classHBoxProgressIndicator"
+					visible="{parts : ['servicerequestModel>/ServiceRequestID','servicerequestModel>/StatusCode','buttonControlModel>/isEdit'], formatter: '.formatter.setSRProgressHboxVisibility'}">
+					<m:ProgressIndicator width="100%" id="SRProgessIndicator" tooltip="hello" showValue="true" state="None"/>
+					<m:Button class="sapUiSizeCompact btnIndicatorClass" id="idSRProgressBarBtn" text="Check Progress" press="progessIndictaorOnPress"></m:Button>
+				</m:HBox>
+			</m:VBox>
+		</heading>
+		<actions>
+			<m:Button id="edit_SR" type="Emphasized" icon="sap-icon://edit" press="onEdit" text="{i18n>edit}" tooltip="{i18n>edit}"
+				visible="{= ${buttonControlModel>/isNewRequest} ? false : !${buttonControlModel>/isEdit}}">
+				<m:layoutData>
+					<m:OverflowToolbarLayoutData priority="High"/>
+				</m:layoutData>
+			</m:Button>
+			<m:Button id="btnCopySR" type="Transparent" enabled="{buttonControlModel>/isCopyEnabled}" text="{i18n>dialogCopySRBtnTxt}"
+				tooltip="{i18n>toolTipCopySR}" icon="sap-icon://copy" press="onCopySR"
+				visible="{= ${buttonControlModel>/isEdit}?false:${buttonControlModel>/isCopyVisible}}">
+				<m:layoutData>
+					<m:OverflowToolbarLayoutData priority="High"/>
+				</m:layoutData>
+			</m:Button>
+			<m:Button icon="sap-icon://refresh" visible="{buttonControlModel>/refreshBtnVisible}" press="onRefresh" type="Transparent"
+				text="{i18n>refresh}" tooltip="{i18n>refresh}">
+				<m:layoutData>
+					<m:OverflowToolbarLayoutData priority="High"/>
+				</m:layoutData>
+			</m:Button>
+			<m:Button icon="sap-icon://action" visible="{parts : ['buttonControlModel>/isNewRequest'], formatter: '.formatter.setShareBtnVisibility'}"
+				press="onPressShare" type="Transparent" text="Share" tooltip="Share">
+				<m:layoutData>
+					<m:OverflowToolbarLayoutData priority="High"/>
+				</m:layoutData>
+			</m:Button>
+			<m:Button type="Transparent" icon="sap-icon://sys-back" press="onDetailClose" text="{i18n>closeDetailView}" tooltip="{i18n>closeDetailView}"
+				visible="{= ${main>/actionButtonsInfo/midColumn/closeColumn} !== null }">
+				<m:layoutData>
+					<m:OverflowToolbarLayoutData priority="High"/>
+				</m:layoutData>
+			</m:Button>
+		</actions>
+	</ObjectPageDynamicHeaderTitle>
+</core:FragmentDefinition>

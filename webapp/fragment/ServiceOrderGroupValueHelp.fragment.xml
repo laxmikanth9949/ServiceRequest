@@ -1,0 +1,50 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:u="sap.ui.unified" xmlns:fb="sap.ui.comp.filterbar" xmlns:table="sap.ui.table"
+	xmlns:core="sap.ui.core" xmlns:l="sap.ui.layout" xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+	<Dialog id="dialogSOG" title="{i18n>selectServiceOrderGroup}" tooltip="{i18n>selectServiceOrderGroup}" resizable="true">
+		<content>
+			<fb:FilterBar id="filterbar" showFilterConfiguration="false" search="handleServiceOrderGroupValueHelpSearchInDialog" useToolbar="false">
+				<fb:filterItems>
+					<fb:FilterItem name="A" label="{i18n>createdBy}">
+						<fb:control>
+							<Input id="idCreatedByInput" maxLength="12" submit="handleServiceOrderGroupValueHelpSearchInDialog" tooltip="{i18n>createdByPrompt}" placeholder="{i18n>createdByPrompt}"/>
+						</fb:control>
+					</fb:FilterItem>
+					<fb:FilterItem name="B" label="{i18n>description}" class="sapUitinyMarginBegin">
+						<fb:control>
+							<Input id="idDescriptionInput" maxLength="40" submit="handleServiceOrderGroupValueHelpSearchInDialog" tooltip="{i18n>description}" />
+						</fb:control>
+					</fb:FilterItem>
+				</fb:filterItems>
+			</fb:FilterBar>
+			<Table id="SOGTable" enableBusyIndicator="true" items="{serviceOrderGroupModel>/}" ariaLabelledBy="title" selectionChange="handleServiceOrderGroupSelection"
+				sticky="ColumnHeaders" mode="SingleSelectMaster">
+				<headerToolbar>
+					<OverflowToolbar>
+						<content>
+							<Title id="titleSOGTable" text="{i18n>serviceOrderGroupsTitle}" level="H2"/>
+						</content>
+					</OverflowToolbar>
+				</headerToolbar>
+				<columns>
+					<Column>
+						<Text text="{i18n>createdBy}" tooltip="{i18n>createdBy}"/>
+					</Column>
+					<Column>
+						<Text text="{i18n>description}" tooltip="{i18n>description}"/>
+					</Column>					
+				</columns>
+				<items>
+					<ColumnListItem>
+						<cells>
+							<Text text="{serviceOrderGroupModel>CreatedBy}" tooltip="{serviceOrderGroupModel>CreatedBy}"/>
+							<Text text="{serviceOrderGroupModel>Description}" tooltip="{serviceOrderGroupModel>Description}"/>
+						</cells>
+					</ColumnListItem>
+				</items>
+			</Table>
+		</content>
+		<endButton>
+			<Button id="cancelSOGDialog" text="{i18n>cancel}" tooltip="{i18n>cancel}" press="onServiceOrderGroupDialogClose" visible="true"/>
+		</endButton>
+	</Dialog>
+</core:FragmentDefinition>

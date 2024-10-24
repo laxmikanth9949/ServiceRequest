@@ -1,0 +1,11 @@
+<core:FragmentDefinition xmlns:m="sap.m" xmlns:l="sap.ui.layout" xmlns:core="sap.ui.core">
+	<m:Popover showHeader="true" class="sapUiContentPadding" placement="Bottom" title="{i18n>openCaseIn}:">
+		<m:content>
+			<l:VerticalLayout>
+				<!--<m:Button text="{i18n>CPC}" width="18em" press="launchCustomerProjCard" tooltip="{i18n>CPC}"/>-->
+				<m:Button text="{i18n>CRM}" width="18em" press="launchCRM" tooltip="{i18n>CRM}"/>
+				<m:Button text="{i18n>HEP}" width="18em" press="launchHEP" tooltip="{i18n>HEP}"/>
+			</l:VerticalLayout>
+		</m:content>
+	</m:Popover>
+</core:FragmentDefinition>

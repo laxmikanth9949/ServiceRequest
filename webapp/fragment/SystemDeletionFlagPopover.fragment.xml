@@ -1,0 +1,13 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form" xmlns:core="sap.ui.core">
+	<ResponsivePopover id="idSystemDeletionFlagHintPopover" title="{i18n>txtFlaggedForDeletion}"
+		placement="Auto" initialFocus="content" contentWidth="35rem">
+		<content>
+			<VBox wrap="Wrap">
+				<Text text="{i18n>txtFlaggedForDeletionHintContent}" class="sapUiSmallMargin"/>
+			</VBox>
+		</content>
+		<!--endButton>
+			<Button text="{i18n>close}" press="handleSystemDeletionFlagPopoverClose"/>
+		</endButton-->
+	</ResponsivePopover>
+</core:FragmentDefinition>

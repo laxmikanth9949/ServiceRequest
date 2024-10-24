@@ -1,0 +1,126 @@
+<core:FragmentDefinition xmlns="sap.ui.table" xmlns:si="sap.suite.ui.commons.statusindicator" xmlns:core="sap.ui.core"
+	xmlns:fb="sap.ui.comp.filterbar" xmlns:f="sap.ui.layout.form" xmlns:m="sap.m" xmlns:l="sap.ui.layout">
+	<m:Dialog width="50%" id="UserRolesDialog" title="{i18n>txtUserRoles}" tooltip="{i18n>txtUserRoles}">
+		<m:content>
+			<m:Table>
+				<m:columns>
+					<m:Column demandPopin="true" minScreenWidth="Desktop" width="20%">
+						<m:Text text="{i18n>txtRole}" tooltip="{i18n>txtRole}"/>
+					</m:Column>
+					<m:Column minScreenWidth="Desktop" demandPopin="true" width="50%">
+						<m:Text text="{i18n>txtRolePurpose}" tooltip="{i18n>txtRolePurpose}"/>
+					</m:Column>
+					<m:Column demandPopin="true" minScreenWidth="Desktop" width="30%">
+						<m:Text text="{i18n>txtRoleStatus}" tooltip="{i18n>txtRoleStatus}"/>
+					</m:Column>
+				</m:columns>
+				<m:items>
+					<m:ColumnListItem>
+						<m:cells>
+							<m:Text text="{i18n>txtTQM}" tooltip="{i18n>txtTQM}"/>
+							<m:Text text="{i18n>txtTQMPurpose}" tooltip="{i18n>txtTQMPurpose}"/>
+							<m:HBox>
+								<si:StatusIndicator value="100" width="30px" height="30px" class="sapUiTinyMargin SICursorStyle statusIndicatorClass">
+									<si:propertyThresholds>
+										<si:PropertyThreshold fillColor="{ parts: [ {path: 'SRS_Data_UserSet>/isTQM'} ], formatter: '.formatter.setStatusColorForUserRoles' }"
+											toValue="100"/>
+									</si:propertyThresholds>
+									<si:ShapeGroup>
+										<si:LibraryShape  shapeId="circle"/>
+									</si:ShapeGroup>
+								</si:StatusIndicator>
+								<m:Text text="{i18n>txtRoleGranted}" tooltip="{i18n>txtRoleGranted}" class="classTxtColorGreen classMarginTxtStatusColumn" visible="{SRS_Data_UserSet>/isTQM}"></m:Text>
+								<m:Text text="{i18n>txtRoleNotGranted}" tooltip="{i18n>txtRoleNotGranted}" class="classTxtColorRed classMarginTxtStatusColumn"
+									visible="{ parts: [ {path: 'SRS_Data_UserSet>/isTQM'} ], formatter: '.formatter.ShowCreateRequestLink' }"></m:Text>
+								<m:HBox visible="{ parts: [ {path: 'SRS_Data_UserSet>/isTQM'} ], formatter: '.formatter.ShowCreateRequestLink' }">
+									<m:Text text="{i18n>txtSepartor}" class="classMarginTxtStatusColumn"></m:Text>
+									<m:Link class="LinkRolesClass classMarginTxtStatusColumn" target="_blank"
+										href="{ parts: [ {value: 'TQM'} ], formatter: '.formatter.setRolesRequestHREF' }" text="{i18n>txtRoleRequest}" tooltip="{i18n>txtRoleRequest}"></m:Link>
+								</m:HBox>
+							</m:HBox>
+						</m:cells>
+					</m:ColumnListItem>
+					<m:ColumnListItem>
+						<m:cells>
+							<m:Text text="{i18n>txtScoper}" tooltip="{i18n>txtScoper}"/>
+							<m:Text text="{i18n>txtScoperPurpose}" tooltip="{i18n>txtScoperPurpose}"/>
+							<m:HBox>
+								<si:StatusIndicator value="100" width="30px" height="30px" class="sapUiTinyMargin SICursorStyle statusIndicatorClass">
+									<si:propertyThresholds>
+										<si:PropertyThreshold fillColor="{ parts: [ {path: 'SRS_Data_UserSet>/isScoper'} ], formatter: '.formatter.setStatusColorForUserRoles' }"
+											toValue="100"/>
+									</si:propertyThresholds>
+									<si:ShapeGroup>
+										<si:LibraryShape shapeId="circle"/>
+									</si:ShapeGroup>
+								</si:StatusIndicator>
+								<m:Text text="{i18n>txtRoleGranted}" tooltip="{i18n>txtRoleGranted}" class="classTxtColorGreen classMarginTxtStatusColumn" visible="{SRS_Data_UserSet>/isScoper}"></m:Text>
+								<m:Text text="{i18n>txtRoleNotGranted}" tooltip="{i18n>txtRoleNotGranted}" class="classTxtColorRed classMarginTxtStatusColumn"
+									visible="{ parts: [ {path: 'SRS_Data_UserSet>/isScoper'} ], formatter: '.formatter.ShowCreateRequestLink' }"></m:Text>
+								<m:HBox visible="{ parts: [ {path: 'SRS_Data_UserSet>/isScoper'} ], formatter: '.formatter.ShowCreateRequestLink' }">
+									<m:Text text="{i18n>txtSepartor}" class="classMarginTxtStatusColumn"></m:Text>
+									<m:Link class="LinkRolesClass classMarginTxtStatusColumn" target="_blank"
+										href="{ parts: [ {value: 'SCOPER'} ], formatter: '.formatter.setRolesRequestHREF' }" tooltip="{i18n>txtRoleRequest}" text="{i18n>txtRoleRequest}"></m:Link>
+								</m:HBox>
+							</m:HBox>
+						</m:cells>
+					</m:ColumnListItem>
+					<m:ColumnListItem>
+						<m:cells>
+							<m:Text text="{i18n>txtApprover}" tooltip="{i18n>txtApprover}"/>
+							<m:Text text="{i18n>txtApproverPurpose}" tooltip="{i18n>txtApproverPurpose}"/>
+							<m:HBox>
+								<si:StatusIndicator value="100" width="30px" height="30px" class="sapUiTinyMargin SICursorStyle statusIndicatorClass">
+									<si:propertyThresholds>
+										<si:PropertyThreshold fillColor="{ parts: [ {path: 'SRS_Data_UserSet>/isApprover'} ], formatter: '.formatter.setStatusColorForUserRoles' }"
+											toValue="100"/>
+									</si:propertyThresholds>
+									<si:ShapeGroup>
+										<si:LibraryShape shapeId="circle"/>
+									</si:ShapeGroup>
+								</si:StatusIndicator>
+								<m:Text text="{i18n>txtRoleGranted}" tooltip="{i18n>txtRoleGranted}" class="classTxtColorGreen classMarginTxtStatusColumn" visible="{SRS_Data_UserSet>/isApprover}"></m:Text>
+								<m:Text text="{i18n>txtRoleNotGranted}" tooltip="{i18n>txtRoleNotGranted}" class="classTxtColorRed classMarginTxtStatusColumn"
+									visible="{ parts: [ {path: 'SRS_Data_UserSet>/isApprover'} ], formatter: '.formatter.ShowCreateRequestLink' }"></m:Text>
+								<m:HBox visible="{ parts: [ {path: 'SRS_Data_UserSet>/isApprover'} ], formatter: '.formatter.ShowCreateRequestLink' }">
+									<m:Text text="{i18n>txtSepartor}" class="classMarginTxtStatusColumn"></m:Text>
+									<m:Link class="LinkRolesClass classMarginTxtStatusColumn" target="_blank"
+										href="https://jam4.sapjam.com/groups/52xmbqsyVeQxWEhkLjs1ko/overview_page/mw3hIvF99EMf45TuPajmR8" text="{i18n>txtRegionalVPR}" tooltip="{i18n>txtRegionalVPR}"></m:Link>
+								</m:HBox>
+							</m:HBox>
+						</m:cells>
+					</m:ColumnListItem>
+					<m:ColumnListItem visible="{ parts: [ {path: 'SRS_Data_UserSet>/isTQM'},{path: 'SRS_Data_UserSet>/isScoper'},{path: 'SRS_Data_UserSet>/isApprover'},{path: 'SRS_Data_UserSet>/isGuest'} ], formatter: '.formatter.isGuestRoleVisibe' }">
+						<m:cells>
+							<m:Text text="{i18n>txtGuest}" tooltip="{i18n>txtGuest}"/>
+							<m:Text text="{i18n>txtGuestPurpose}" tooltip="{i18n>txtGuestPurpose}"/>
+							<m:HBox>
+								<si:StatusIndicator value="100" width="30px" height="30px" class="sapUiTinyMargin SICursorStyle statusIndicatorClass">
+									<si:propertyThresholds>
+										<si:PropertyThreshold fillColor="{ parts: [ {path: 'SRS_Data_UserSet>/isGuest'} ], formatter: '.formatter.setStatusColorForUserRoles' }"
+											toValue="100"/>
+									</si:propertyThresholds>
+									<si:ShapeGroup>
+										<si:LibraryShape shapeId="circle"/>
+									</si:ShapeGroup>
+								</si:StatusIndicator>
+								<m:Text text="{i18n>txtRoleGranted}" tooltip="{i18n>txtRoleGranted}" class="classTxtColorGreen classMarginTxtStatusColumn" visible="{SRS_Data_UserSet>/isGuest}"></m:Text>
+								<m:Text text="{i18n>txtRoleNotGranted}" tooltip="{i18n>txtRoleNotGranted}" class="classTxtColorRed classMarginTxtStatusColumn"
+									visible="{ parts: [ {path: 'SRS_Data_UserSet>/isGuest'} ], formatter: '.formatter.ShowCreateRequestLink' }"></m:Text>
+								<m:HBox visible="{ parts: [ {path: 'SRS_Data_UserSet>/isGuest'} ], formatter: '.formatter.ShowCreateRequestLink' }">
+									<m:Text text="{i18n>txtSepartor}" tooltip="{i18n>txtSepartor}" class="classMarginTxtStatusColumn"></m:Text>
+									<m:Link class="LinkRolesClass classMarginTxtStatusColumn" target="_blank"
+										href="{ parts: [ {value: 'GUEST'} ], formatter: '.formatter.setRolesRequestHREF' }" text="{i18n>txtRoleRequest}" tooltip="{i18n>txtRoleRequest}"></m:Link>
+								</m:HBox>
+							</m:HBox>
+						</m:cells>
+					</m:ColumnListItem>
+				</m:items>
+			</m:Table>
+			<core:HTML content='&lt;div style="font-size: small; margin: 1% !important" &gt; Got questions? Refer to &lt;a href="https://sap.sharepoint.com/teams/SRSApp" target="_blank"&gt;SRS App Homepage&lt;/a&gt; &lt;/div&gt;'></core:HTML> 
+		</m:content>
+		<m:endButton>
+			<m:Button text="{i18n>close}" tooltip="{i18n>close}" press="onPressCloseRolesDialog"/>
+		</m:endButton>
+	</m:Dialog>
+</core:FragmentDefinition>

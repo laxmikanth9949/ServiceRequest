@@ -1,0 +1,19 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:commons="sap.suite.ui.commons" xmlns:f="sap.ui.layout.form"
+	xmlns:core="sap.ui.core" xmlns:l="sap.ui.layout" xmlns:tnt="sap.tnt" xmlns:m="sap.m" xmlns="sap.uxap" xmlns:table="sap.ui.table" xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+	<m:VBox >
+		<commons:Timeline id="comment-display" alignment="Right" enableDoubleSided="false" axisOrientation="Vertical" width="100%" height="100%"
+			noDataText="{i18n>noData}" enableBusyIndicator="true" enableScroll="false" forceGrowing="true" groupBy="" growingThreshold="5"
+			showHeaderBar="false" showIcons="false" textHeight="3" showSearch="false" sort="true" sortOldestFirst="false"
+			content="{commentsModel>/data}" grow="growFire">
+			<commons:content>
+				<commons:TimelineItem
+					dateTime="{parts : ['commentsModel>CreatedTmstmp'], formatter: '.formatter.formatTimelineDateAndTime'}"
+					text="{ parts: [ {path: 'commentsModel>Text'} ], formatter: '.formatter.removeWhiteSpace' }"
+					userName="{commentsModel>CreatedFirstname} {commentsModel>CreatedLastname}" app:createdBy="{commentsModel>CreatedBy}" userNameClicked="onDiscussionUserNameClick" userNameClickable="true">
+					<commons:embeddedControl/>
+				</commons:TimelineItem>
+			</commons:content>
+			<commons:filterList/>
+		</commons:Timeline>
+	</m:VBox>
+</core:FragmentDefinition>

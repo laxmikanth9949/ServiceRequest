@@ -1,0 +1,10 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form" xmlns:core="sap.ui.core">
+	<ResponsivePopover id="idImmediateSOInfoPopover" title="{i18n>txtImmediateSOPopovertitle}" modal="true" placement="Top" contentWidth="35rem">
+		<content>
+			<FormattedText htmlText="&lt;p style='padding: 10px !important'&gt;If you set &lt;strong&gt;Immediate SO&lt;/strong&gt; flag (in edit mode), you will reduce the time to staffing as follows: &lt;ul&gt;&lt;li&gt;As soon as the SR is approved by the Scoper the SO creation will be triggered immediately without any further interaction with you as the Service Request Owner. Thus, the time elapsing between status APPROVED and status “SO CREATED” is being eliminated.&lt;/li&gt;&lt;li&gt;The document owner of the generated SO will be same as the Service Request owner.&lt;/li&gt;&lt;li&gt;The SO person responsible will still show the Service Request Owner.&lt;/li&gt;&lt;/ul&gt;&lt;/p&gt;&lt;p style='padding: 10px !important'&gt;Set this flag only for SRs which are ready for immediate SO creation. This means if your priority is on fastest time to staffing and you tolerate minor adjustments by the Scoper without waiting for your interaction.&lt;/p&gt;"></FormattedText>
+		</content>
+		<endButton>
+			<Button text="{i18n>close}" press="handleImmediateSOInfoPopoverClose"/>
+		</endButton>
+	</ResponsivePopover>
+</core:FragmentDefinition>

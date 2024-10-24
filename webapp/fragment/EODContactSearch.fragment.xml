@@ -1,0 +1,76 @@
+<core:FragmentDefinition xmlns="sap.ui.table" xmlns:u="sap.ui.unified" xmlns:fb="sap.ui.comp.filterbar" xmlns:core="sap.ui.core"
+	xmlns:f="sap.ui.layout.form" xmlns:m="sap.m" xmlns:l="sap.ui.layout"
+	xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+	<m:Dialog id="idEODContactDialog" title="{i18n>EoDContactSearch}" tooltip="{i18n>EoDContactSearch}">
+		<m:content>
+			<fb:FilterBar id="filterbarEODSearch" showFilterConfiguration="false" search="onEODGOPress" useToolbar="false">
+				<fb:filterItems>
+					<fb:FilterItem name="A" label="{i18n>firstName}">
+						<fb:control>
+							<m:Input id="idEODFirstNameInput" submit="onEODGOPress" tooltip="{i18n>firstNamePromptText}" placeholder="{i18n>firstNamePromptText}"/>
+						</fb:control>
+					</fb:FilterItem>
+					<fb:FilterItem name="B" label="{i18n>lastName}">
+						<fb:control>
+							<m:Input id="idEODLastNameNumber" submit="onEODGOPress" tooltip="{i18n>lastNamePromptText}" placeholder="{i18n>lastNamePromptText}"/>
+						</fb:control>
+					</fb:FilterItem>
+					<fb:FilterItem name="C" label="{i18n>email}">
+						<fb:control>
+							<m:Input id="idEODEmail" submit="onEODGOPress" tooltip="{i18n>emailNamePromptText}"	placeholder="{i18n>emailNamePromptText}"/>
+						</fb:control>
+					</fb:FilterItem>
+				</fb:filterItems>
+			</fb:FilterBar>
+			<m:MessageStrip type="Error" id="idMsgStripFilterBarEODContactDialog" showIcon="true" text="{i18n>selectSystemEoDContactSearch}"
+				visible="{buttonControlModel>/showMsgStripFilterBarEODContactDialog}" showCloseButton="true" class="sapUiTinyMarginBottom sapUiTinyMarginBeginEnd"></m:MessageStrip>
+			<m:Table growing="false" id="idEODContactTable" mode="SingleSelectMaster" enableBusyIndicator="true" items="{EODContactModel>/data}"
+				ariaLabelledBy="title" selectionChange="onEODContactSearchPressOK">
+				<m:headerToolbar>
+					<m:OverflowToolbar id="totalEODCustomerContactCounts">
+						<m:content>
+							<m:Title id="EODcustomerContactCounts" text="{i18n>contacts} ({EODContactModel>/total})" level="H2"
+								tooltip="{i18n>contacts} ({EODContactModel>/total})"/>
+						</m:content>
+					</m:OverflowToolbar>
+				</m:headerToolbar>
+				<m:columns>
+					<m:Column id="firstNameColumn">
+						<m:Text id="firstName" text="{i18n>firstName}" tooltip="{i18n>firstName}"/>
+					</m:Column>
+					<m:Column id="lastNameColumn" minScreenWidth="Desktop" demandPopin="true">
+						<m:Text id="lastName" text="{i18n>lastName}" tooltip="{i18n>lastName}"/>
+					</m:Column>
+					<m:Column demandPopin="true" minScreenWidth="Desktop" id="EmailColumn">
+						<m:Text id="email" text="{i18n>email}" tooltip="{i18n>email}"/>
+					</m:Column>
+				</m:columns>
+				<m:items>
+					<m:ColumnListItem app:item="{EODContactModel>}">
+						<m:cells>
+							<m:Text text="{EODContactModel>Firstname}" tooltip="{EODContactModel>Firstname}"/>
+							<m:Text text="{EODContactModel>Lastname}" tooltip="{EODContactModel>Lastname}"/>
+							<m:Text text="{EODContactModel>EmailAddr}" tooltip="{EODContactModel>EmailAddr}"/>
+						</m:cells>
+					</m:ColumnListItem>
+				</m:items>
+			</m:Table>
+			<m:OverflowToolbar>
+				<m:content>
+					<m:Link class="classLinkSO"  target="_blank" text="{i18n>txtEODContactPersonHelp}" tooltip="{i18n>txtEODContactPersonHelp}" href="https://jam4.sapjam.com/wiki/show/HJFX0GYrQyxwJCCpRgwdok"></m:Link>
+				</m:content>
+			</m:OverflowToolbar>
+			<m:FlexBox height="100%" alignItems="Start" justifyContent="Center" id="showMoreBtnAlignment">
+				<m:items>
+					<m:Button id="showMoreBtnEOD" type="Emphasized" text="{i18n>showMore}" tooltip="{i18n>showMore}" press="showMoreCase" visible="false"/>
+				</m:items>
+			</m:FlexBox>
+		</m:content>
+		<m:beginButton>
+			<m:Button text="{i18n>ok}" tooltip="{i18n>ok}" press="onEODContactSearchPressOK" visible="false"/>
+		</m:beginButton>
+		<m:endButton>
+			<m:Button text="{i18n>cancel}" tooltip="{i18n>cancel}" press="onEODContactSearchClose" visible="true"/>
+		</m:endButton>
+	</m:Dialog>
+</core:FragmentDefinition>

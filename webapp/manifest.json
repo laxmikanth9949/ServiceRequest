@@ -1,0 +1,189 @@
+{
+    "_version": "1.12.0",
+    "sap.cloud": {
+        "service": "com.sap.ui.srs",
+        "public": true
+    },
+    "sap.platform.cf": {
+		"ui5VersionNumber": "1.120.x"
+	},
+    "sap.app": {
+        "id": "sap.com.servicerequest.servicerequest",
+        "type": "application",
+        "i18n": "i18n/i18n.properties",
+        "applicationVersion": {
+            "version": "1.0.0"
+        },
+        "title": "{{appTitle}}",
+        "description": "{{appDescription}}",
+        "sourceTemplate": {
+            "id": "ui5template.basicSAPUI5ApplicationProject",
+            "version": "1.61.1"
+        },
+        "dataSources": {
+            "zs_app_srs_srv": {
+                "uri": "zs_app_srs_srv/",
+                "type": "OData",
+                "settings": {
+                    "odataVersion": "2.0"
+                }
+            },
+            "status_local_data": {
+                "type": "JSON",
+                "uri": "./model/status.json"
+            }
+        },
+        "crossNavigation": {
+            "inbounds": {
+                "intent1": {
+                    "signature": {
+                        "parameters": {},
+                        "additionalParameters": "allowed"
+                    },
+                    "semanticObject": "SRS",
+                    "action": "Display"
+                }
+            }
+        }
+    },
+    "sap.ui": {
+        "technology": "UI5",
+        "icons": {
+            "icon": "",
+            "favIcon": "",
+            "phone": "",
+            "phone@2": "",
+            "tablet": "",
+            "tablet@2": ""
+        },
+        "deviceTypes": {
+            "desktop": true,
+            "tablet": true,
+            "phone": true
+        }
+    },
+    "sap.ui5": {
+        "services": {
+            "ShellUIService": {
+                "factoryName": "sap.ushell.ui5service.ShellUIService"
+            }
+        },
+        "rootView": {
+            "viewName": "sap.com.servicerequest.servicerequest.view.App",
+            "type": "XML",
+            "async": true,
+            "id": "app"
+        },
+        "config": {
+            "fullWidth": true,
+            "sapFiori2Adaptation": true,
+            "reportingId": "Service Request Scoping App",
+            "reportingHosts": [
+                "sapit-home-prod-004.launchpad.cfapps.eu10.hana.ondemand.com",
+                "sapit-customerengagementworkplace-prod-elephant.launchpad.cfapps.eu10.hana.ondemand.com",
+                "fiorilaunchpad-sapitcloud.dispatcher.hana.ondemand.com",
+				"fiorilaunchpad.sap.com"
+            ]
+        },
+        "dependencies": {
+            "minUI5Version": "1.70.0",
+            "libs": {
+                "sap.ui.layout": {},
+                "sap.ui.core": {},
+                "sap.m": {}
+            }
+        },
+        "contentDensities": {
+            "compact": true,
+            "cozy": true
+        },
+        "models": {
+            "i18n": {
+                "type": "sap.ui.model.resource.ResourceModel",
+                "settings": {
+                    "bundleName": "sap.com.servicerequest.servicerequest.i18n.i18n"
+                }
+            },
+            "SRS_Data": {
+                "type": "sap.ui.model.odata.v2.ODataModel",
+                "settings": {
+                    "defaultOperationMode": "Server",
+                    "defaultBindingMode": "OneWay",
+                    "defaultCountMode": "Request",
+                    "metadataUrlParams": {
+                        "sap-language": "en"
+                    },
+                    "serviceUrlParams": {
+                        "sap-language": "en"
+                    }
+                },
+                "dataSource": "zs_app_srs_srv",
+                "preload": true
+            },
+            "SRS_Data_UserSet": {
+                "type": "sap.ui.model.json.JSONModel"
+            },
+            "status_model": {
+                "type": "sap.ui.model.json.JSONModel",
+                "dataSource": "status_local_data"
+            }
+        },
+        "resources": {
+            "css": [
+                {
+                    "uri": "css/style.css"
+                }
+            ]
+        },
+        "routing": {
+            "config": {
+                "routerClass": "sap.m.routing.Router",
+                "viewType": "XML",
+                "async": true,
+                "viewPath": "sap.com.servicerequest.servicerequest.view",
+                "controlAggregation": "pages",
+                "controlId": "app",
+                "clearControlAggregation": false
+            },
+            "routes": [
+                {
+                    "name": "RouteMainView",
+                    "pattern": "",
+                    "target": [
+                        "TargetMainView"
+                    ]
+                },
+                {
+                    "name": "DetailView",
+                    "pattern": "DetailView/{ServiceRequestID},{CaseId}:?query:",
+                    "target": [
+                        "DetailView"
+                    ]
+                }
+            ],
+            "targets": {
+                "TargetMainView": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "clearControlAggregation": false,
+                    "viewId": "MainView",
+                    "viewName": "MainView",
+                    "viewLevel": 1
+                },
+                "DetailView": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "clearControlAggregation": false,
+                    "viewId": "DetailView",
+                    "viewName": "DetailView",
+                    "viewLevel": 2
+                }
+            }
+        },
+        "flexEnabled": true
+    },
+    "sap.platform.hcp": {
+        "uri": "webapp",
+        "_version": "1.1.0"
+    }
+}

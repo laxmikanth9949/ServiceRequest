@@ -1,0 +1,125 @@
+<core:View xmlns:mvc="sap.ui.core.mvc" xmlns:commons="sap.suite.ui.commons" xmlns:f="sap.ui.layout.form" xmlns:core="sap.ui.core"
+	xmlns:l="sap.ui.layout" xmlns:tnt="sap.tnt" xmlns:m="sap.m" xmlns="sap.uxap" xmlns:table="sap.ui.table"
+	xmlns:blocks="sap.com.servicerequest.servicerequest.blocks" controllerName="sap.com.servicerequest.servicerequest.controller.DetailView"
+	height="100%">
+	<m:Page id="DetailPage" showHeader="false" showFooter="true" showNavButton="true" navButtonPress="onNavBack">
+		<m:content>
+			<ObjectPageLayout backgroundDesignAnchorBar="Solid" id="ObjectPageLayout" enableLazyLoading="false" toggleHeaderOnTitleClick="true"
+				headerContentPinnable="false">
+				<headerTitle>
+					<core:Fragment fragmentName="sap.com.servicerequest.servicerequest.fragment.DetailPageHeaderTitle" type="XML"/>
+				</headerTitle>
+				<headerContent>
+					<m:VBox visible="false" id="fragmentDetailPageHeaderContentEdit">
+						<core:Fragment fragmentName="sap.com.servicerequest.servicerequest.fragment.DetailPageHeaderContentEdit" type="XML"/>
+					</m:VBox>
+					<m:VBox visible="true" id="fragmentDetailPageHeaderContentDisplay">
+						<core:Fragment fragmentName="sap.com.servicerequest.servicerequest.fragment.DetailPageHeaderContentDisplay" type="XML"/>
+					</m:VBox>
+				</headerContent>
+				<sections>
+					<ObjectPageSection>
+						<customAnchorBarButton>
+							<m:Button icon="sap-icon://appointment" text="{i18n>scope}" width="10em" tooltip="{i18n>scope}"/>
+						</customAnchorBarButton>
+						<subSections>
+							<ObjectPageSubSection title="{i18n>scope}" mode="Expanded" id="Section2">
+								<blocks>
+									<m:VBox visible="true" id="fragmentDetailScopeDisplay">
+										<core:Fragment fragmentName="sap.com.servicerequest.servicerequest.fragment.DetailScopeDisplay" type="XML"/>
+									</m:VBox>
+									<blocks:DetailScope visible="false" id="detailScope"/>
+								</blocks>
+							</ObjectPageSubSection>
+						</subSections>
+					</ObjectPageSection>
+					<ObjectPageSection>
+						<customAnchorBarButton>
+							<m:Button icon="sap-icon://approvals" text="{i18n>approval}" width="12em" tooltip="{i18n>approval}"/>
+						</customAnchorBarButton>
+						<subSections>
+							<ObjectPageSubSection title="{i18n>approval}" mode="Expanded" id="Section3">
+								<blocks>
+									<m:VBox visible="true" id="fragmentDetailApprovalDisplay">
+										<core:Fragment fragmentName="sap.com.servicerequest.servicerequest.fragment.DetailApprovalDisplay" type="XML"/>
+									</m:VBox>
+									<blocks:DetailApproval visible="false" id="detailApproval"/>
+								</blocks>
+							</ObjectPageSubSection>
+						</subSections>
+					</ObjectPageSection>
+					<ObjectPageSection>
+						<customAnchorBarButton>
+							<m:Button icon="sap-icon://comment" text="{i18n>discussions}" width="12em" tooltip="{i18n>discussions}"/>
+						</customAnchorBarButton>
+						<subSections>
+							<ObjectPageSubSection title="{i18n>discussions}" mode="Expanded" id="Section5">
+								<blocks>
+									<m:VBox visible="true" id="fragmentDetailDiscussionDisplay">
+										<core:Fragment fragmentName="sap.com.servicerequest.servicerequest.fragment.DetailDiscussionDisplay" type="XML"/>
+									</m:VBox>
+									<blocks:DetailDiscussion visible="false" id="detailDiscussion"/>
+								</blocks>
+							</ObjectPageSubSection>
+						</subSections>
+					</ObjectPageSection>
+					<ObjectPageSection>
+						<customAnchorBarButton>
+							<m:Button icon="sap-icon://attachment" text="{i18n>txtAttachments}" width="12em" tooltip="{i18n>txtAttachments}"/>
+						</customAnchorBarButton>
+						<subSections>
+							<ObjectPageSubSection title="{i18n>txtAttachments}" mode="Expanded" id="sectionAttachments">
+								<blocks>
+									<m:VBox visible="true" id="fragmentDetailAttachmentDisplay">
+										<core:Fragment fragmentName="sap.com.servicerequest.servicerequest.fragment.DetailAttachmentDisplay" type="XML"/>
+									</m:VBox>
+									<blocks:DetailAttachment visible="false" id="detailAttachments"/>
+								</blocks>
+							</ObjectPageSubSection>
+						</subSections>
+					</ObjectPageSection>
+				</sections>
+			</ObjectPageLayout>
+		</m:content>
+		<m:footer>
+			<m:OverflowToolbar width="100%" height="auto" design="Auto" enabled="true" visible="true">
+				<m:content>
+					<m:Button id="messagePopoverBtn" class="classBtnError" icon="sap-icon://message-popup" type="Emphasized"
+						text="{=${errorModel>/message}.length}" visible="{=!!${errorModel>/message}.length}" press="handleMessagePopoverPress"/>
+					<m:Button id="changeHistoryBtn" icon="sap-icon://history" type="Emphasized" text="Change History"
+						visible="{ parts: [{path: 'buttonControlModel>/isEdit' } ], formatter: '.formatter.showHistoryBtn' }" press="handleChangeHistoryPress"/>
+					<m:ToolbarSpacer width=""/>
+					<m:Button class="sapUiSizeCompact classBtnBold" press="pressBtnMandtField" text="{buttonControlModel>/txtMandatoryField}" visible="{= ${buttonControlModel>/isEdit}?${buttonControlModel>/visibleTxtMandatoryField}:false}" type="Negative" iconFirst="true"></m:Button>
+					<m:ToolbarSpacer width=""/>
+					<m:HBox class="classHBoxImmediateSO" >
+						<m:CheckBox editable="{ parts: [{path: 'buttonControlModel>/isEdit' },{path: 'editableFieldsModel>/ImmediateSO'},{path: 'editableFieldsModel>/Session'},{path: 'servicerequestModel>/StatusCode'} ], formatter: '.formatter.enableImmediateSOCheckbox' }" selected="{servicerequestModel>/ImmediateSoCreationEnabled}" text="Immediate SO" />
+						<m:Button id="btnImmediateSOInfoBtn" icon="sap-icon://message-information" press="pressImmediateSOInfoBtn" type="Transparent"/>
+					</m:HBox>
+					<m:Button id="create_sr" text="{i18n>createServiceRequest}" type="Accept" iconFirst="true" width="auto"
+						enabled="{buttonControlModel>/createRequestButtonEnabled}" visible="{buttonControlModel>/isNewRequest}" press="onCreateServiceRequest"
+						iconDensityAware="false" tooltip="{i18n>txtMandatoryFieldOnSRCreate}"/>
+					<m:Button text="{i18n>cancel}" tooltip="{i18n>cancel}" type="Reject" visible="{buttonControlModel>/isNewRequest}" press="onDetailClose"/>
+					<m:Button type="Accept" text="{i18n>saveServiceRequest}" press="onSaveServiceRequest"
+						visible="{= ${buttonControlModel>/isNewRequest}?false:${buttonControlModel>/isEdit}}" tooltip="{i18n>txtMandatoryFieldOnSRCreate}"
+						enabled="{buttonControlModel>/createRequestButtonEnabled}"/>
+					<m:Button type="Reject" text="{i18n>cancel}" press="onCancel"
+						visible="{= ${buttonControlModel>/isNewRequest}?false:${buttonControlModel>/isEdit}}" tooltip="{i18n>cancel}"/>
+					<m:Button type="Emphasized" text="{i18n>sendServiceRequestForScoping}" tooltip="{i18n>sendServiceRequestForScoping}"
+						press="onSendForScoping" enabled="{buttonControlModel>/statusBtnEnabled}"
+						visible="{= ${buttonControlModel>/isEdit}?false:${buttonControlModel>/isReadyForScoping}}"/>
+					<m:Button type="Emphasized" text="{i18n>createServiceOrder}" tooltip="{i18n>createServiceOrder}" press="onCreateSO"
+						enabled="{buttonControlModel>/statusBtnEnabled}" visible="{= ${buttonControlModel>/isEdit}?false:${buttonControlModel>/isSOCreated}}"/>
+					<m:Button type="Emphasized" text="{i18n>requestApproval}" tooltip="{i18n>requestApproval}" press="onRequestApproval"
+						enabled="{buttonControlModel>/statusBtnEnabled}" visible="{= ${buttonControlModel>/isEdit}?false:${buttonControlModel>/requestApproval}}"/>
+					<m:Button type="Default" text="{i18n>backToAuthor}" tooltip="{i18n>backToAuthor}" press="onBackToAuthor"
+						visible="{= ${buttonControlModel>/isEdit}?false:${buttonControlModel>/isBackToAuthorVisible}}"/>
+					<m:Button type="Emphasized" text="{i18n>approveScope}" tooltip="{i18n>approveScope}" press="onApproveScope"
+						enabled="{buttonControlModel>/statusBtnEnabled}"
+						visible="{= ${buttonControlModel>/isEdit}?false:${buttonControlModel>/isApproveScopeVisible}}"/>
+					<m:Button type="Reject" text="{i18n>cancelServiceRequest}" tooltip="{i18n>cancelServiceRequest}" press="onCancelSR"
+						visible="{= ${buttonControlModel>/isEdit}?false:${buttonControlModel>/isCancelSRVisible}}" enabled="{buttonControlModel>/statusBtnEnabled}"/>
+				</m:content>
+			</m:OverflowToolbar>
+		</m:footer>
+	</m:Page>
+</core:View>

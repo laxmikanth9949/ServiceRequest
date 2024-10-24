@@ -1,0 +1,35 @@
+{
+	"status_local_data": [{
+		"Type": "StatusType",
+		"DdlbKey": "E0001",
+		"Value": "New"
+	}, {
+		"Type": "StatusType",
+		"DdlbKey": "E0003",
+		"Value": "In Scoping"
+	}, {
+		"Type": "StatusType",
+		"DdlbKey": "E0008",
+		"Value": "Author Action"
+	}, {
+		"Type": "StatusType",
+		"DdlbKey": "E0002",
+		"Value": "Violated"
+	}, {
+		"Type": "StatusType",
+		"DdlbKey": "E0004",
+		"Value": "In Exception"
+	}, {
+		"Type": "StatusType",
+		"DdlbKey": "E0005",
+		"Value": "Approved"
+	}, {
+		"Type": "StatusType",
+		"DdlbKey": "E0007",
+		"Value": "SO Created"
+	}, {
+		"Type": "StatusType",
+		"DdlbKey": "E0006",
+		"Value": "Cancelled"
+	}]
+}

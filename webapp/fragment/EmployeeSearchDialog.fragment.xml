@@ -1,0 +1,5 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:utils="sapit.controls"
+	xmlns:ct="sap.com.servicerequest.servicerequest.controller">
+	<!--when IT implements multi-select employee search, set multi-selection to "true"-->
+	<ct:EmployeeSearchDialog multiSelect="{= ${viewModel>/View} === 'Main' ? false : false}" confirm="_handleEmpSearchValueHelpConfirm"/>
+</core:FragmentDefinition>

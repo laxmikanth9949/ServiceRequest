@@ -1,0 +1,10 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form" xmlns:core="sap.ui.core">
+	<ResponsivePopover id="idApprovalRuleInfoPopover" title="{i18n>txtRelatedPartner}"
+		placement="Auto" contentWidth="35rem" >
+		<content>
+			<VBox wrap="Wrap">
+				<Text text="{buttonControlModel>/approvalRuleInfoTxt}" class="sapUiSmallMargin"/>
+			</VBox>
+		</content>
+	</ResponsivePopover>
+</core:FragmentDefinition>

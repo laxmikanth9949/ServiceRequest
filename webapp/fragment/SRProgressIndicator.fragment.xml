@@ -1,0 +1,72 @@
+<core:FragmentDefinition xmlns:table="sap.ui.table" xmlns:tnt="sap.tnt" xmlns:core="sap.ui.core" xmlns:f="sap.ui.layout.form" xmlns="sap.m"
+	xmlns:l="sap.ui.layout" xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+	<ResponsivePopover id="SRProgressPopOver" title="{i18n>txtSRProgressPopOverTitle} {servicerequestModel>/ServiceRequestID}"
+		class="sapUiContentPadding sapUiSizeCompact" placement="Auto" contentWidth="35rem">
+		<content>
+			<Table id="tableSrIndicator" noDataText="{i18n>noDataText}" enableBusyIndicator="true" items="{SRProgressIndicator>/}"
+				sticky="ColumnHeaders">
+				<columns>
+					<Column width="40%">
+						<Text text="{i18n>txtSRProgressStep}" tooltip="{i18n>txtSRProgressStep}"/>
+					</Column>
+					<Column width="30%" minScreenWidth="Desktop" demandPopin="true">
+						<Text text="{i18n>txtSRProgressStatus}" tooltip="{i18n>txtSRProgressStatus}"/>
+					</Column>
+					<Column width="30%" demandPopin="true" minScreenWidth="Desktop">
+						<Text text="{i18n>txtSRProgressComment}" tooltip="{i18n>txtSRProgressComment}"/>
+					</Column>
+					<Column visible="false" width="15%" demandPopin="true" minScreenWidth="Desktop">
+						<Text text="{i18n>txtSRProgressPoint}" tooltip="{i18n>txtSRProgressPoint}"/>
+					</Column>
+				</columns>
+				<items>
+					<ColumnListItem app:step="{SRProgressIndicator>}">
+						<cells>
+							<Text text="{SRProgressIndicator>Title}" tooltip="{SRProgressIndicator>Title}">
+								<customData>
+									<core:CustomData key="boldClass"
+										value="{ parts: [ {path: 'SRProgressIndicator>HeaderElement'}], formatter: '.formatter.changeFontStyleForProgressTableStatusCol' }"
+										writeToDom="true"/>
+								</customData>
+							</Text>
+							<tnt:InfoLabel text="{path: 'SRProgressIndicator>Status', formatter:'.formatter.setSRProgressStatusText' }"
+								colorScheme="{path: 'SRProgressIndicator>Status', formatter:'.formatter.setSRProgressStatusColor' }">
+								<tnt:layoutData>
+									<l:GridData linebreak="false" span="XL3 L3 M6 S6"/>
+								</tnt:layoutData>
+							</tnt:InfoLabel>
+							<VBox>
+								<Link app:step="{SRProgressIndicator>}" href="" press="SRProgressLinkOnPress"
+									visible="{parts: ['SRProgressIndicator>Status', 'SRProgressIndicator>Comment'], formatter:'.formatter.showDoItNowLink' }"
+									text="{parts: ['SRProgressIndicator>Comment'], formatter:'.formatter.showDoItNowLinkComment' }"
+									tooltip="{parts: ['SRProgressIndicator>Comment'], formatter:'.formatter.showDoItNowLinkComment' }" class="hyperLinkClassDetailHeader">
+									<customData>
+										<core:CustomData key="boldClass"
+											value="{ parts: [ {path: 'SRProgressIndicator>HeaderElement'}], formatter: '.formatter.changeFontStyleForProgressTableStatusCol' }"
+											writeToDom="true"/>
+									</customData>
+								</Link>
+								<Text visible="{parts: ['SRProgressIndicator>Status','SRProgressIndicator>Comment'], formatter:'.formatter.showDoItNowText' }"
+									text="{parts: ['SRProgressIndicator>Comment'], formatter:'.formatter.showDoItNowLinkComment' }"
+									tooltip="{parts: ['SRProgressIndicator>Comment'], formatter:'.formatter.showDoItNowLinkComment' }">
+									<customData>
+										<core:CustomData key="boldClass"
+											value="{ parts: [ {path: 'SRProgressIndicator>HeaderElement'}], formatter: '.formatter.changeFontStyleForProgressTableStatusCol' }"
+											writeToDom="true"/>
+									</customData>
+								</Text>
+							</VBox>
+							<Text text="{SRProgressIndicator>CP}" tooltip="{SRProgressIndicator>CP}">
+								<customData>
+									<core:CustomData key="boldClass"
+										value="{ parts: [ {path: 'SRProgressIndicator>HeaderElement'}], formatter: '.formatter.changeFontStyleForProgressTableStatusCol' }"
+										writeToDom="true"/>
+								</customData>
+							</Text>
+						</cells>
+					</ColumnListItem>
+				</items>
+			</Table>
+		</content>
+	</ResponsivePopover>
+</core:FragmentDefinition>

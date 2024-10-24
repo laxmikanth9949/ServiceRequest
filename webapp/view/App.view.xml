@@ -1,0 +1,7 @@
+<mvc:View xmlns="sap.f" xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns:m="sap.m"
+	xmlns:smartFilterBar="sap.ui.comp.smartfilterbar" xmlns:smartTable="sap.ui.comp.smarttable" xmlns:sv="sap.ui.comp.smartvariants"
+	controllerName="sap.com.servicerequest.servicerequest.controller.App" height="100%">
+	<m:Shell appWidthLimited="false">
+		<m:App id="app"/>
+	</m:Shell>
+</mvc:View>

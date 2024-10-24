@@ -1,0 +1,13 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form" xmlns:core="sap.ui.core">
+	<ResponsivePopover id="idRelatedPartnerHintPopover" title="{i18n>txtRelatedPartner}"
+		placement="Auto" initialFocus="content" contentWidth="35rem" >
+		<content>
+			<VBox wrap="Wrap">
+				<Text text="{i18n>relatedPartnerHintContent}" class="sapUiSmallMargin"/>
+			</VBox>
+		</content>
+		<!--endButton>
+			<Button text="{i18n>close}" press="handleRelatedPartnerHintPopoverClose"/>
+		</endButton-->
+	</ResponsivePopover>
+</core:FragmentDefinition>

@@ -1,0 +1,11 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form" xmlns:core="sap.ui.core">
+	<ResponsivePopover id="idCustomerDetailsFromISDHubPopover" busyIndicatorDelay="0" title="Customer’s SAP Cloud ALM for Service readiness for ISD Hub Delivery" placement="Right" initialFocus="content"
+		contentWidth="45rem" modal="true">
+		<content>
+			<core:HTML id="htmlPopoverISDHUb" content='' afterRendering="ISDHPopoverHtmlContentAfterRendering"/>
+		</content>
+		<endButton>
+			<Button text="{i18n>close}" press="handleCustomerDetailsFromISDHubPopoverClose"/>
+		</endButton>
+	</ResponsivePopover>
+</core:FragmentDefinition>

@@ -1,0 +1,43 @@
+<core:FragmentDefinition xmlns="sap.ui.table" xmlns:core="sap.ui.core" xmlns:f="sap.ui.layout.form" xmlns:m="sap.m" xmlns:l="sap.ui.layout"
+	xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+	<m:Dialog state="Warning" contentWidth="50%" id="addconfirmCancellationDialog" title="{i18n>confirmCancellationTitle}" tooltip="{i18n>confirmCancellationTitle}">
+		<m:content  >
+			<m:VBox>
+				<m:MessageStrip text="You are about to cancel the Service Request {servicerequestModel>/ServiceRequestID}. This action cannot be reverted. Please cancel the Service Requests only if the delivery is not going ahead. There is no need to cancel the Service Request and start from scratch if you would like to make changes to it. If you still want to cancel this Service Request, below provide a reason via the drop-down list and in 'Further details' mention with whom at the customer you have agreed on the cancellation." type="Warning" showIcon="false" class="sapUiTinyMargin"/>
+			<f:Form editable="true">
+			<f:layout>
+				<f:ResponsiveGridLayout labelSpanXL="3" labelSpanL="3" labelSpanM="3" labelSpanS="12"
+					adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="2"
+					singleContainerFullSize="true"/>
+			</f:layout>
+			<f:formContainers>
+				<f:FormContainer width="100%">
+					<f:formElements>
+						<f:FormElement label="{i18n>cancellationReason}">
+							<f:fields>
+								<m:ComboBox id="comboCancelReason"  busy="{busyIndicatorModel>/dropdownList}"  filterSecondaryValues="true"
+									change="onCancelReasonChange" required="true"
+									items="{ path: 'cancelReasonModel>/'}" >
+									<core:ListItem key="{cancelReasonModel>DdlbKey}" text="{cancelReasonModel>Value}"/>
+								</m:ComboBox>
+							</f:fields>
+						</f:FormElement>
+						<f:FormElement label="{i18n>cancellationDesc}">
+							<f:fields>
+									<m:TextArea id="textAreaCancelReasonDesc" placeholder="Explain the cancellation reason with further detailed information" rows="5" showExceededText="false" growing="false" liveChange="reasonDescOnChange" width="100%" />
+							</f:fields>
+						</f:FormElement>
+					</f:formElements>
+				</f:FormContainer>
+			</f:formContainers>
+		</f:Form>
+		</m:VBox>
+		</m:content>
+		<m:beginButton>
+			<m:Button text="{i18n>dialogChangeStatusTitle}" tooltip="{i18n>dialogChangeStatusTitle}" enabled="{buttonControlModel>/enableConfirmBtnForCCDialog}" press="onPresssConfirmCancellationBtn"/>
+		</m:beginButton>
+		<m:endButton>
+			<m:Button text="{i18n>close}" type="Emphasized" tooltip="{i18n>close}" press="onCancelCCPopup"/>
+		</m:endButton>
+	</m:Dialog>
+</core:FragmentDefinition>

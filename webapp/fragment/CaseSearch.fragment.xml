@@ -1,0 +1,106 @@
+<core:FragmentDefinition xmlns="sap.ui.table" xmlns:core="sap.ui.core" xmlns:f="sap.ui.layout.form" xmlns:m="sap.m" xmlns:l="sap.ui.layout">
+	<m:Dialog id="CaseDialog" title="{i18n>selectCase}" tooltip="{i18n>selectCase}">
+		<m:content>
+			<l:Grid containerQuery="true" defaultSpan="XL3 L4 M6 S12" hSpacing="2" vSpacing="0.5" class="sapUiSmallMarginTop">
+				<l:VerticalLayout width="100%">
+					<m:Label text="{i18n>case}" tooltip="{i18n>case}"/>
+					<m:Input width="100%" id="srs_case" value="{caseSearchModel>/caseId}" submit="onPressCaseSearch" tooltip="{i18n>casePromptText}"
+						placeholder="{i18n>casePromptText}"/>
+				</l:VerticalLayout>
+				<l:VerticalLayout width="100%">
+					<m:Label text="{i18n>customer}" tooltip="{i18n>customer}"/>
+					<m:Input width="100%" id="srs_customer" submit="onPressCaseSearch" tooltip="{i18n>customerPromptText}" value="{caseSearchModel>/customer}"
+						placeholder="{i18n>customerPromptText}"/>
+				</l:VerticalLayout>
+				<l:VerticalLayout width="100%">
+					<m:Label text="{i18n>owner}" tooltip="{i18n>owner}"/>
+					<m:MultiInput valueHelpOnly="true" id="srs_ownerAndPeople" enabled="true" type="Text" showValueHelp="true" showSuggestion="true"
+						submit="onPressCaseSearch" valueHelpRequest="handleEmpSearchValueHelp" tokenUpdate="onCaseOwnerChange"
+						placeholder="{i18n>personResponsibleCheck}" tooltip="{i18n>personResponsibleCheck}">
+						<m:layoutData>
+							<l:GridData linebreak="false" span="XL7 L6 M10 S9"/>
+						</m:layoutData>
+					</m:MultiInput>
+				</l:VerticalLayout>
+				<l:VerticalLayout>
+					<m:Label id="caseSearchBtnLabel"/>
+					<m:Button text="{i18n>search}" enabled="{buttonControlModel>/enableCaseSearchBtn}" id="btnCaseSearch" icon="sap-icon://search" type="Emphasized" tooltip="{i18n>search}" press="onPressCaseSearch"/>
+				</l:VerticalLayout>
+			</l:Grid>
+			<m:OverflowToolbar>
+				<m:content>
+					<m:Link wrapping="true" text="{i18n>caseNotFoundLink}" tooltip="{i18n>caseNotFoundLink}" class="sapUiSmallMarginBegin" target="_blank"
+						href="https://sap.sharepoint.com/teams/SRSApp/HELP%20Cannot%20use%20my%20Case/Home.aspx"/>
+				</m:content>
+			</m:OverflowToolbar>
+			<m:Table growing="false" id="srs_casetable" enableBusyIndicator="true" items="{caseModel>/data}" ariaLabelledBy="title"
+				selectionChange="caseModelSelect" sticky="ColumnHeaders" mode="{= ${viewModel>/View} === 'Main' ? 'MultiSelect' : 'SingleSelectMaster'}"
+				updateStarted="_getMoreCaseStarted" updateFinished="_getMoreCaseFinished">
+				<m:headerToolbar>
+					<m:OverflowToolbar>
+						<m:content>
+							<m:Title text="{i18n>cases} ({caseModel>/current}/{caseModel>/total})" level="H2"
+								tooltip="{i18n>cases} ({caseModel>/current}/{caseModel>/total})"/>
+						</m:content>
+					</m:OverflowToolbar>
+				</m:headerToolbar>
+				<m:columns>
+					<m:Column>
+						<m:Text text="{i18n>caseId}" tooltip="{i18n>caseId}"/>
+					</m:Column>
+					<m:Column minScreenWidth="Desktop" demandPopin="true">
+						<m:Text text="{i18n>caseTitle}" tooltip="{i18n>caseTitle}"/>
+					</m:Column>
+					<m:Column demandPopin="true" minScreenWidth="Desktop">
+						<m:Text text="{i18n>customerId}" tooltip="{i18n>customerId}"/>
+					</m:Column>
+					<m:Column minScreenWidth="Desktop" demandPopin="true">
+						<m:Text text="{i18n>customer}" tooltip="{i18n>customer}"/>
+					</m:Column>
+					<m:Column minScreenWidth="Desktop" demandPopin="true">
+						<m:Text text="{i18n>personResponsible}" tooltip="{i18n>personResponsible}"/>
+					</m:Column>
+					<m:Column minScreenWidth="Desktop" demandPopin="true">
+						<m:Text text="{i18n>processor}" tooltip="{i18n>processor}"/>
+					</m:Column>
+				</m:columns>
+				<m:items>
+					<m:ColumnListItem>
+						<m:cells>
+							<m:HBox>
+								<m:items>
+									<m:Text text="{caseModel>CaseId}" tooltip="{caseModel>CaseId}"/>
+									<core:Icon src="sap-icon://status-error" visible="{= ${viewModel>/View} !== 'Main' &amp;&amp; ${caseModel>StatusId} === '90' }" size="1rem"
+										color="#808080" tooltip="{caseModel>StatusDescr}" class="sapUiTinyMarginBegin"></core:Icon>
+									<core:Icon src="sap-icon://message-warning" visible="{= ${viewModel>/View} !== 'Main' &amp;&amp; ${caseModel>ReasonCode} === '' }"
+										size="1rem" color="#de6f3c" tooltip="{i18n>txtCaseReasonWarn}" class="sapUiTinyMarginBegin"></core:Icon>
+									<core:Icon src="sap-icon://alert" visible="{= ${viewModel>/View} !== 'Main' &amp;&amp; ${caseModel>ReasonCode} === 'ENG2' }" size="1rem"
+										color="#8B0000" tooltip="{caseModel>ReasonDescription} (cannot be used)" class="sapUiTinyMarginBegin"></core:Icon>
+									<core:Icon src="sap-icon://alert" visible="{= ${viewModel>/View} !== 'Main' &amp;&amp; ${caseModel>ReasonCode} === 'ENG1' }" size="1rem"
+										color="#8B0000" tooltip="{caseModel>ReasonDescription} (cannot be used)" class="sapUiTinyMarginBegin"></core:Icon>
+								</m:items>
+							</m:HBox>
+							<m:Text text="{caseModel>CaseTitle}" tooltip="{caseModel>CaseTitle}"/>
+							<m:Text text="{caseModel>CustomerId}" tooltip="{caseModel>CustomerId}"/>
+							<m:Text text="{caseModel>CustomerName}" tooltip="{caseModel>CustomerName}"/>
+							<m:Text text="{caseModel>EmplRespName}" tooltip="{caseModel>EmplRespName}"/>
+							<m:Text text="{caseModel>ProcessorName}" tooltip="{caseModel>ProcessorName}"/>
+						</m:cells>
+					</m:ColumnListItem>
+				</m:items>
+			</m:Table>
+			<m:FlexBox height="100%" alignItems="Start" justifyContent="Center">
+				<m:items>
+					<m:Button enabled="{buttonControlModel>/enableShowMoreBtnInCaseSearch}" type="Emphasized" text="{i18n>showMore}" tooltip="{i18n>showMore}" press="showMoreCase"
+						visible="{buttonControlModel>/caseMoreButton}"/>
+				</m:items>
+			</m:FlexBox>
+		</m:content>
+		<m:beginButton>
+			<m:Button text="{i18n>ok}" tooltip="{i18n>ok}" press="onPressOkInCaseSearchPopUp" visible="{caseModel>/visible}"/>
+		</m:beginButton>
+		<m:endButton>
+			<m:Button text="{i18n>cancel}" tooltip="{i18n>cancel}" press="onCloseCase" visible="true"/>
+		</m:endButton>
+	</m:Dialog>
+</core:FragmentDefinition>

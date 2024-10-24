@@ -1,0 +1,74 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:commons="sap.suite.ui.commons" xmlns:f="sap.ui.layout.form"
+	xmlns:core="sap.ui.core" xmlns:l="sap.ui.layout" xmlns:tnt="sap.tnt" xmlns:m="sap.m" xmlns="sap.uxap" xmlns:table="sap.ui.table">
+	<m:VBox>
+		<f:Form id="sr-request-display" editable="false">
+			<f:layout>
+				<f:ResponsiveGridLayout labelSpanXL="4" labelSpanL="4" labelSpanM="4" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0"
+					emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="2" singleContainerFullSize="false"/>
+			</f:layout>
+			<f:formContainers>
+				<f:FormContainer>
+					<f:formElements>
+						<f:FormElement label="{i18n>customer}" visible="{parts: ['servicerequestModel>/CustomerID'], formatter: '.formatter.visibleCustomer' }">
+							<f:fields>
+								<m:Text
+									text="{parts: ['servicerequestModel>/CustomerID', 'servicerequestModel>/CustomerName'], formatter: '.formatter.idAndNameFormatter' }"
+									tooltip="{parts: ['servicerequestModel>/CustomerID', 'servicerequestModel>/CustomerName'], formatter: '.formatter.idAndNameFormatter' }"/>
+							</f:fields>
+						</f:FormElement>
+						<f:FormElement label="{i18n>customerContact}">
+							<f:fields>
+								<m:Text text="{servicerequestModel>/ContactName}" tooltip="{servicerequestModel>/ContactName}"/>
+							</f:fields>
+						</f:FormElement>
+						<f:FormElement label="{i18n>txtEnableServiceFeedbackEmail}" visible="{buttonControlModel>/visibleSurveyRecipientSwitch}">
+							<f:fields>
+									<m:Switch customTextOn="Yes" class="sapUiSizeCompact classEnableServiceFeedbackEmail"  customTextOff="No" state="{servicerequestModel>/FeedbackEnabled}" enabled="false"></m:Switch>
+							</f:fields>
+						</f:FormElement>
+						<f:FormElement label="{i18n>txtEnableServiceFeedbackEmail}" visible="{buttonControlModel>/visibleNoSurveyRecipientLink}">
+							<f:fields>
+								<m:Link wrapping="true" text="{i18n>txtNoSurveyRecptLink}" href="https://jam4.sapjam.com/wiki/show/XLtTwO6gdSsy3ga0TxJo1N" target="_blank"></m:Link>
+							</f:fields>
+						</f:FormElement>
+						<f:FormElement label="{i18n>txtSurveyRecipient}" visible="{servicerequestModel>/FeedbackEnabled}">
+							<f:fields>
+								<m:Text text="{servicerequestModel>/SurveyRecName}" tooltip="{servicerequestModel>/SurveyRecName}"/>
+							</f:fields>
+						</f:FormElement>
+					</f:formElements>
+				</f:FormContainer>
+				<f:FormContainer>
+					<f:formElements>
+						<f:FormElement label="{i18n>goLiveDate}">
+							<f:fields>
+								<m:Text
+									text="{ parts: [ {path: 'servicerequestModel>/GoLiveDate'} ], formatter: 'sap.com.servicerequest.servicerequest.model.formatter.date' }"
+									tooltip="{ parts: [ {path: 'servicerequestModel>/GoLiveDate'} ], formatter: 'sap.com.servicerequest.servicerequest.model.formatter.date' }"/>
+							</f:fields>
+						</f:FormElement>
+					</f:formElements>
+				</f:FormContainer>
+			</f:formContainers>
+		</f:Form>
+		<m:Panel expandable="true" expanded="true" headerText="{i18n>serviceRequestInfo}" tooltip="{i18n>serviceRequestInfo}" width="auto">
+			<m:headerToolbar>
+				<m:OverflowToolbar>
+					<m:Title class="classPanelTitle" text="{i18n>serviceRequestInfo}" tooltip="{i18n>serviceRequestInfo}"/>
+					<m:ToolbarSpacer/>
+					<m:Button id="sr-req-scope-TextMode-Display" text="{i18n>showMore}" tooltip="{i18n>showMore}" press="setTextAreaGrowing"></m:Button>
+				</m:OverflowToolbar>
+			</m:headerToolbar>
+			<m:content>
+				<!--m:FormattedText htmlText="{ parts: [ {path: 'i18n>serviceRequestInfoTextHeader'} ], formatter: '.formatter.formatEmphasized' }"
+					tooltip="{i18n>serviceRequestInfoTextHeader}"/-->
+				<m:TextArea id="sr-req-display" class="allowTextAreaResize"
+					value="{ parts: [ {path: 'serviceRequestScopeModel>/data/0/Text'} ], formatter: '.formatter.removeWhiteSpace' }" rows="5" editable="false"
+					growing="false" growingMaxLines="5" width="100%" tooltip="{i18n>serviceRequestInfo}"/>
+				<m:FormattedText
+					htmlText="{parts: ['serviceRequestScopeModel>/data/0/ChangedFirstname', 'serviceRequestScopeModel>/data/0/ChangedLastname', 'serviceRequestScopeModel>/data/0/ChangedTmstmp'], formatter: '.formatter.formatNoteLastChanged'}"
+					tooltip="{i18n>serviceRequestInfo}"/>
+			</m:content>
+		</m:Panel>
+	</m:VBox>
+</core:FragmentDefinition>

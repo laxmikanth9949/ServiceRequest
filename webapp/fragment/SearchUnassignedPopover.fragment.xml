@@ -1,0 +1,9 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form" xmlns:core="sap.ui.core">
+	<ResponsivePopover id="idSearchUnassignedPopover" showHeader="false" title="{i18n>txtSearchUnassigned}" placement="Auto">
+		<content>
+			<VBox wrap="Wrap">
+				<Text text="{i18n>txtSearchUnassignedPopoverContent}" class="sapUiSmallMargin"/>
+			</VBox>
+		</content>
+	</ResponsivePopover>
+</core:FragmentDefinition>

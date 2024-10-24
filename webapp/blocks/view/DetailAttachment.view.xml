@@ -1,0 +1,40 @@
+<mvc:View xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:upload="sap.m.upload"
+	controllerName="sap.com.servicerequest.servicerequest.blocks.controller.DetailAttachment"
+	xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+	<MessageStrip text="Please create Service Request to enable files attachment" type="Information" showIcon="true"
+		visible="{buttonControlModel>/showAttachMsgStrip}" class="sapUiMediumMarginBottom"></MessageStrip>
+	<UploadCollection uploadTerminated="onUploadTerminated" fileSizeExceed="onFileSizeExceeded" maximumFileSize="30" visible="{buttonControlModel>/showAttachUpload}" multiple="true" change="onChange" uploadEnabled="true"
+		uploadUrl="zs_app_srs_srv/AttachmentSet" uploadComplete="onUploadComplete" beforeUploadStarts="onBeforeUploadStarts"
+		id="UploadSetEdit" fileDeleted="deleteAttachmentHandler" busy="{busyIndicatorModel>/attachmentBusyIndicator}" mode="MultiSelect"
+		items="{path: 'servicerequestAttachmentModel>/',templateShareable: false}">
+		<toolbar>
+			<OverflowToolbar>
+				<Title text="{buttonControlModel>/attachmentCount}" />
+				<ToolbarSpacer/>
+				<Button icon="sap-icon://download" id="downloadSelectedButtonEdit" enabled="{buttonControlModel>/enableAttachDownloadAllBtn}" text="{i18n>txtDownloadSelected}" tooltip="{i18n>txtDownloadSelected}"
+					press="onDownloadSelectedButton"/>
+				<Button icon="sap-icon://delete" id="deleteSelectedButtonEdit" visible="{buttonControlModel>/showUploadDelete}" enabled="{buttonControlModel>/enableAttachDownloadAllBtn}" text="{i18n>txtDeleteSelected}" tooltip="{i18n>txtDeleteSelected}"
+					press="onDeleteSelectedButton"/>
+				<UploadCollectionToolbarPlaceholder/>
+			</OverflowToolbar>
+		</toolbar>
+		<items>
+			<UploadCollectionItem
+				documentId="{ parts: [ {path: 'servicerequestAttachmentModel>ObjectID'},{path: 'servicerequestAttachmentModel>FileGuid'} ], formatter: '.formatter.formatDocuemntID' }"
+				visibleDelete="{buttonControlModel>/showUploadDelete}" visibleEdit="false" fileName="{servicerequestAttachmentModel>FileName}"
+				mimeType="{servicerequestAttachmentModel>FileType}"
+				url="{ parts: [ {path: 'servicerequestAttachmentModel>ObjectID'},{path: 'servicerequestAttachmentModel>FileGuid'} ], formatter: '.formatter.formatAttachmentURLs' }"
+				thumbnailUrl="{ parts: [ {path: 'servicerequestAttachmentModel>ObjectID'},{path: 'servicerequestAttachmentModel>FileGuid'},{path: 'servicerequestAttachmentModel>FileType'} ], formatter: '.formatter.formatAttachmentThumbnailURLs' }">
+				<attributes>
+					<ObjectAttribute title="{i18n>txtUploadedBy}"
+						text="{servicerequestAttachmentModel>FileCreatedBy}"
+						active="true" press="attachmentUserOnPress"/>
+					<ObjectAttribute title="{i18n>txtUploadedOn}"
+						text="{ parts: [ {path: 'servicerequestAttachmentModel>FileCreatedAt'} ], formatter: '.formatter.dateTime' }"/>
+					<ObjectAttribute title="{i18n>txtFileSize}"
+						text="{ parts: [ {path: 'servicerequestAttachmentModel>FileSize'} ], formatter: '.formatter.convertBytesToSize' }"/>
+				</attributes>
+			</UploadCollectionItem>
+		</items>
+	</UploadCollection>
+</mvc:View>

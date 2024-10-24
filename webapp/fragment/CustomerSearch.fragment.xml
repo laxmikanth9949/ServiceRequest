@@ -1,0 +1,59 @@
+<core:FragmentDefinition xmlns="sap.ui.table" xmlns:core="sap.ui.core" xmlns:f="sap.ui.layout.form" xmlns:m="sap.m" xmlns:l="sap.ui.layout">
+	<m:Dialog id="CustomerDialog" title="{i18n>selectCustomer}" tooltip="{i18n>selectCustomer}">
+		<m:content>
+			<l:Grid containerQuery="true" defaultSpan="XL3 L4 M6 S12" hSpacing="2" vSpacing="0.5" class="sapUiSmallMarginTop">
+				<l:VerticalLayout width="100%">
+					<m:Label text="{i18n>customer}" tooltip="{i18n>customer}"/>
+					<m:Input width="100%" submit="onPressCustomerSearch" tooltip="{i18n>customerPromptText}" value="{customerSearchModel>/customer}"
+						placeholder="{i18n>customerPromptText}"/>
+				</l:VerticalLayout>
+			
+				<l:VerticalLayout>
+					<m:Button text="{i18n>search}" icon="sap-icon://search" type="Emphasized" tooltip="{i18n>search}" press="onPressCustomerSearch"/>
+				</l:VerticalLayout>
+			</l:Grid>
+			<m:Table growing="false" id="srs_customertable" enableBusyIndicator="true" items="{customerModel>/data}" ariaLabelledBy="title" selectionChange="customerModelSelect"
+				sticky="ColumnHeaders" mode="{= ${viewModel>/View} === 'Main' ? 'MultiSelect' : 'SingleSelectMaster'}" updateStarted="_getMoreCustomerStarted"
+				updateFinished="_getMoreCustomerFinished">
+				<m:headerToolbar>
+					<m:OverflowToolbar>
+						<m:content>
+							<m:Title text="{i18n>customers} ({customerModel>/current}/{customerModel>/total})" level="H2"
+								tooltip="{i18n>customers} ({customerModel>/current}/{customerModel>/total})"/>
+						</m:content>
+					</m:OverflowToolbar>
+				</m:headerToolbar>
+				<m:columns>
+
+					<m:Column demandPopin="true" minScreenWidth="Desktop">
+						<m:Text text="{i18n>customerId}" tooltip="{i18n>customerId}"/>
+					</m:Column>
+					<m:Column minScreenWidth="Desktop" demandPopin="true">
+						<m:Text text="{i18n>customer}" tooltip="{i18n>customer}"/>
+					</m:Column>
+				
+				</m:columns>
+				<m:items>
+					<m:ColumnListItem>
+						<m:cells>
+							<m:Text text="{customerModel>CustomerId}" tooltip="{customerModel>CustomerId}"/>
+							<m:Text text="{customerModel>CustomerName}" tooltip="{customerModel>CustomerName}"/>
+						</m:cells>
+					</m:ColumnListItem>
+				</m:items>
+			</m:Table>
+			<m:FlexBox height="100%" alignItems="Start" justifyContent="Center">
+				<m:items>
+					<m:Button type="Emphasized" text="{i18n>showMore}" tooltip="{i18n>showMore}" press="showMoreCustomer"
+						visible="{buttonControlModel>/customerMoreButton}"/>
+				</m:items>
+			</m:FlexBox>
+		</m:content>
+		<m:beginButton>
+			<m:Button text="{i18n>ok}" tooltip="{i18n>ok}" press="onCloseCustomer" visible="{customerModel>/visible}"/>
+		</m:beginButton>
+		<m:endButton>
+			<m:Button text="{i18n>cancel}" tooltip="{i18n>cancel}" press="onCloseCustomer"  visible="true"/>
+		</m:endButton>
+	</m:Dialog>
+</core:FragmentDefinition>

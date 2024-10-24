@@ -1,0 +1,60 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns:f="sap.ui.layout.form" xmlns="sap.m" xmlns:l="sap.ui.layout">
+	<Dialog id="dialogCopySR" title="{i18n>dialogCopySRTitle}" tooltip="{i18n>dialogCopySRTitle}" class="classDialogCopySR">
+		<content>
+			<f:Form editable="true" class="formDialogSRCopyInput">
+				<f:layout>
+					<f:ResponsiveGridLayout labelSpanXL="0" labelSpanL="0" labelSpanM="0" labelSpanS="12" adjustLabelSpan="true" emptySpanXL="0" emptySpanL="0"
+						emptySpanM="0" emptySpanS="0" columnsXL="0" columnsL="0" columnsM="0" singleContainerFullSize="true"/>
+				</f:layout>
+				<f:formContainers>
+					<f:FormContainer>
+						<f:formElements>
+							<f:FormElement>
+								<f:fields>
+									<VBox id="vBoxRDDSelection" visible="false">
+										<Label required="true" text="{i18n>dialogFormLabelRDD}" tooltip="{i18n>dialogFormLabelRDD}"></Label>
+										<DatePicker id="dialogReqdDate" change="dialogCopySRrequestDelDateOnChange" />
+									</VBox>
+								</f:fields>
+							</f:FormElement>
+						</f:formElements>
+					</f:FormContainer>
+				</f:formContainers>
+			</f:Form>
+			<f:Form editable="true" class="formDialogSRCopyCheckbox">
+			<f:layout>
+				<f:ResponsiveGridLayout labelSpanXL="4" labelSpanL="4" labelSpanM="4" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0"
+					emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="2" singleContainerFullSize="false"/>
+			</f:layout>
+			<f:formContainers>
+				<f:FormContainer>
+					<f:formElements>
+						<f:FormElement >
+							<f:fields>
+									<CheckBox id="checkboxCopySRTitle" text="Include Service Request Title"></CheckBox>
+							</f:fields>
+						</f:FormElement>
+					</f:formElements>
+				</f:FormContainer>
+				<f:FormContainer>
+					<f:formElements>
+						<f:FormElement>
+							<f:fields>
+									<CheckBox id="checkboxCopySRInfo" text="Include Service Request Info"></CheckBox>
+							</f:fields>
+						</f:FormElement>
+					</f:formElements>
+				</f:FormContainer>
+			</f:formContainers>
+		</f:Form>
+			<MessageStrip id="messageStripCopyDialog" text="{i18n>dialogCopySRWarningMsg}" type="Warning" showIcon="true" showCloseButton="false"
+				class="classDialogCopySRMsgStrip" visible="false"></MessageStrip>
+		</content>
+		<beginButton>
+			<Button id="btnDialogCopySR" enabled="true" text="{i18n>dialogCopySRBtnTxt}" tooltip="{i18n>dialogCopySRBtnTxt}" press="onCopySRBtnPress"/>
+		</beginButton>
+		<endButton>
+			<Button text="{i18n>dialogCopySRCancelBtnTxt}" tooltip="{i18n>dialogCopySRCancelBtnTxt}" press="onCopySRCancelBtnPress"/>
+		</endButton>
+	</Dialog>
+</core:FragmentDefinition>

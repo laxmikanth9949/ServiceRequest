@@ -1,0 +1,20 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form" xmlns:core="sap.ui.core">
+	<ResponsivePopover id="idServiceDelDetails" title="{i18n>serviceDeliveryDetails}" placement="Auto" initialFocus="textareaServiceDelDesc" contentWidth="35rem"
+		modal="true">
+		<content>
+			<VBox class="sapUiResponsiveMargin" >
+				<Toolbar class="toolbarServiceDelTextPopover">
+			<ToolbarSpacer/>
+				<Button icon="sap-icon://clear-all" text="Clear" press="pressClearBtnServiceDelTextPopover"></Button>
+			</Toolbar>
+				<TextArea  id="textareaServiceDelDesc" rows="10" width="100%" showExceededText="false" placeholder="Type delivery details description" tooltip="{i18n>serviceDeliveryDetails}"></TextArea>
+			</VBox>
+		</content>
+		<beginButton>
+			<Button text="{i18n>txtSave}" press="handleServiceDelDetailsSaveBtn"/>
+		</beginButton>
+		<endButton>
+			<Button text="{i18n>close}" press="handleServiceDelDetailsCloseBtn"/>
+		</endButton>
+	</ResponsivePopover>
+</core:FragmentDefinition>

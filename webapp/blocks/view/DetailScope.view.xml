@@ -1,0 +1,534 @@
+<mvc:View xmlns:mvc="sap.ui.core.mvc" xmlns:commons="sap.suite.ui.commons" xmlns:f="sap.ui.layout.form" xmlns:core="sap.ui.core"
+	xmlns:l="sap.ui.layout" xmlns:tnt="sap.tnt" xmlns:m="sap.m" xmlns="sap.uxap" xmlns:table="sap.ui.table"
+	controllerName="sap.com.servicerequest.servicerequest.blocks.controller.DetailScope" xmlns:dnd="sap.ui.core.dnd"
+	xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+	<m:VBox>
+		<m:Panel expandable="true" id="panelSRInfo" expanded="true" headerText="{i18n>serviceRequestInfo}" tooltip="{i18n>serviceRequestInfo}"
+			width="auto">
+			<m:headerToolbar>
+				<m:OverflowToolbar>
+					<m:Title class="classPanelTitle" text="{i18n>serviceRequestInfo}" tooltip="{i18n>serviceRequestInfo}"/>
+					<m:Button icon="sap-icon://information" press="SRInfoBtnOnPress"></m:Button>
+					<m:ToolbarSpacer/>
+					<m:Button id="sr-req-scope-TextMode-Edit" text="{i18n>showMore}" tooltip="{i18n>showMore}" press="setTextAreaGrowing"></m:Button>
+				</m:OverflowToolbar>
+			</m:headerToolbar>
+			<m:FormattedText htmlText="{ parts: [ {path: 'i18n>serviceRequestInfoTextHeader'} ], formatter: '.formatter.formatEmphasized' }"
+				tooltip="{i18n>serviceRequestInfoTextHeader}"/>
+			<m:TextArea id="sr-req-scope" class="allowTextAreaResize" value="{serviceRequestScopeModel>/Text}" width="100%" valueLiveUpdate="true"
+				enabled="{editableFieldsModel>/SRInfo}" change="serviceRequestScopeChanged" rows="5" showExceededText="false" growing="false"
+				valueState="{parts: ['serviceRequestScopeModel>/Text', 'servicerequestModel>/StatusCode'], formatter: '.formatter.handleSRInfoValueState' }"
+				valueStateText="{parts: ['serviceRequestScopeModel>/Text', 'servicerequestModel>/StatusCode'], formatter: '.formatter.srInfoValueStateText' }"
+				growingMaxLines="5" maxLength="10000" tooltip="{i18n>serviceRequestInfo}"/>
+			<m:FormattedText
+				htmlText="{parts: ['serviceRequestScopeModel>/data/0/ChangedFirstname', 'serviceRequestScopeModel>/data/0/ChangedLastname', 'serviceRequestScopeModel>/data/0/ChangedTmstmp'], formatter: '.formatter.formatNoteLastChanged'}"
+				tooltip="{i18n>serviceRequestInfo}"/>
+		</m:Panel>
+		<f:Form editable="true">
+			<f:layout>
+				<f:ResponsiveGridLayout class="classScopeSectionServiceForm" labelSpanXL="4" labelSpanL="4" labelSpanM="4" labelSpanS="12"
+					adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="2"
+					singleContainerFullSize="false"/>
+			</f:layout>
+			<f:formContainers>
+				<f:FormContainer>
+					<f:formElements>
+						<f:FormElement>
+							<f:label>
+								<m:Label text="{i18n>txtDeliveryType}" design="Bold" />
+							</f:label>
+							<f:fields>
+								<m:Link href="{parts: ['servicerequestModel>/ServiceID'], formatter: '.formatter.getServiceCatalogueURL' }" target="_blank" text="{= ${servicerequestModel>/ServiceID}?(${buttonControlModel>/IsPreferredSuccessServiceSelected}?${i18n>txtPrs}:${i18n>txtPE}):''}"
+									tooltip="{= ${servicerequestModel>/ServiceID}?(${buttonControlModel>/IsPreferredSuccessServiceSelected}?${i18n>txtPrs}:${i18n>txtPE}):''}"/>
+							</f:fields>
+						</f:FormElement>
+						<f:FormElement label="{i18n>serviceId}">
+							<f:fields>
+								<m:ComboBox id="ServiceName-edit" busy="{buttonControlModel>/busyIndicatorServiceDropdown}" busyIndicatorDelay="0" enabled="{editableFieldsModel>/Service}" showSecondaryValues="true" filterSecondaryValues="true"
+									change="onServiceIdChange" selectedKey="{servicerequestModel>/ServiceID}"
+									items="{ path: 'productSetModel>/', sorter: { path: 'ProductText' } }" placeholder="{i18n>typeIdorName}" tooltip="{i18n>serviceId}">
+									<core:ListItem app:selectedProductSet="{productSetModel>}" key="{productSetModel>ProductID}"
+										text="{productSetModel>ProductID} - {productSetModel>ProductText}"/>
+								</m:ComboBox>
+							</f:fields>
+						</f:FormElement>
+						<f:FormElement label="{i18n>session}">
+							<f:fields>
+								<m:ComboBox id="SessionName-edit"
+									required="{ parts: [ {path: 'servicerequestModel>/ServiceID'} ], formatter: '.formatter.isSessionRequired' }"
+									enabled="{editableFieldsModel>/Session}" selectedKey="{servicerequestModel>/SessionID}" showSecondaryValues="true"
+									filterSecondaryValues="true" change="onSessionIdChange" valueStateText="{i18n>noComponentselected}" items="{sessionModel>/}"
+									placeholder="{i18n>typeIdorName}" tooltip="{i18n>session}">
+									<core:ListItem app:selectedSessionSet="{sessionModel>}" key="{sessionModel>ProductID}"
+										text="{sessionModel>ProductID} - {sessionModel>ProductText}"/>
+									<m:layoutData>
+										<l:GridData span="L7 M10 S10"/>
+									</m:layoutData>
+								</m:ComboBox>
+								<m:Button id="SessionText-edit" tooltip="Click here to open selected Component details" enabled="{ parts: [ {path: 'scopeSessionModel>/0/ProductID'} ], formatter: '.formatter.setSessionLinkVisibility' }" press="pressComponentInCatalogIcon" icon="sap-icon://display">
+									<m:layoutData>
+										<l:GridData span="L1 M2 S2"/>
+									</m:layoutData>
+								</m:Button>
+							</f:fields>
+						</f:FormElement>
+						<f:FormElement id="idFormValueDriver" visible="false" label="{i18n>txtValueDriver}">
+							<f:fields>
+								<m:MultiComboBox id="idMultiComboValueDriver" valueState="Warning" valueStateText="{i18n>txtValueDriverInformation}"
+									enabled="{= !${buttonControlModel>/valueDriverDropdowneditable}?${buttonControlModel>/valueDriverDropdowneditable}:${editableFieldsModel>/Session}}" showSecondaryValues="true"
+									selectionChange="onValueDriverComboChange" items="{valueDriverModel>/}"
+									placeholder="{i18n>txtTypeName}" tooltip="{i18n>txtValueDriver}">
+									<core:Item app:selectedValueDriver="{valueDriverModel>}" key="{valueDriverModel>Value Driver}"
+										text="{valueDriverModel>Description}"/>
+								</m:MultiComboBox>
+							</f:fields>
+						</f:FormElement>
+						<f:FormElement visible="{buttonControlModel>/showServiceResultReviewfield}" label="{i18n>txtReviewofServiceResultsrequired}">
+							<f:fields>
+								<m:HBox>
+									<m:CheckBox selected="{servicerequestModel>/ServiceReviewEnabled}" editable="{editableFieldsModel>/Service}" tooltip="{i18n>txtReviewofServiceResultsrequired}"/>
+									<m:Button icon="sap-icon://information" tooltip="{i18n>txtHint}" type="Transparent" press="pressServiceReviewInfoBtn"/>
+								</m:HBox>
+							</f:fields>
+						</f:FormElement>
+						<f:FormElement label="{i18n>requestedDeliveryLanguage}" visible="{buttonControlModel>/showRDLfield}">
+							<f:fields>
+								<m:ComboBox width="100%" id="comboRDL" enabled="{editableFieldsModel>/ReqDelDate}" valueState="None" showSecondaryValues="true"
+									selectedKey="{servicerequestModel>/RequestedDeliveryLanguage}"  busy="{buttonControlModel>/busyIndicatorRDLDropdown}" items="{ path: 'rdlModel>/'}" tooltip="{i18n>requestedDeliveryLanguage}"
+									selectionChange="onRDLDropDownOnChange">
+									<core:ListItem key="{rdlModel>Language}" text="{rdlModel>LanguageTxt}"/>
+									<m:layoutData>
+                                        <l:GridData span="L7 M10 S10"/>
+                                    </m:layoutData>
+								</m:ComboBox>
+								<m:Button icon="sap-icon://information" tooltip="{i18n>txtHint}" press="pressRDLInfoBtn">
+									<m:layoutData>
+                                        <l:GridData span="L1 M2 S2"/>
+                                    </m:layoutData>
+								</m:Button>
+							</f:fields>
+						</f:FormElement>
+						<f:FormElement label="{i18n>requestedDeliveryDate}">
+							<f:fields>
+								<m:DatePicker id="reqdate-edit" change="requestDelDateOnChange" minDate="{ parts: ['servicerequestItemsModel>/0/RequestedDeliveryDate', 'buttonControlModel>/IsPreferredSuccessServiceSelected'], formatter: '.formatter.formatDateLimitForRDD' }" enabled="{editableFieldsModel>/ReqDelDate}"
+									value="{ parts: [ {path: 'servicerequestItemsModel>/0/RequestedDeliveryDate'} ], formatter: 'sap.com.servicerequest.servicerequest.model.formatter.date' }" valueState="{= ${buttonControlModel>/IsPreferredSuccessServiceSelected}?'None':${buttonControlModel>/showMsgForDatesValidationAgainstCurrentDate}?'Warning':'None'}"
+									tooltip="{i18n>requestedDeliveryDate}"/>
+							</f:fields>
+						</f:FormElement>
+					</f:formElements>
+				</f:FormContainer>
+				<f:FormContainer visible="{buttonControlModel>/showContractFieldsBasedOnSelectedService}">
+					<f:formElements>
+						<f:FormElement >
+							<f:label>
+								<m:Label text="{i18n>txtContractType}" design="Bold" />
+							</f:label>
+							<m:Text id="idTextContactType" wrapping="true"
+								text="{parts: ['servicerequestItemsModel>/0/ContractMainProdID','servicerequestItemsModel>/0/ContractMainProdDescr'], formatter:'.formatter.formatContractType'}"></m:Text>
+						</f:FormElement>
+						<f:FormElement label="{i18n>contract}">
+							<f:fields>
+								<m:ComboBox width="100%" id="contractId-edit" enabled="{editableFieldsModel>/Contract}" showSecondaryValues="true"
+									selectedKey="{servicerequestItemsModel/0/ContractID}" items="{ path: 'contractSetModel>/', sorter: { path: 'GroupText', descending: false, group: true} }" tooltip="{i18n>contract}"
+									selectionChange="onContractSelected">
+									<core:ListItem key="{contractSetModel>ContractID}" text="{contractSetModel>ContractName}"/>
+									<m:layoutData>
+										<l:GridData span="L7 M10 S10"/>
+									</m:layoutData>
+								</m:ComboBox>
+								<m:Button icon="sap-icon://sys-find" tooltip="{i18n>txtCannotFindContract}" press="pressFindContractBtn">
+									<m:layoutData>
+										<l:GridData span="L1 M2 S2"/>
+									</m:layoutData>
+								</m:Button>
+								<!--m:Link wrapping="true" href="https://sap.sharepoint.com/teams/SRSApp/HELP%20Cannot%20use%20my%20Contract/Home.aspx"
+									text="{i18n>txtCannotFindContract}" target="_blank" class="sapUiTinyMarginTop" tooltip="{i18n>txtCannotFindContract}"/-->
+							</f:fields>
+						</f:FormElement>
+						<f:FormElement label="{i18n>contractItem}">
+							<f:fields>
+								<m:ComboBox id="contractItemId-edit" enabled="{editableFieldsModel>/ContractItem}" showSecondaryValues="true"
+									items="{ path: 'contractItemModel>/', sorter: { path: 'ContractItemName' }}" change="onContractItemSelected" tooltip="{i18n>contractItem}">
+									<core:ListItem key="{contractItemModel>ContractItemID}" text="{contractItemModel>ContractitemName}" app:contractItem="{contractItemModel>}"/>
+								</m:ComboBox>
+							</f:fields>
+						</f:FormElement>
+						<f:FormElement label="{path:'servicerequestModel>/ServiceID', formatter:'.formatter.formatTextForAvailableCallOffDays'}">
+								<m:Text 
+									text="{parts: ['servicerequestItemsModel>/0/ContractItemID','SRS_Data_UserSet>/AvailableCallOffDays'], formatter:'.formatter.availableCalloffDaysFormatter'}"
+									tooltip="{path:'SRS_Data_UserSet>/AvailableCallOffDays', formatter:'.formatter.availableCalloffDaysFormatter'}"></m:Text>
+						</f:FormElement>
+						<f:FormElement label="{path:'servicerequestModel>/ServiceID', formatter:'.formatter.formatTextForTotalCallOffDays'}">
+								<m:Text id="totalcalloff-Edit"
+									text="{path: 'servicerequestModel>/TotalCallOffDays', formatter: '.formatter.totalCallOffDaysFormatter'}"
+									tooltip="{servicerequestModel>/TotalCallOffDays}"></m:Text>
+						</f:FormElement>
+					</f:formElements>
+				</f:FormContainer>
+			</f:formContainers>
+		</f:Form>
+		<f:Form editable="true" visible="{buttonControlModel>/isSystemVisible}">
+			<f:layout>
+				<f:ResponsiveGridLayout class="classScopeSectionSystemForm" labelSpanXL="4" labelSpanL="4" labelSpanM="4" labelSpanS="12"
+					adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="2"
+					singleContainerFullSize="false"/>
+			</f:layout>
+			<f:formContainers >
+				<f:FormContainer>
+					<f:formElements>
+						<f:FormElement label="{i18n>system}">
+							<f:fields>
+								<m:ComboBox id="idSystemCombo"  busy="{buttonControlModel>/busyIndictorSystemDropdown}"
+									enabled="{editableFieldsModel>/System}" showSecondaryValues="true" selectedKey="{'servicerequestModel>/ReferenceSystemID'}"
+									items="{ path: 'ReferenceObjectsModel>/', sorter: {path: 'DeployModel',descending: false, group: true }}" tooltip="{i18n>system}"
+									selectionChange="onSystemSelected" change="changeSystem"
+									valueState="{parts: ['servicerequestModel>/ReferenceSystemID', 'servicerequestModel>/StatusCode'], formatter: '.formatter.requiredForScopingIndicator' }"
+									valueStateText="{parts: ['servicerequestModel>/ReferenceSystemID', 'servicerequestModel>/StatusCode'], formatter: '.formatter.requiredForScopingValueStateTextForSystem' }">
+									<core:ListItem key="{ReferenceObjectsModel>IbComponent}" app:systemData="{ReferenceObjectsModel>}"
+										text="{parts: ['ReferenceObjectsModel>IbComponent', 'ReferenceObjectsModel>SystemRefNum', 'ReferenceObjectsModel>DeployMod', 'ReferenceObjectsModel>SID', 'ReferenceObjectsModel>SysDescription'], formatter: '.formatter.formatRefObjectsFirsColumn' }"/>
+									<m:layoutData>
+										<l:GridData span="L7 M10 S10"/>
+									</m:layoutData>
+								</m:ComboBox>
+								<m:Button press="pressSystemHint" tooltip="{i18n>txtHint}" icon="sap-icon://information">
+									<m:layoutData>
+										<l:GridData span="L1 M2 S2"/>
+									</m:layoutData>
+								</m:Button>
+							</f:fields>
+						</f:FormElement>
+					</f:formElements>
+				</f:FormContainer>
+			</f:formContainers>
+		</f:Form>
+		<m:MessageStrip text="{i18n>txtMsgStripCloudRegObj}" type="Information" showIcon="true"
+			visible="{buttonControlModel>/showCloudRefObjSection}" class="sapUiTinyMargin"></m:MessageStrip>
+		<m:Panel visible="{buttonControlModel>/showCloudRefObjSection}" id="panelCloudRefObjEdit" expandable="true" expanded="true" width="auto"
+			class="sapUiNoMargin classBorderRemovalPanel">
+			<m:headerToolbar>
+				<m:OverflowToolbar style="Clear">
+					<m:Title text="{i18n>txtCloudRefObjTitle}"/>
+					<m:Button icon="sap-icon://message-information" tooltip="{i18n>txtInfoCloudRefObj}" press="onCloudRefObjectInfoButton" type="Transparent"/>
+					<m:Button text="Add Tenants" press="onPressAddTenant" tooltip="{i18n>txtAddTenant}" type="Accept" visible="{editableFieldsModel>/System}"/>
+					<m:ToolbarSpacer/>
+					<m:Button id="ShowMoreCloudRefObjEdit" visible="{buttonControlModel>/isShowMoreCloudRefObjVisible}" text="Show More"
+						press="pressShowMoreCloudRefObjBtn" type="Transparent"/>
+				</m:OverflowToolbar>
+			</m:headerToolbar>
+			<m:content>
+				<table:TreeTable id="idTreeTableCloudRefEdit" toggleOpenState="toggleOpenStateForCROTreeTable" minAutoRowCount="1"
+					noData="{i18n>txtnoDataCloudRefObj}" visibleRowCount="{buttonControlModel>/visibleRowCount}"
+					busy="{buttonControlModel>/busyIndicatorCloudRefTable}" rows="{path:'CloudReferenceObjectSetModel>/', parameters: {arrayNames:['objects']}}"
+					selectionMode="None" enableSelectAll="false" visibleRowCountMode="Interactive" class="sapUiNoMargin">
+					<table:columns>
+						<table:Column width="17rem">
+							<m:Label text="Tenant/Module"/>
+							<table:template>
+								<m:HBox>
+									<core:Icon class="classCloudRefObjIcons"
+										src="{parts: ['CloudReferenceObjectSetModel>ProductID', 'CloudReferenceObjectSetModel>MainObject'], formatter: '.formatter.cloudRefObjectIcon'}"></core:Icon>
+									<m:Text text="{parts: ['CloudReferenceObjectSetModel>ProductID'], formatter: '.formatter.formatCloudRefObjProductID' }" wrapping="false"/>
+								</m:HBox>
+							</table:template>
+						</table:Column>
+						<table:Column width="7rem" visible="{parts: ['editableFieldsModel>/System'], formatter: '.formatter.showHideActionColumn' }">
+							<m:Label text="Actions"/>
+							<table:template>
+								<m:HBox>
+									<m:Button app:selectedCloudObj="{CloudReferenceObjectSetModel>}" icon="sap-icon://delete"
+										visible="{parts: ['CloudReferenceObjectSetModel>MainObject'], formatter: '.formatter.showHideDeleteIconCloudRefObj' }"
+										press="onPressDeleteTenatAndModule" type="Transparent" class="sapUiTinyMarginEnd"/>
+									<m:Button app:selectedCloudObj="{CloudReferenceObjectSetModel>}" tooltip="{i18n>txtAddModule}" class="sapUiTinyMarginEnd"
+										visible="{parts: ['CloudReferenceObjectSetModel>ParentComponent'], formatter: '.formatter.showHideAddIconCloudRefObj' }"
+										icon="sap-icon://add-document" type="Transparent" press="onPressAddModule"/>
+								</m:HBox>
+							</table:template>
+						</table:Column>
+						<table:Column width="35rem">
+							<m:Label text="Product Description"/>
+							<table:template>
+								<m:Text text="{CloudReferenceObjectSetModel>ProductText}"/>
+							</table:template>
+						</table:Column>
+						<table:Column>
+							<m:Label text="System Role"/>
+							<table:template>
+								<m:Text text="{CloudReferenceObjectSetModel>CarSystemRoleT}"/>
+							</table:template>
+						</table:Column>
+					</table:columns>
+				</table:TreeTable>
+			</m:content>
+		</m:Panel>
+		<f:Form editable="true">
+			<f:layout>
+				<f:ResponsiveGridLayout class="classScopeSectionSystemForm" labelSpanXL="4" labelSpanL="4" labelSpanM="4" labelSpanS="12"
+					adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="2"
+					singleContainerFullSize="false"/>
+			</f:layout>
+			<f:formContainers >
+				<f:FormContainer>
+					<f:formElements>
+						<f:FormElement label="{i18n>customerContact}">
+							<f:fields>
+								<m:MultiInput id="srs_customerContact-input" showValueHelp="true" valueHelpRequest="onCustomerContactSearch"
+									enabled="{parts: ['servicerequestModel>/ReferenceSystemID','servicerequestModel>/ContactName','editableFieldsModel>/CustomerContact'], formatter: '.formatter.enableSystemDependentFields' }"
+									valueState="{parts: ['servicerequestModel>/ContactName', 'servicerequestModel>/StatusCode'], formatter: '.formatter.requiredForScopingIndicator' }"
+									valueStateText="{parts: ['servicerequestModel>/ContactName', 'servicerequestModel>/StatusCode'], formatter: '.formatter.requiredForScopingValueStateText' }"
+									valueHelpOnly="true" tooltip="{i18n>customerContacts}" tokenUpdate="contactTokenUpdate"/>
+							</f:fields>
+						</f:FormElement>
+					</f:formElements>
+				</f:FormContainer>
+			</f:formContainers>
+		</f:Form>
+		<f:Form editable="true" visible="{buttonControlModel>/visibleFeedbackForm}">
+			<f:layout>
+				<f:ResponsiveGridLayout class="classScopeSectionSystemForm" labelSpanXL="4" labelSpanL="4" labelSpanM="4" labelSpanS="12"
+					adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="2"
+					singleContainerFullSize="false"/>
+			</f:layout>
+			<f:formContainers >
+				<f:FormContainer>
+					<f:formElements>
+						<f:FormElement label="{i18n>txtEnableServiceFeedbackEmail}" visible="{buttonControlModel>/visibleSurveyRecipientSwitch}">
+							<f:fields >
+									<m:CheckBox  text=""
+										editable="{editableFieldsModel>/visibleFeedbackFormCheckboxEditable}"
+										busy="{buttonControlModel>/busyIndicatorSurveyRecpt}" select="onSurveyRcptSwitchChange"
+										selected="{servicerequestModel>/FeedbackEnabled}">
+										<m:layoutData>
+                                        	<l:GridData span="L1 M2 S2"/>
+                                   		</m:layoutData>
+									</m:CheckBox>
+									<m:MultiInput  width="100%" placeholder="Select a Survey Recipient" visible="{ parts: [ {path: 'servicerequestModel>/FeedbackEnabled'} ], formatter: '.formatter.visibleSurveyRcpt' }"
+										enabled="{parts: ['servicerequestModel>/ReferenceSystemID','servicerequestModel>/SurveyRecName','editableFieldsModel>/CustomerContact'], formatter: '.formatter.enableSystemDependentFields' }"
+										id="idSurveyRecipient" busy="{buttonControlModel>/busyIndicatorSurveyRecpt}" showValueHelp="true" valueHelpRequest="onSurveyRcpySearch"
+										valueState="{parts: ['servicerequestModel>/SurveyRecName', 'servicerequestModel>/StatusCode'], formatter: '.formatter.requiredForScopingIndicator' }"
+										valueStateText="{parts: ['servicerequestModel>/SurveyRecName', 'servicerequestModel>/StatusCode'], formatter: '.formatter.requiredForScopingValueStateText' }"
+										valueHelpOnly="true" tokenUpdate="surveyRecipientTokenUpdate" tooltip="{i18n>txtSurveyRecipient}">
+										<m:layoutData>
+                                        	<l:GridData span="L7 M10 S10"/>
+                                   		 </m:layoutData>
+									</m:MultiInput>	
+							</f:fields>
+						</f:FormElement>
+						<f:FormElement label="{i18n>txtEnableServiceFeedbackEmail}" visible="{buttonControlModel>/visibleNoSurveyRecipientLink}">
+							<f:fields>
+								<m:Link wrapping="true" text="{i18n>txtNoSurveyRecptLink}" href="https://jam4.sapjam.com/wiki/show/XLtTwO6gdSsy3ga0TxJo1N" target="_blank"></m:Link>
+							</f:fields>
+						</f:FormElement>
+					</f:formElements>
+				</f:FormContainer>
+			</f:formContainers>
+		</f:Form>
+		<m:MessageStrip
+			visible="{= ${buttonControlModel>/showContractFieldsBasedOnSelectedService} &amp;&amp; ${buttonControlModel>/showContractWorkAtRisk}}"
+			enableFormattedText="true" showIcon="true" text="{buttonControlModel>/txWorkAtRisk}" type="Warning" class="sapUiMediumMarginBottom"></m:MessageStrip>
+		<m:MessageStrip text="{i18n>violationInServiceRequest}" type="Error" showIcon="true" showCloseButton="false" class="sapUiTinyMarginBottom"
+			visible="{ parts: [ {path: 'servicerequestModel>/StatusCode'}, {path: 'servicerequestApprovalModel>/'} ], formatter: '.formatter.violationAlertDisplay' }"></m:MessageStrip>
+		<m:MessageStrip id="msgStripContractItemValidation" text="{i18n>txtContractValidationMsg}"
+			visible="{= ${buttonControlModel>/showContractFieldsBasedOnSelectedService} &amp;&amp; ${buttonControlModel>/showContractValidationMessageStrip}}"
+			type="Error" showIcon="true" class="sapUiMediumMarginBottom"></m:MessageStrip>
+		<m:MessageStrip text="{i18n>txtMsgForDatesValidationAgainstCurrentDate}"
+			visible="{= ${buttonControlModel>/IsPreferredSuccessServiceSelected}?false:${buttonControlModel>/showMsgForDatesValidationAgainstCurrentDate}}" type="Warning" showIcon="true" class="sapUiMediumMarginBottom"></m:MessageStrip>
+		<m:MessageStrip text="{i18n>txtMsgIfOCDPreSelected}"
+			visible="{ parts: [{path: 'servicerequestModel>/ServiceID'} ], formatter: '.formatter.showMsgIfOCDPreSelected' }" type="Information"
+			showIcon="true" class="sapUiMediumMarginBottom"></m:MessageStrip>
+		<m:MessageStrip text="{i18n>txtMsgIfPrSSelected}"
+			visible="{editableFieldsModel>/IsPreferredSuccessServiceSelected}" type="Information"
+			showIcon="true" class="sapUiMediumMarginBottom"></m:MessageStrip>
+		<m:MessageStrip text="{SignavioInstructionModel>/InstructionTxt}" enableFormattedText="true"
+			visible="{buttonControlModel>/showSignavioInstructionsMsgStrip}" type="Information"
+			showIcon="false" class="sapUiMediumMarginBottom"></m:MessageStrip>
+		<m:VBox>
+			<m:Table id="idProductsTable-edit" busy="{busyIndicatorModel>/itemsTable}" inset="false" items="{ path: 'servicerequestItemsModel>/'}"
+				sticky="ColumnHeaders">
+				<m:headerToolbar>
+					<m:OverflowToolbar>
+						<m:Button enabled="{buttonControlModel>/enableDeleteAllItems}" icon="sap-icon://delete" type="Emphasized" text="{i18n>deleteAllItems}"
+							tooltip="{i18n>deleteAllItems}" press="pressDeleteAllItems"/>
+					</m:OverflowToolbar>
+				</m:headerToolbar>
+				<m:dragDropConfig>
+					<dnd:DragInfo
+						groupName="selected2available"
+						sourceAggregation="items" />
+					<dnd:DropInfo
+						groupName="available2selected"
+						targetAggregation="items"
+						dropPosition="Between"
+						drop="onDropSelectedProductsTable" />
+					<dnd:DragDropInfo
+						sourceAggregation="items"
+						targetAggregation="items"
+						dropPosition="Between"
+						drop="onDropSelectedProductsTable"/>
+				</m:dragDropConfig>
+				<m:columns>
+					<m:Column width="3em"></m:Column>
+					<m:Column width="6em" minScreenWidth="Tablet" demandPopin="true">
+						<m:Text text="{i18n>itemNo}" tooltip="{i18n>itemNo}"/>
+					</m:Column>
+					<m:Column minScreenWidth="Tablet" demandPopin="true">
+						<m:Text text="{i18n>role}" tooltip="{i18n>role}"/>
+					</m:Column>
+					<m:Column minScreenWidth="Tablet" demandPopin="true">
+						<m:Text text="{i18n>qualification}" tooltip="{i18n>qualification}"/>
+					</m:Column>
+					<m:Column width="9em" minScreenWidth="Tablet" demandPopin="true">
+						<m:Text text="{path:'servicerequestModel>/ServiceID', formatter:'.formatter.formatTextForCallOffDaysHeader'}"
+							tooltip="{path:'servicerequestModel>/ServiceID', formatter:'.formatter.formatTextForCallOffDaysHeader'}"/>
+					</m:Column>
+					<m:Column minScreenWidth="Tablet" demandPopin="true">
+						<m:Text class="classTableItemsHeadDates" text="{ parts: [ {path: 'i18n>startDateTime'} ], formatter: '.formatter.formatSRItemsDateHeader' }"
+							tooltip="{ parts: [ {path: 'i18n>startDateTime'} ], formatter: '.formatter.formatSRItemsDateHeader' }"/>
+					</m:Column>
+					<m:Column minScreenWidth="Tablet" demandPopin="true">
+						<m:Text class="classTableItemsHeadDates" text="{ parts: [ {path: 'i18n>endDateTime'} ], formatter: '.formatter.formatSRItemsDateHeader' }"
+							tooltip="{ parts: [ {path: 'i18n>endDateTime'} ], formatter: '.formatter.formatSRItemsDateHeader' }"/>
+					</m:Column>
+					<m:Column minScreenWidth="Tablet" demandPopin="true">
+						<m:Text text="{i18n>deliveryTeam}" tooltip="{i18n>deliveryTeam}"/>
+					</m:Column>
+					<m:Column minScreenWidth="Tablet" demandPopin="true">
+						<m:HBox alignItems="Center">
+							<m:Text text="{i18n>serviceDeliveryDetails}" tooltip="{i18n>serviceDeliveryDetails}"/>
+							<m:Button class="sapUiNoContentPadding sapUiNoMargin" press="pressServiceDelDetailsInfoBtn" type="Transparent" tooltip="{i18n>txtHint}" icon="sap-icon://information"></m:Button>
+						</m:HBox>
+					</m:Column>
+				</m:columns>
+				<m:items>
+					<m:ColumnListItem>
+						<m:cells >
+							<m:VBox alignItems="Center" app:item="{servicerequestItemsModel>}">
+								<core:Icon app:isDeleted="false"
+									visible="{ parts: [ {path: 'servicerequestItemsModel>ItemNo'},{path: 'editableFieldsModel>/SRItems'} ], formatter: '.formatter.showIconForItemsDelete' }"
+									src="sap-icon://delete" press="handleDelete" tooltip="Delete Item {i18n>txtShiftDeleteTxt}"/>
+								<core:Icon class="classItemCopy" tooltip="{i18n>copyItem}"
+									visible="{ parts: [ {path: 'servicerequestItemsModel>ItemNo'},{path: 'editableFieldsModel>/SRItems'} ], formatter: '.formatter.showIconForItemsDelete' }"
+									src="sap-icon://copy" press="handleItemCopy"/>
+							</m:VBox>
+							<m:HBox>
+								<m:Text text="{ parts: [ {path: 'servicerequestItemsModel>ItemNo'} ], formatter: '.formatter.removePrecedingZerosInItemNo' }"
+									tooltip="{ parts: [ {path: 'servicerequestItemsModel>ItemNo'} ], formatter: '.formatter.removePrecedingZerosInItemNo' }"/>
+							</m:HBox>
+							<m:HBox>
+								<m:Text visible="{ parts: [ {path: 'servicerequestItemsModel>ItemNo'} ], formatter: '.formatter.isTextControlEnabled' }"
+									text="{= ${servicerequestItemsModel>BrandVoiceText}?${servicerequestItemsModel>BrandVoiceText}:${servicerequestItemsModel>ProductName}}" tooltip="{= ${servicerequestItemsModel>BrandVoiceText}?${servicerequestItemsModel>BrandVoiceText}:${servicerequestItemsModel>ProductName}}"/>
+								<m:ComboBox enabled="{editableFieldsModel>/SRItems}"
+									visible="{ parts: [ {path: 'servicerequestItemsModel>ItemNo'} ], formatter: '.formatter.isInputControlEnabled' }"
+									selectedKey="{servicerequestItemsModel>ProductID}" tooltip="{servicerequestItemsModel>ProductName}" change="comboProductOnChange"
+									showSecondaryValues="true" items="{ path: 'roleModel>/'}">
+									<core:ListItem key="{roleModel>DdlbKey}" text="{roleModel>Value}"/>
+								</m:ComboBox>
+							</m:HBox>
+							<m:HBox>
+								<m:ComboBox
+									enabled="{ parts: [ {path: 'servicerequestItemsModel>ItemNo'},{path: 'editableFieldsModel>/SRItems'},{path: 'editableFieldsModel>/IsPreferredSuccessServiceSelected'}], formatter: '.formatter.showIconForItems' }"
+									visible="{ parts: [ {path: 'servicerequestItemsModel>ItemNo'} ], formatter: '.formatter.SRItemsControlVisibility' }"
+									selectedKey="{servicerequestItemsModel>QualifiactionID}" change="comboQualOnChange" showSecondaryValues="true"
+									placeholder="{i18n>typeForSuggestions}" tooltip="{servicerequestItemsModel>QualificationName}" items="{ path: 'qualificationModel>/'}">
+									<core:ListItem key="{qualificationModel>DdlbKey}" text="{qualificationModel>Value}"/>
+								</m:ComboBox>
+								<m:Button class="classBtnFUQ" tooltip="{i18n>txtFavQualLink}" press="pressShowFavQualifications" visible="{ parts: [ {path: 'servicerequestItemsModel>ItemNo'},{path: 'editableFieldsModel>/IsPreferredSuccessServiceSelected'} ], formatter: '.formatter.SRItemsControlVisibility' }" icon="sap-icon://customer-history"></m:Button>
+							</m:HBox>
+							<m:HBox>
+								<m:Text visible="{ parts: [ {path: 'servicerequestItemsModel>ItemNo'} ], formatter: '.formatter.isTextControlEnabledForCallOffDays' }"
+									text="{ parts: [ {path: 'servicerequestItemsModel>CallOffDays'},{path: 'servicerequestModel>/ServiceID'} ], formatter: '.formatter.formatCallOffDaysforCODService' }"
+									tooltip="{servicerequestItemsModel>CallOffDays}">
+									<m:customData>
+										<core:CustomData key="boldClass" value="{ parts: [ {path: 'servicerequestItemsModel>ItemNo'}], formatter: '.formatter.changeFontStyle' }"
+											writeToDom="true"/>
+									</m:customData>
+								</m:Text>
+								<m:Input
+									enabled="{ parts: [ {path: 'servicerequestItemsModel>ItemNo'},{path: 'editableFieldsModel>/SRItems'}, {path: 'editableFieldsModel>/IsPreferredSuccessServiceSelected'} ], formatter: '.formatter.showIconForItems' }"
+									visible="{ parts: [ {path: 'servicerequestItemsModel>ItemNo'} ], formatter: '.formatter.isInputControlEnabledForCallOffDays' }"
+									tooltip="{ parts: [ {path: 'servicerequestItemsModel>CallOffDays'},{path: 'servicerequestModel>/ServiceID'} ], formatter: '.formatter.formatCallOffDaysforCODService' }"
+									placeholder="{path:'servicerequestModel>/ServiceID', formatter:'.formatter.formatTextForCallOffDaysHeader'}"
+									value="{ parts: [ {path: 'servicerequestItemsModel>CallOffDays'},{path: 'servicerequestModel>/ServiceID'} ], formatter: '.formatter.formatCallOffDaysforCODService' }"
+									liveChange="CallOffDaysOnLiveChange" change="callOffDaysOnChange" type="Number"/>
+							</m:HBox>
+							<m:HBox>
+								<m:DateTimePicker visible="{ parts: [ {path: 'servicerequestItemsModel>ItemNo'} ], formatter: '.formatter.SRItemsControlVisibility' }"
+									placeholder="{i18n>startDateTime}"  minutesStep="30" secondsStep="30" tooltip="{i18n>startDateTime}"
+									value="{ parts: [ {path: 'servicerequestItemsModel>StartDate'} ], formatter: '.formatter.dateTime' }" change="handleChangeStartD"
+									enabled="{ parts: [ {path: 'servicerequestItemsModel>ItemNo'},{path: 'editableFieldsModel>/SRItems'}], formatter: '.formatter.enableStartDate' }"
+									minDate="{ parts: [ {path: 'contractItemsDateModel>/ContractItemStart'} ], formatter: '.formatter.formatDateLimitMinDate' }"
+									maxDate="{ parts: [ {path: 'contractItemsDateModel>/ContractItemEnd'} ], formatter: '.formatter.formatDateLimit' }"
+									app:itemNo="{servicerequestItemsModel>ItemNo}"/>
+							</m:HBox>
+							<m:HBox>
+								<m:DateTimePicker visible="{ parts: [ {path: 'servicerequestItemsModel>ItemNo'} ], formatter: '.formatter.SRItemsControlVisibility' }"
+									placeholder="{i18n>endDateTime}" minutesStep="30" secondsStep="30"
+									value="{ parts: [ {path: 'servicerequestItemsModel>EndDate'} ], formatter: '.formatter.dateTime' }" change="handleChangeEndD"
+									enabled="{editableFieldsModel>/SRItems}" tooltip="{i18n>endDateTime}"
+									minDate="{ parts: [ {path: 'contractItemsDateModel>/ContractItemStart'} ], formatter: '.formatter.formatDateLimitMinDate' }"
+									maxDate="{ parts: [ {path: 'contractItemsDateModel>/ContractItemEnd'} ], formatter: '.formatter.formatDateLimit' }"/>
+							</m:HBox>
+							<m:HBox>
+								<m:ComboBox
+									enabled="{ parts: [{path: 'editableFieldsModel>/SRItems'},{path: 'editableFieldsModel>/IsPreferredSuccessServiceSelected'} ], formatter: '.formatter.enableDeliveryTeam' }"
+									change="comboDeliveryOnChange" tooltip="{i18n>deliveryTeam}" visible="true"
+									selectedKey="{ parts: [ {path: 'servicerequestItemsModel>DeliveryTeamID'} ], formatter: '.formatter.removePrecedingZerosInItemNo' }"
+									showSecondaryValues="true" items="{ path: 'deliveryTeamModel>/' }" width="100%">
+									<core:Item key="{deliveryTeamModel>TeamID}" text="{deliveryTeamModel>TeamName}"/>
+								</m:ComboBox>
+							</m:HBox>
+							<m:VBox>
+								<m:Button visible="{ parts: [ {path: 'servicerequestItemsModel>ServiceDelDetailsText'},{path: 'servicerequestItemsModel>ItemNo'}, {path: 'servicerequestModel>/StatusCode'} ], formatter: '.formatter.showAddDescriptionBtn' }" icon="sap-icon://add" text="Add details" type="Transparent" tooltip="Add service delivery details" press="pressAddDescriptionBtn"></m:Button>
+								<m:HBox visible="{ parts: [ {path: 'servicerequestItemsModel>ServiceDelDetailsText'},{path: 'servicerequestItemsModel>ItemNo'} ], formatter: '.formatter.showEditDescriptionFields' }">
+									<m:ExpandableText maxCharacters="40" text="{servicerequestItemsModel>ServiceDelDetailsText}" overflowMode="Popover" tooltip="{servicerequestItemsModel>ServiceDelDetailsText}"/>
+									<m:Button visible="{ parts: [  {path: 'servicerequestModel>/StatusCode'} ], formatter: '.formatter.showEditDescriptionBtn' }" icon="sap-icon://edit" type="Transparent"  tooltip="Edit service delivery details" press="pressAddDescriptionBtn"></m:Button>
+									</m:HBox>
+							</m:VBox>
+						</m:cells>
+					</m:ColumnListItem>
+				</m:items>
+			</m:Table>
+		</m:VBox>
+		<m:VBox alignItems="Center">
+			<m:Button icon="sap-icon://add" id="scopeaddbutton-edit" enabled="{= ${editableFieldsModel>/IsPreferredSuccessServiceSelected}?false:${buttonControlModel>/itemAddBtn}}" press="onAddNewScopeRow"
+				tooltip="{i18n>addNewLineItem}"/>
+		</m:VBox>
+		<m:Panel class="panelAgreedScope" id="panelAgreedScope" expandable="true" expanded="true" headerText="{i18n>agreedscope}" width="auto">
+			<m:headerToolbar>
+				<m:OverflowToolbar>
+					<m:Label required="{ parts: [ 'servicerequestModel>/StatusCode' ], formatter: '.formatter.setMandatoryTitleAgreedScope' }"
+						class="classLabelitle" text="{i18n>agreedscope}"/>
+					<m:Button icon="sap-icon://information" press="agreedScopeBtnOnPress"></m:Button>	
+					<m:ToolbarSpacer/>
+					<m:Button id="sr-agreed-scope-TextMode-Edit" text="{i18n>showMore}" tooltip="{i18n>showMore}" press="setTextAreaGrowingAgreedScope"></m:Button>
+				</m:OverflowToolbar>
+			</m:headerToolbar>
+			<m:FormattedText htmlText="{ parts: [ {path: 'i18n>agreedServiceRequestInfoTextHeader'} ], formatter: '.formatter.formatEmphasized' }"
+				tooltip="{i18n>agreedServiceRequestInfoTextHeader}"/>
+			<m:TextArea id="sr-agreed-scope" class="allowTextAreaResize" value="{agreedServiceRequestScopeModel>/Text}" valueLiveUpdate="true"
+				width="100%" enabled="{editableFieldsModel>/AgreedScope}" change="agreedScopeChanged" rows="5" showExceededText="false" growing="false"
+				valueState="{= ${agreedServiceRequestScopeModel>/Text}.length >= 10000 ? 'Warning' : 'None' }"
+				valueStateText="{= ${agreedServiceRequestScopeModel>/Text}.length >= 10000 ? ${i18n>maxCharLimitReached} : '' }" growingMaxLines="5"
+				maxLength="10000" tooltip="{i18n>agreedscope}"/>
+			<m:FormattedText
+				htmlText="{parts: ['agreedServiceRequestScopeModel>/data/0/ChangedFirstname', 'agreedServiceRequestScopeModel>/data/0/ChangedLastname', 'agreedServiceRequestScopeModel>/data/0/ChangedTmstmp'], formatter: '.formatter.formatNoteLastChanged'}"
+				tooltip="{i18n>agreedscope}"/>
+		</m:Panel>
+		<f:Form visible="{path:'SRS_Data_UserSet>/', formatter:'.formatter.extRefVisibility'}" class="classFormExtRef" editable="false">
+			<f:layout>
+				<f:ResponsiveGridLayout labelSpanXL="4" labelSpanL="4" labelSpanM="4" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0"
+					emptySpanM="0" emptySpanS="0" columnsXL="3" columnsL="3" columnsM="3" singleContainerFullSize="false"/>
+			</f:layout>
+			<f:formContainers>
+				<f:FormContainer >
+					<f:formElements>
+						<f:FormElement label="{i18n>txtExtRef}">
+							<f:fields >
+								<m:Input maxLength="35" value="{servicerequestModel>/ExternalRef}" tooltip="{servicerequestModel>/ExternalRef}"/>
+							</f:fields>
+						</f:FormElement>
+					</f:formElements>
+				</f:FormContainer>
+			</f:formContainers>
+		</f:Form>
+	</m:VBox>
+</mvc:View>

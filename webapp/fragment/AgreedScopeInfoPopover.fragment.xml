@@ -1,0 +1,9 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form" xmlns:core="sap.ui.core">
+	<ResponsivePopover id="idAgreedScopePopover" title="{i18n>agreedscope}" placement="Right">
+		<content>
+			<VBox wrap="Wrap" class="sapUiSmallMargin"> 
+				<core:HTML content="&lt;div style='font-size: 14px !important' &gt;&lt;strong&gt;Notes to the Scoper&lt;/strong&gt;&lt;p&gt;This section is intended for the scoper to document the expectations for the service, key deliverables, and any other important notes for the Delivery Team.&lt;/p&gt;&lt;p&gt;Agreed Scope should NOT reiterate details already documented in the Service Request Info field.  The information here should be VALUE-ADDED and UNIQUE, with the goal of aiding Staffing and Service Delivery processes&lt;/p&gt;&lt;p&gt;#Signavio: Be sure to document if Signavio will be leveraged for this delivery.   Check Discussion Field for Activity with Signavio Backoffice.  They will help determine Signavio usage. Scope approval should not wait for Signavio determination. Signavio usage can be updated later in the scoping notes of the SO.&lt;/p&gt;&lt;/div&gt;"/>
+			</VBox>
+		</content>
+	</ResponsivePopover>
+</core:FragmentDefinition>
